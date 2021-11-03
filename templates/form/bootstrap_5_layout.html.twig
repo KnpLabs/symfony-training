@@ -1,0 +1,8 @@
+{% block datalist_widget %}
+  <input list="{{ id }}_list" placeholder="Type to search..." class="form-control" {{ block('widget_attributes') }}{% if value is not empty %}value="{{ value }}"{% endif %}>
+  <datalist id="{{ id }}_list">
+    {% for choice in choices %}
+      <option value="{{ choice }}"></option>
+    {% endfor %}
+  </datalist>
+{% endblock %}

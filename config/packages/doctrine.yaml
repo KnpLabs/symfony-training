@@ -1,6 +1,16 @@
 doctrine:
     dbal:
-        url: '%env(resolve:DATABASE_URL)%'
+        driver: pdo_mysql
+        host: '%env(resolve:MYSQL_HOST)%'
+        port: '%env(resolve:MYSQL_PORT)%'
+        dbname: '%env(resolve:MYSQL_DATABASE)%'
+        user: '%env(resolve:MYSQL_USER)%'
+        password: '%env(resolve:MYSQL_PASSWORD)%'
+        server_version: '%env(resolve:MYSQL_VERSION)%'
+        charset: utf8mb4
+        default_table_options:
+           charset: utf8mb4
+           collation: utf8mb4_unicode_ci
 
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)

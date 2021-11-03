@@ -1,19 +1,70 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
-        {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
-        {% endblock %}
+  <head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {# Run `composer require symfony/webpack-encore-bundle`
+    and uncomment the following Encore helpers to start using Symfony UX #}
+    {% block stylesheets %}
+    {#{{ encore_entry_link_tags('app') }}#}
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" />
+    {% endblock %}
 
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    {% block javascripts %}
+    {#{{ encore_entry_script_tags('app') }}#}
+    {% endblock %}
+  </head>
+  <body>
+    {% block menu %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Dinosaurs</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a 
+                class="nav-link{% if app.request.get('_route') == 'app_list_dinosaurs' %} active{% endif %}"
+                aria-current="page"
+                href="{{ path('app_list_dinosaurs') }}"
+              >
+                Dinosaurs list
+              </a>
+            </li>
+            <li class="nav-item">
+              <a 
+                class="nav-link{% if app.request.get('_route') == 'app_create_dinosaur' %} active{% endif %}" 
+                href="{{ path('app_create_dinosaur') }}"
+              >
+                Create a dinosaur
+              </a>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-light" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+    {% endblock %}
+
+    {% block flashMessage %}
+      {% if app.session.flashbag.peekAll %}
+      <div id="container">
+        {% for name, messages in app.session.flashbag.all %}
+          {% for message in messages %}
+          <div class="alert alert-{{ name }}">
+            {{ message }}
+          </div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endblock %}
+
+    {% block body %}{% endblock %}
+  </body>
 </html>

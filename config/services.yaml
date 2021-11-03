@@ -4,6 +4,10 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+  env(MYSQL_HOST): '%env(resolve:MYSQL_HOST)%'
+  env(MYSQL_DATABASE): '%env(resolve:MYSQL_DATABASE)%'
+  env(MYSQL_USER): '%env(resolve:MYSQL_USER)%'
+  env(MYSQL_PASSWORD): '%env(resolve:MYSQL_PASSWORD)%'
 
 services:
     # default configuration for services in *this* file
@@ -23,3 +27,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Database\PdoProvider:
+      arguments:
+        $host: '%env(MYSQL_HOST)%'
+        $dbName: '%env(MYSQL_DATABASE)%'
+        $user: '%env(MYSQL_USER)%'
+        $password: '%env(MYSQL_PASSWORD)%'
