@@ -17,3 +17,9 @@ app_edit_dinosaur:
   controller: App\Controller\DinosaursController::edit
   requirements:
     id: \d+
+
+app_remove_dinosaur:
+  path: /dinosaurs/{id}/remove
+  controller: App\Controller\DinosaursController::remove
+  requirements:
+    id: \d+

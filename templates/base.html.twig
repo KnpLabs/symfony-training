@@ -41,10 +41,30 @@
                 Create a dinosaur
               </a>
             </li>
+            <li class="nav-item">
+              <a 
+                class="nav-link{% if app.request.get('_route') == 'app_list_species' %} active{% endif %}"
+                aria-current="page"
+                href="{{ path('app_list_species') }}"
+              >
+                Species list
+              </a>
+            </li>
+            <li class="nav-item">
+              <a 
+                class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}" 
+                href="{{ path('app_create_species') }}"
+              >
+                Create a species
+              </a>
+            </li>
           </ul>
-          <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-light" type="submit">Search</button>
+            {% if searchForm is defined %}
+              {{ form_start(searchForm, { 'attr': {'class': 'd-flex'}}) }}
+                {{ form_widget(searchForm.q) }}
+                {{ form_widget(searchForm.submit) }}
+              {{ form_end(searchForm) }}
+            {% endif %}
           </form>
         </div>
       </div>

@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS `dinosaur`;
 CREATE TABLE `dinosaur` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL,
-  `gender` VARCHAR(6) NOT NULL,
+  `gender` VARCHAR(255) NOT NULL,
   `age` INT NOT NULL,
   `species` VARCHAR(255) NOT NULL
 );

@@ -1,0 +1,20 @@
+app_list_species:
+  path: /species
+  controller: App\Controller\SpeciesController::list
+
+app_create_species:
+  path: /species/create
+  controller: App\Controller\SpeciesController::create
+
+app_edit_species:
+  path: /species/{id}/edit
+  controller: App\Controller\SpeciesController::edit
+  requirements:
+    id: \d+
+
+app_remove_species:
+  path: /species/{id}/remove
+  controller: App\Controller\SpeciesController::remove
+  requirements:
+    id: \d+
+

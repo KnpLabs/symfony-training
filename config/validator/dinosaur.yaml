@@ -17,11 +17,6 @@ App\Entity\Dinosaur:
           maxMessage: 'The gender must contain at most 255 characters'
     species:
       - NotBlank: ~
-      - Length: 
-          min: 3
-          max: 255
-          minMessage: 'The species must contain at least 3 characters'
-          maxMessage: 'The species must contain at most 255 characters'
     age:
       - NotBlank: ~
       - Positive: 

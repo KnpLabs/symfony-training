@@ -2,42 +2,46 @@
 
 namespace App\Controller;
 
-use App\Database\PdoProvider;
 use App\Entity\Dinosaur;
 use App\Form\Type\DinosaurType;
+use App\Form\Type\SearchType;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class DinosaursController extends AbstractController
 {
-    public function __construct(
-        private PdoProvider $pdoProvider
-    ) { }
-
-    public function list(): Response
+    public function list(Request $request, ManagerRegistry $doctrine): Response
     {
-        $dinosaurs = $this
-            ->pdoProvider
-            ->getPdo()
-            ->query('SELECT * FROM dinosaur')
-            ->fetchAll()
+        $q = null;
+        $form = $this->createForm(SearchType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $search = $form->getData();
+
+            $q = $search['q'];
+        }
+
+        $dinosaurs = $doctrine
+            ->getRepository(Dinosaur::class)
+            ->search($q)
         ;
 
         return $this->render('dinosaurs-list.html.twig', [
-            'dinosaurs' => $dinosaurs
+            'dinosaurs' => $dinosaurs,
+            'searchForm' => $form->createView(),
         ]);
     }
 
-    public function single(string $id): Response
+    public function single(string $id, ManagerRegistry $doctrine): Response
     {
-        $pdo = $this->pdoProvider->getPdo();
-
-        $statement = $pdo->prepare('SELECT * FROM dinosaur WHERE dinosaur.id = :id');
-        $statement->bindParam(':id', $id);
-        $statement->execute();
-
-        $dinosaur = $statement->fetch();
+        $dinosaur = $doctrine
+            ->getRepository(Dinosaur::class)
+            ->find($id)
+        ;
 
         if ($dinosaur === false) {
             throw $this->createNotFoundException(
@@ -50,30 +54,18 @@ class DinosaursController extends AbstractController
         ]);
     }
 
-    public function create(Request $request): Response
+    public function create(Request $request, ManagerRegistry $doctrine): Response
     {
         $form = $this->createForm(DinosaurType::class);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $em = $doctrine->getManager();
             $dinosaur = $form->getData();
 
-            $statement = $this
-                ->pdoProvider
-                ->getPdo()
-                ->prepare("
-                    INSERT INTO dinosaur (name, gender, age, species)
-                    VALUES (:name, :gender, :age, :species)
-                ")
-            ;
-
-            $statement->execute([
-              ':name' => $dinosaur->getName(),
-              ':gender' => $dinosaur->getGender(),
-              ':age' => $dinosaur->getAge(),
-              ':species' => $dinosaur->getSpecies(),
-            ]);
+            $em->persist($dinosaur);
+            $em->flush();
 
             $this->addFlash('success', 'The dinosaur has been created!');
 
@@ -85,53 +77,28 @@ class DinosaursController extends AbstractController
         ]);
     }
 
-    public function edit(Request $request, int $id): Response
+    public function edit(Request $request, int $id, ManagerRegistry $doctrine): Response
     {
-        $pdo = $this->pdoProvider->getPdo();
+        $dinosaur = $doctrine
+            ->getRepository(Dinosaur::class)
+            ->find($id)
+        ;
 
-        $statement = $pdo->prepare('SELECT * FROM dinosaur WHERE dinosaur.id = :id');
-        $statement->bindParam(':id', $id);
-        $statement->execute();
-
-        $dinosaurData = $statement->fetch();
-
-        if ($dinosaurData === false) {
+        if ($dinosaur === false) {
             throw $this->createNotFoundException(
                 'The dinosaur you are looking for does not exists.'
             );
         }
-
-        $dinosaur = new Dinosaur(
-            $dinosaurData['name'],
-            $dinosaurData['gender'],
-            $dinosaurData['species'],
-            $dinosaurData['age']
-        );
 
         $form = $this->createForm(DinosaurType::class, $dinosaur);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $em = $doctrine->getManager();
             $dinosaur = $form->getData();
 
-            $statement = $this
-                ->pdoProvider
-                ->getPdo()
-                ->prepare("
-                    UPDATE dinosaur 
-                    SET name = :age, gender = :gender, age = :age, species = :species
-                    WHERE id = :id
-                ")
-            ;
-
-            $statement->execute([
-              ':id' => $id,
-              ':name' => $dinosaur->getName(),
-              ':gender' => $dinosaur->getGender(),
-              ':age' => $dinosaur->getAge(),
-              ':species' => $dinosaur->getSpecies(),
-            ]);
+            $em->flush();
 
             $this->addFlash('success', 'The dinosaur has been edited!');
 
@@ -141,5 +108,27 @@ class DinosaursController extends AbstractController
         return $this->renderForm('edit-dinosaur.html.twig', [
           'form' => $form
         ]);
+    }
+
+    public function remove(int $id, ManagerRegistry $doctrine): Response
+    {
+        $dinosaur = $doctrine
+            ->getRepository(Dinosaur::class)
+            ->find($id)
+        ;
+
+        if ($dinosaur === false) {
+            throw $this->createNotFoundException(
+                'The dinosaur you are looking for does not exists.'
+            );
+        }
+
+        $em = $doctrine->getManager();
+        $em->remove($dinosaur);
+        $em->flush();
+
+        $this->addFlash('success', 'The dinosaur has been removed!');
+
+        return $this->redirectToRoute('app_list_dinosaurs');
     }
 }
