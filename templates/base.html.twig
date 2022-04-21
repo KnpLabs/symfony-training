@@ -24,40 +24,72 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a 
-                class="nav-link{% if app.request.get('_route') == 'app_list_dinosaurs' %} active{% endif %}"
-                aria-current="page"
-                href="{{ path('app_list_dinosaurs') }}"
-              >
-                Dinosaurs list
-              </a>
-            </li>
-            <li class="nav-item">
-              <a 
-                class="nav-link{% if app.request.get('_route') == 'app_create_dinosaur' %} active{% endif %}" 
-                href="{{ path('app_create_dinosaur') }}"
-              >
-                Create a dinosaur
-              </a>
-            </li>
-            <li class="nav-item">
-              <a 
-                class="nav-link{% if app.request.get('_route') == 'app_list_species' %} active{% endif %}"
-                aria-current="page"
-                href="{{ path('app_list_species') }}"
-              >
-                Species list
-              </a>
-            </li>
-            <li class="nav-item">
-              <a 
-                class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}" 
-                href="{{ path('app_create_species') }}"
-              >
-                Create a species
-              </a>
-            </li>
+            {% if app.user is not null %}
+              <li class="nav-item">
+                <a 
+                  class="nav-link{% if app.request.get('_route') == 'app_list_dinosaurs' %} active{% endif %}"
+                  aria-current="page"
+                  href="{{ path('app_list_dinosaurs') }}"
+                >
+                  Dinosaurs list
+                </a>
+              </li>
+              {% if 'ROLE_ADMIN' in app.user.roles %}
+                <li class="nav-item">
+                  <a 
+                    class="nav-link{% if app.request.get('_route') == 'app_create_dinosaur' %} active{% endif %}" 
+                    href="{{ path('app_create_dinosaur') }}"
+                  >
+                    Create a dinosaur
+                  </a>
+                </li>
+              {% endif %}
+              <li class="nav-item">
+                <a 
+                  class="nav-link{% if app.request.get('_route') == 'app_list_species' %} active{% endif %}"
+                  aria-current="page"
+                  href="{{ path('app_list_species') }}"
+                >
+                  Species list
+                </a>
+              </li>
+              {% if 'ROLE_ADMIN' in app.user.roles %}
+                <li class="nav-item">
+                  <a 
+                    class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}" 
+                    href="{{ path('app_create_species') }}"
+                  >
+                    Create a species
+                  </a>
+                </li>
+              {% endif %}
+              <li class="nav-item">
+                <a 
+                  class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}" 
+                  href="{{ path('logout') }}"
+                >
+                  Logout
+                </a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a 
+                  class="nav-link{% if app.request.get('_route') == 'app_list_species' %} active{% endif %}"
+                  aria-current="page"
+                  href="{{ path('register') }}"
+                >
+                  Register
+                </a>
+              </li>
+              <li class="nav-item">
+                <a 
+                  class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}" 
+                  href="{{ path('login') }}"
+                >
+                  Login
+                </a>
+              </li>
+            {% endif %}
           </ul>
             {% if searchForm is defined %}
               {{ form_start(searchForm, { 'attr': {'class': 'd-flex'}}) }}
@@ -65,7 +97,11 @@
                 {{ form_widget(searchForm.submit) }}
               {{ form_end(searchForm) }}
             {% endif %}
-          </form>
+            {% if app.user is not null %}
+              <span class="navbar-text ms-2">
+                {{app.user.userIdentifier}}
+              </span>
+            {% endif %}
         </div>
       </div>
     </nav>
