@@ -25,7 +25,7 @@ class DatalistType extends AbstractType
         return 'datalist';
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return TextType::class;
     }
