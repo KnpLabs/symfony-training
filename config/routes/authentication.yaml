@@ -1,12 +1,4 @@
 ---
-register:
-  path: /register
-  controller: App\Controller\AuthenticationController::register
-
-login:
-  path: /login
-  controller: App\Controller\AuthenticationController::login
-    
 logout:
   path: /logout
   methods: GET

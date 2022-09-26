@@ -9,10 +9,12 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AuthenticationController extends AbstractController
 {
+    #[Route('/register', name: 'register')]
     public function register(Request $request, ManagerRegistry $doctrine): Response
     {
         $form = $this->createForm(UserType::class);
@@ -36,6 +38,7 @@ class AuthenticationController extends AbstractController
         ]);
     }
 
+    #[Route('/login', name: 'login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();

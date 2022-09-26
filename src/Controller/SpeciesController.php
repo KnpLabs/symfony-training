@@ -8,9 +8,11 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class SpeciesController extends AbstractController
 {
+    #[Route('/species', name: 'app_list_species')]
     public function list(ManagerRegistry $doctrine): Response
     {
         $speciesList = $doctrine
@@ -23,6 +25,7 @@ class SpeciesController extends AbstractController
         ]);
     }
 
+    #[Route('/species/create', name: 'app_create_species')]
     public function create(Request $request, ManagerRegistry $doctrine): Response
     {
         $form = $this->createForm(SpeciesType::class);
@@ -46,6 +49,11 @@ class SpeciesController extends AbstractController
         ]);
     }
 
+    #[Route(
+        '/species/{id}/edit',
+        name: 'app_edit_species',
+        requirements: ['id' => '\d+']
+    )]
     public function edit(Request $request, int $id, ManagerRegistry $doctrine): Response
     {
         $species = $doctrine
@@ -77,6 +85,11 @@ class SpeciesController extends AbstractController
         ]);
     }
 
+    #[Route(
+        '/species/{id}/remove',
+        name: 'app_remove_species',
+        requirements: ['id' => '\d+']
+    )]
     public function remove(int $id, ManagerRegistry $doctrine): Response
     {
         $species = $doctrine
