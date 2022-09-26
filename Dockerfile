@@ -11,7 +11,6 @@ RUN apk add --no-cache \
     git=~2.36 \
     icu-dev=~71.1
 
-
 RUN mkdir -p /usr/src/app \
     && addgroup docker \
     && adduser -S -h /home/docker -u ${USER_ID:-1000} -G docker docker \
