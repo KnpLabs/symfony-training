@@ -14,9 +14,11 @@ RUN mkdir -p /usr/src/app \
         autoconf \
         g++ \
         make \
-    && docker-php-ext-install -j"$(nproc)" pdo_mysql \
-    && pecl install apcu-5.1.19 \
-    && docker-php-ext-enable apcu \
+        icu-dev \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install -j"$(nproc)" intl pdo_mysql \
+    && pecl install apcu \
+    && docker-php-ext-enable apcu intl \
     && apk del .build-deps
 
 WORKDIR /usr/src/app
