@@ -46,6 +46,6 @@ class AuthenticationController extends AbstractController
             'controller_name' => 'AuthenticationController',
             'last_username' => $lastUsername,
             'error' => $error
-        ]); 
+        ]);
     }
 }

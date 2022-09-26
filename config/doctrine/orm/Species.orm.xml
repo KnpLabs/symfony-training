@@ -14,11 +14,10 @@
         <field name="habitats" column="habitats" type="simple_array" nullable="false" unique="false" />
         <field name="feeding" column="feeding" type="string" length="255" nullable="false" unique="false" />
 
-        <one-to-many 
+        <one-to-many
             field="dinosaurs"
             target-entity="App\Entity\Dinosaur"
             mapped-by="species" />
     </entity>
 
 </doctrine-mapping>
-
