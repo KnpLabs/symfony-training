@@ -9,9 +9,11 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DinosaursController extends AbstractController
 {
+    #[Route('/dinosaurs', name: 'app_list_dinosaurs')]
     public function list(Request $request, ManagerRegistry $doctrine): Response
     {
         $q = null;
@@ -36,6 +38,11 @@ class DinosaursController extends AbstractController
         ]);
     }
 
+    #[Route(
+        '/dinosaurs/{id}',
+        name: 'app_single_dinosaur',
+        requirements: ['id' => '\d+']
+    )]
     public function single(string $id, ManagerRegistry $doctrine): Response
     {
         $dinosaur = $doctrine
@@ -54,6 +61,7 @@ class DinosaursController extends AbstractController
         ]);
     }
 
+    #[Route('/dinosaurs/create', name: 'app_create_dinosaur')]
     public function create(Request $request, ManagerRegistry $doctrine): Response
     {
         $form = $this->createForm(DinosaurType::class);
@@ -77,6 +85,11 @@ class DinosaursController extends AbstractController
         ]);
     }
 
+    #[Route(
+        '/dinosaurs/{id}/edit',
+        name: 'app_edit_dinosaur',
+        requirements: ['id' => '\d+']
+    )]
     public function edit(Request $request, int $id, ManagerRegistry $doctrine): Response
     {
         $dinosaur = $doctrine
@@ -110,6 +123,11 @@ class DinosaursController extends AbstractController
         ]);
     }
 
+    #[Route(
+        '/dinosaurs/{id}/remove',
+        name: 'app_remove_dinosaur',
+        requirements: ['id' => '\d+']
+    )]
     public function remove(int $id, ManagerRegistry $doctrine): Response
     {
         $dinosaur = $doctrine
