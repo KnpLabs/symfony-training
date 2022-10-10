@@ -14,6 +14,14 @@ build:
 install-deps:
 	docker-compose run --rm php composer install
 
-.PHONY: migrate
-migrate:
+.PHONY: database-migrate
+database-migrate:
 	docker-compose run --rm php bin/console doctrine:migrations:migrate
+
+.PHONY: database-create
+database-create:
+	docker-compose run --rm php bin/console doctrine:database:create
+
+.PHONY: database-drop
+database-drop:
+	docker-compose run --rm php bin/console doctrine:database:drop --force
