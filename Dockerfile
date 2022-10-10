@@ -33,3 +33,6 @@ COPY composer.lock /usr/src/app/composer.lock
 RUN composer install --no-scripts
 
 COPY . /usr/src/app
+
+RUN chown -R 1000:1000 /usr/src/app
+USER 1000:1000

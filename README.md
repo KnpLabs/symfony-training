@@ -3,16 +3,25 @@
 ## Installation
 
 ```bash
-cp .env.dist .env
-docker-compose build
-docker-compose run --rm php composer install
-docker-compose up -d
+make start
 ```
 
-## Migrations
+### Migrations
+
+One the stack has started, you may apply Doctrine migrations once MySQL is ready.
 
 ```bash
-docker-compose run --rm php bin/console doctrine:migrations:migrate
+make migrate
 ```
 
 You can now access the application on [localhost](http://127.0.0.1/login).
+
+## Commands
+
+| Commands     	| Description                        	|
+|--------------	|-----------------------------------	|
+| start        	| Setup and start the stack         	|
+| cp-env       	| Copie default .env if none exists 	|
+| build        	| Build Docker's container          	|
+| install-deps 	| Install Composer dependencies     	|
+| migrate      	| Run Doctrine migrations           	|
