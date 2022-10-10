@@ -31,10 +31,10 @@ services:
   database:
     image: mysql:8.0.27
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-app}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-RootPass}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-ChangeMe}
-      MYSQL_USER: ${MYSQL_USER:-symfony}
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
     volumes:
       - db-data:/var/lib/mysql:rw
     restart: unless-stopped
