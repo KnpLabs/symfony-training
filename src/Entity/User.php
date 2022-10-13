@@ -24,27 +24,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getUserIdentifier(): string 
-    { 
+    public function getUserIdentifier(): string
+    {
         return $this->email;
     }
 
-    public function getRoles(): array 
-    { 
+    public function getRoles(): array
+    {
         return ['ROLE_USER'];
     }
-    
+
     public function setHashedPassword(string $hashedPassword): void
     {
         $this->password = $hashedPassword;
     }
 
-    public function getPassword(): ?string 
-    { 
+    public function getPassword(): ?string
+    {
         return $this->password;
     }
 
-    public function eraseCredentials() 
-    { 
+    public function eraseCredentials()
+    {
     }
 }

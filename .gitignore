@@ -20,3 +20,5 @@
 ###< phpunit/phpunit ###
 
 .env
+
+.deptrac.cache

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controller;
+namespace Application\Controller;
 
-use App\Entity\Dinosaur;
 use App\Form\Type\DinosaurType;
 use App\Form\Type\SearchType;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Dinosaur;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
