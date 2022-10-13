@@ -4,7 +4,7 @@ namespace Application\Controller;
 
 use Application\Form\Type\SpeciesType;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\Species;
+use Domain\Model\Species;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
