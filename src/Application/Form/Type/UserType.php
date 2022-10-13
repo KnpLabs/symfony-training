@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Application\Form\Type;
 
-use App\Entity\User;
+use Domain\Model\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

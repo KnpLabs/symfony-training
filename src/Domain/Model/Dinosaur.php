@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace Domain\Model;
 
 class Dinosaur
 {

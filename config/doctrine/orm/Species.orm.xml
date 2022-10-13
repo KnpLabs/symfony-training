@@ -20,7 +20,7 @@
 
         <one-to-many
             field="dinosaurs"
-            target-entity="App\Entity\Dinosaur"
+            target-entity="Domain\Model\Dinosaur"
             mapped-by="species" />
     </entity>
 
