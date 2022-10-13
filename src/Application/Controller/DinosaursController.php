@@ -2,8 +2,8 @@
 
 namespace Application\Controller;
 
-use App\Form\Type\DinosaurType;
-use App\Form\Type\SearchType;
+use Application\Form\Type\DinosaurType;
+use Application\Form\Type\SearchType;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Dinosaur;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
