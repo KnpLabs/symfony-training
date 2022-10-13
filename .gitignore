@@ -20,3 +20,4 @@
 
 .env
 docker compose.override.yml
+.deptrac.cache

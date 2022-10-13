@@ -50,7 +50,8 @@
         "symfony/maker-bundle": "^1.58",
         "symfony/phpunit-bridge": "^7.0",
         "symfony/stopwatch": "^7.0",
-        "symfony/web-profiler-bundle": "^7.0"
+        "symfony/web-profiler-bundle": "^7.0",
+        "qossmic/deptrac-shim": "^1.0"
     },
     "config": {
         "allow-plugins": {
@@ -64,7 +65,10 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "src/",
+            "Application\\": "src/Application/",
+            "Domain\\": "src/Domain/",
+            "Infrastructure\\": "src/Infrastructure/"
         }
     },
     "autoload-dev": {

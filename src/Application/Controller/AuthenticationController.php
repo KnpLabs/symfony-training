@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace Application\Controller;
 
 use App\Form\Type\UserType;
 use Doctrine\Persistence\ManagerRegistry;
