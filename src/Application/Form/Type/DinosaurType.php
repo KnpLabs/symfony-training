@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Type;
+namespace Application\Form\Type;
 
 use App\Entity\Dinosaur;
 use App\Entity\Species;
