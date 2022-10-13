@@ -1,0 +1,39 @@
+---
+parameters:
+  paths:
+    - ./src
+  layers:
+    - name: Application
+      collectors:
+        - type: classLike
+          regex: ^Application\\.*
+    - name: Domain
+      collectors:
+        - type: classLike
+          regex: ^Domain\\.*
+    - name: Infrastructure
+      collectors:
+        - type: classLike
+          regex: ^Infrastructure\\.*
+    - name: Framework
+      collectors:
+        - type: classLike
+          regex: ^Symfony\\.*
+    - name: App
+      collectors:
+        - type: classLike
+          regex: ^App\\.*
+    - name: Others
+      collectors:
+      - type: classLike
+        regex: ^(Doctrine)\\.*
+  ruleset:
+    Infrastructure:
+      - +Application
+      - Other
+    Application:
+      - Domain
+      - Framework
+    Domain: ~
+    App:
+      - +Infrastructure
