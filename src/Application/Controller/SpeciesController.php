@@ -2,7 +2,7 @@
 
 namespace Application\Controller;
 
-use App\Form\Type\SpeciesType;
+use Application\Form\Type\SpeciesType;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Species;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

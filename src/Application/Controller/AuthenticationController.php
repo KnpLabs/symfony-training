@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Application\Controller;
 
-use App\Form\Type\UserType;
+use Application\Form\Type\UserType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
