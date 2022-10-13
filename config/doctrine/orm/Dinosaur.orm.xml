@@ -5,7 +5,7 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <entity
-        name="App\Entity\Dinosaur"
+        name="Domain\Model\Dinosaur"
         repository-class="App\Repository\DinosaurRepository"
         table="dinosaur"
     >
@@ -21,7 +21,7 @@
 
         <many-to-one
             field="species"
-            target-entity="App\Entity\Species"
+            target-entity="Domain\Model\Species"
             inversed-by="dinosaurs" />
 
     </entity>

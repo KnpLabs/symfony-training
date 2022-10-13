@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Dinosaur;
+use Domain\Model\Dinosaur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

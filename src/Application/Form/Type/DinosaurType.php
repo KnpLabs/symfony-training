@@ -2,8 +2,8 @@
 
 namespace Application\Form\Type;
 
-use App\Entity\Dinosaur;
-use App\Entity\Species;
+use Domain\Model\Dinosaur;
+use Domain\Model\Species;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;

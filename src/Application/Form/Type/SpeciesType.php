@@ -2,7 +2,7 @@
 
 namespace Application\Form\Type;
 
-use App\Entity\Species;
+use Domain\Model\Species;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

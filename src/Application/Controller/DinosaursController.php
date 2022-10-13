@@ -5,7 +5,7 @@ namespace Application\Controller;
 use Application\Form\Type\DinosaurType;
 use Application\Form\Type\SearchType;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\Dinosaur;
+use Domain\Model\Dinosaur;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
