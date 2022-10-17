@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures;
+namespace Infrastructure\Doctrine\DataFixtures;
 
 use App\Entity\Dinosaur;
 use App\Entity\Species;
