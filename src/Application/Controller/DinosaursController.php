@@ -5,7 +5,7 @@ namespace Application\Controller;
 use Application\Form\Type\DinosaurType;
 use Application\Form\Type\SearchType;
 use Doctrine\Persistence\ManagerRegistry;
-use Domain\Model\Dinosaur;
+use Infrastructure\Doctrine\Repository\DinosaurRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,8 +13,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class DinosaursController extends AbstractController
 {
+    public function __construct(
+        private DinosaurRepository $dinosaurRepository,
+    ) {
+    }
+
     #[Route('/dinosaurs', name: 'app_list_dinosaurs')]
-    public function list(Request $request, ManagerRegistry $doctrine): Response
+    public function list(Request $request): Response
     {
         $q = null;
         $form = $this->createForm(SearchType::class);
@@ -27,8 +32,8 @@ final class DinosaursController extends AbstractController
             $q = $search['q'];
         }
 
-        $dinosaurs = $doctrine
-            ->getRepository(Dinosaur::class)
+        $dinosaurs = $this
+            ->dinosaurRepository
             ->search($q);
 
         return $this->render('dinosaurs-list.html.twig', [
@@ -42,10 +47,10 @@ final class DinosaursController extends AbstractController
         name: 'app_single_dinosaur',
         requirements: ['id' => '\d+']
     )]
-    public function single(string $id, ManagerRegistry $doctrine): Response
+    public function single(string $id): Response
     {
-        $dinosaur = $doctrine
-            ->getRepository(Dinosaur::class)
+        $dinosaur = $this
+            ->dinosaurRepository
             ->find($id);
 
         if (false === $dinosaur) {
@@ -88,8 +93,8 @@ final class DinosaursController extends AbstractController
     )]
     public function edit(Request $request, int $id, ManagerRegistry $doctrine): Response
     {
-        $dinosaur = $doctrine
-            ->getRepository(Dinosaur::class)
+        $dinosaur = $this
+            ->dinosaurRepository
             ->find($id);
 
         if (false === $dinosaur) {
@@ -123,8 +128,8 @@ final class DinosaursController extends AbstractController
     )]
     public function remove(int $id, ManagerRegistry $doctrine): Response
     {
-        $dinosaur = $doctrine
-            ->getRepository(Dinosaur::class)
+        $dinosaur = $this
+            ->dinosaurRepository
             ->find($id);
 
         if (false === $dinosaur) {
