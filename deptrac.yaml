@@ -19,10 +19,10 @@ parameters:
       collectors:
         - type: classLike
           regex: ^Symfony\\.*
-    - name: App
+    - name: Kernel
       collectors:
         - type: classLike
-          regex: ^App\\.*
+          regex: ^App\\Kernel.php
     - name: Others
       collectors:
       - type: classLike
@@ -30,13 +30,13 @@ parameters:
   ruleset:
     Infrastructure:
       - +Application
-      - Other
+      - Others
     Application:
       - Domain
       - Framework
     Domain: ~
-    App:
-      - +Infrastructure
+    Kernel:
+      - Framework
 
   skip_violations:
     Domain\Model\Species:
