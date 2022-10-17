@@ -6,7 +6,7 @@
 
     <entity
         name="Domain\Model\Dinosaur"
-        repository-class="App\Repository\DinosaurRepository"
+        repository-class="Infrastructure\Doctrine\Repository\DinosaurRepository"
         table="dinosaur"
     >
 
