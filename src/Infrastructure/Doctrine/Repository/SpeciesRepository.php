@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Species;
+use Domain\Model\Species;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
