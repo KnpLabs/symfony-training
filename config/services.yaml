@@ -30,5 +30,8 @@ services:
     Infrastructure\Doctrine\Repository\:
       resource: '../src/Infrastructure/Doctrine/Repository/*'
 
+    Domain\Collection\DinosaursCollection:
+      alias: Infrastructure\Doctrine\Repository\DinosaurRepository
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

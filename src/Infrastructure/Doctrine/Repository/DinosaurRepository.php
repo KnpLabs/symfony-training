@@ -8,8 +8,9 @@ use Domain\Model\Dinosaur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use Domain\Collection\DinosaursCollection;
 
-class DinosaurRepository extends ServiceEntityRepository
+class DinosaurRepository extends ServiceEntityRepository implements DinosaursCollection
 {
     private ObjectManager $objectManager;
 
