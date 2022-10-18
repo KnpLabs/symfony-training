@@ -5,7 +5,7 @@ namespace Application\Controller;
 use Application\Form\Type\DinosaurType;
 use Application\Form\Type\SearchType;
 use Doctrine\Persistence\ManagerRegistry;
-use Infrastructure\Doctrine\Repository\DinosaurRepository;
+use Domain\Collection\DinosaursCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class DinosaursController extends AbstractController
 {
     public function __construct(
-        private DinosaurRepository $dinosaurRepository,
+        private DinosaursCollection $dinosaursCollection,
     ) {
     }
 
@@ -33,7 +33,7 @@ final class DinosaursController extends AbstractController
         }
 
         $dinosaurs = $this
-            ->dinosaurRepository
+            ->dinosaursCollection
             ->search($q);
 
         return $this->render('dinosaurs-list.html.twig', [
@@ -50,7 +50,7 @@ final class DinosaursController extends AbstractController
     public function single(string $id): Response
     {
         $dinosaur = $this
-            ->dinosaurRepository
+            ->dinosaursCollection
             ->find($id);
 
         if (false === $dinosaur) {
@@ -94,7 +94,7 @@ final class DinosaursController extends AbstractController
     public function edit(Request $request, int $id, ManagerRegistry $doctrine): Response
     {
         $dinosaur = $this
-            ->dinosaurRepository
+            ->dinosaursCollection
             ->find($id);
 
         if (false === $dinosaur) {
@@ -129,7 +129,7 @@ final class DinosaursController extends AbstractController
     public function remove(int $id, ManagerRegistry $doctrine): Response
     {
         $dinosaur = $this
-            ->dinosaurRepository
+            ->dinosaursCollection
             ->find($id);
 
         if (false === $dinosaur) {
