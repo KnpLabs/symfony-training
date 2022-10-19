@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Application\Controller;
 
 use Application\Form\Type\SpeciesType;
-use Doctrine\Persistence\ManagerRegistry;
-use Domain\Model\Species;
+use Domain\Collection\SpeciesCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,11 +13,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SpeciesController extends AbstractController
 {
-    #[Route('/species', name: 'app_list_species')]
-    public function list(ManagerRegistry $doctrine): Response
+    public function __construct(
+        private SpeciesCollection $speciesCollection,
+    )
     {
-        $speciesList = $doctrine
-            ->getRepository(Species::class)
+    }
+
+    #[Route('/species', name: 'app_list_species')]
+    public function list(): Response
+    {
+        $speciesList = $this
+            ->speciesCollection
             ->findAll()
         ;
 
@@ -26,18 +33,16 @@ class SpeciesController extends AbstractController
     }
 
     #[Route('/species/create', name: 'app_create_species')]
-    public function create(Request $request, ManagerRegistry $doctrine): Response
+    public function create(Request $request): Response
     {
         $form = $this->createForm(SpeciesType::class);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $doctrine->getManager();
             $species = $form->getData();
 
-            $em->persist($species);
-            $em->flush();
+            $this->speciesCollection->add($species);
 
             $this->addFlash('success', 'The species has been created!');
 
@@ -54,10 +59,10 @@ class SpeciesController extends AbstractController
         name: 'app_edit_species',
         requirements: ['id' => '\d+']
     )]
-    public function edit(Request $request, int $id, ManagerRegistry $doctrine): Response
+    public function edit(Request $request, int $id): Response
     {
-        $species = $doctrine
-            ->getRepository(Species::class)
+        $species = $this
+            ->speciesCollection
             ->find($id)
         ;
 
@@ -68,12 +73,12 @@ class SpeciesController extends AbstractController
         }
 
         $form = $this->createForm(SpeciesType::class, $species);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $doctrine->getManager();
             $species = $form->getData();
 
-            $em->flush();
+            $this->speciesCollection->add($species);
 
             $this->addFlash('success', 'The species has been edited!');
 
@@ -90,10 +95,10 @@ class SpeciesController extends AbstractController
         name: 'app_remove_species',
         requirements: ['id' => '\d+']
     )]
-    public function remove(int $id, ManagerRegistry $doctrine): Response
+    public function remove(int $id): Response
     {
-        $species = $doctrine
-            ->getRepository(Species::class)
+        $species = $this
+            ->speciesCollection
             ->find($id)
         ;
 
@@ -103,9 +108,7 @@ class SpeciesController extends AbstractController
             );
         }
 
-        $em = $doctrine->getManager();
-        $em->remove($species);
-        $em->flush();
+        $this->speciesCollection->remove($species);
 
         $this->addFlash('success', 'The species has been removed!');
 

@@ -14,4 +14,8 @@ interface DinosaursCollection
      * @return array<Dinosaur>
      */
     public function search(?string $q): array;
+
+    public function add(Dinosaur $dinosaur): void;
+
+    public function remove(Dinosaur $dinosaur): void;
 }
