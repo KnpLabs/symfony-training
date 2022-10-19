@@ -4,7 +4,6 @@ namespace Application\Controller;
 
 use Application\Form\Type\DinosaurType;
 use Application\Form\Type\SearchType;
-use Doctrine\Persistence\ManagerRegistry;
 use Domain\Collection\DinosaursCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,18 +62,16 @@ final class DinosaursController extends AbstractController
     }
 
     #[Route('/dinosaurs/create', name: 'app_create_dinosaur')]
-    public function create(Request $request, ManagerRegistry $doctrine): Response
+    public function create(Request $request): Response
     {
         $form = $this->createForm(DinosaurType::class);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $doctrine->getManager();
             $dinosaur = $form->getData();
 
-            $em->persist($dinosaur);
-            $em->flush();
+            $this->dinosaursCollection->add($dinosaur);
 
             $this->addFlash('success', 'The dinosaur has been created!');
 
@@ -91,7 +88,7 @@ final class DinosaursController extends AbstractController
         name: 'app_edit_dinosaur',
         requirements: ['id' => '\d+']
     )]
-    public function edit(Request $request, int $id, ManagerRegistry $doctrine): Response
+    public function edit(Request $request, int $id): Response
     {
         $dinosaur = $this
             ->dinosaursCollection
@@ -106,10 +103,9 @@ final class DinosaursController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $doctrine->getManager();
             $dinosaur = $form->getData();
 
-            $em->flush();
+            $this->dinosaursCollection->add($dinosaur);
 
             $this->addFlash('success', 'The dinosaur has been edited!');
 
@@ -126,7 +122,7 @@ final class DinosaursController extends AbstractController
         name: 'app_remove_dinosaur',
         requirements: ['id' => '\d+']
     )]
-    public function remove(int $id, ManagerRegistry $doctrine): Response
+    public function remove(int $id): Response
     {
         $dinosaur = $this
             ->dinosaursCollection
@@ -136,9 +132,7 @@ final class DinosaursController extends AbstractController
             throw $this->createNotFoundException('The dinosaur you are looking for does not exists.');
         }
 
-        $em = $doctrine->getManager();
-        $em->remove($dinosaur);
-        $em->flush();
+        $this->dinosaursCollection->remove($dinosaur);
 
         $this->addFlash('success', 'The dinosaur has been removed!');
 

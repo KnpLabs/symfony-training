@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Application\Controller;
 
 use Application\Form\Type\UserType;
-use Doctrine\Persistence\ManagerRegistry;
+use Domain\Collection\UsersCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,8 +14,13 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 final class AuthenticationController extends AbstractController
 {
+    public function __construct(
+        private UsersCollection $usersCollection
+    ) {
+    }
+
     #[Route('/register', name: 'register')]
-    public function register(Request $request, ManagerRegistry $doctrine): Response
+    public function register(Request $request): Response
     {
         $form = $this->createForm(UserType::class);
 
@@ -24,9 +29,7 @@ final class AuthenticationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
 
-            $em = $doctrine->getManager();
-            $em->persist($user);
-            $em->flush($user);
+            $this->usersCollection->add($user);
 
             $this->addFlash('success', 'You have been sucessfully registered!');
 

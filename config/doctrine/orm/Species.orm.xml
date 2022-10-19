@@ -5,8 +5,8 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <entity
-        name="App\Entity\Species"
-        repository-class="App\Repository\SpeciesRepository"
+        name="Domain\Model\Species"
+        repository-class="Infrastructure\Doctrine\Repository\SpeciesRepository"
         table="species"
     >
 
