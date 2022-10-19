@@ -1,0 +1,11 @@
+---
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Infrastructure\Doctrine\Repository\:
+      resource: '%kernel.project_dir%/src/Infrastructure/Doctrine/Repository/*'
+
+    Domain\Collection\DinosaursCollection:
+      alias: Infrastructure\Doctrine\Repository\DinosaurRepository
