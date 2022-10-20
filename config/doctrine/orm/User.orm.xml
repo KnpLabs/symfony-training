@@ -12,6 +12,8 @@
 
         <field name="email" column="email" type="string" length="255" nullable="false" unique="true" />
         <field name="password" column="password" type="string" length="255" nullable="false" unique="false" />
+        <field name="roles" column="roles" type="json" />
+
     </entity>
 
 </doctrine-mapping>

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Make a reservation{% endblock %}
+
+{% block body %}
+<main class="w-25 p-3">
+  <h1>Make a reservation</h1>
+
+  {{ form_start(form) }}
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(form) }}
+    </div>
+
+    {{ form_row(form.buyer) }}
+    {{ form_row(form.dateOfVisit) }}
+    {{ form_label(form.tickets) }}
+
+    <ul id="tickets-fields-list"
+        data-prototype="{{ form_widget(form.tickets.vars.prototype)|e }}"
+        data-widget-tags="{{ '<li></li>'|e }}"
+        data-widget-counter="{{ form.tickets|length }}"
+    >
+    {# {% for ticketField in form.tickets %}
+        <li>
+            {{ form_errors(ticketField) }}
+            {{ form_widget(ticketField) }}
+        </li>
+    {% endfor %} #}
+    </ul>
+
+    <button type="button"
+        class="add-another-collection-widget btn btn-outline-secondary mb-3"
+        data-list-selector="#tickets-fields-list"
+    >
+        + Add another ticket
+    </button>
+
+    {{ form_row(form.submit) }}
+    {{ form_row(form._token) }}
+  {{ form_end(form, {'render_rest': false}) }}
+</main>
+
+<script src="{{ asset('js/add-collection-widget.js') }}"></script>
+{% endblock %}

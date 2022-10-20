@@ -12,11 +12,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private int $id;
     private string $email;
     private ?string $password;
+    private array $roles = [];
 
     public function __construct(
         string $email,
+        array $roles = []
     ) {
         $this->email = $email;
+        $this->roles = $roles;
     }
 
     public function getId(): int
@@ -24,27 +27,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getUserIdentifier(): string 
-    { 
+    public function getUserIdentifier(): string
+    {
         return $this->email;
     }
 
-    public function getRoles(): array 
-    { 
-        return ['ROLE_USER'];
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
-    
+
     public function setHashedPassword(string $hashedPassword): void
     {
         $this->password = $hashedPassword;
     }
 
-    public function getPassword(): ?string 
-    { 
+    public function getPassword(): ?string
+    {
         return $this->password;
     }
 
-    public function eraseCredentials() 
-    { 
+    public function eraseCredentials()
+    {
     }
 }

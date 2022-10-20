@@ -3,7 +3,7 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
     providers:
-        app_user_provider: 
+        app_user_provider:
           entity:
               class: App\Entity\User
               property: email
@@ -35,6 +35,8 @@ security:
         - { path: ^/species$, roles: ROLE_USER }
         - { path: ^/species/\d+$, roles: ROLE_USER }
         - { path: ^/species/, roles: ROLE_ADMIN }
+        - { path: ^/reservations$, roles: ROLE_USER }
+        - { path: ^/reservation/, roles: ROLE_USER }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+      xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Entity\Ticket" table="ticket">
+
+            <id name="id" type="integer" column="id">
+                <generator strategy="AUTO"/>
+            </id>
+
+            <field name="visitorName" column="visitorName" type="string" nullable="false" unique="false" />
+
+            <many-to-one
+                field="category"
+                target-entity="App\Entity\Category"
+            />
+
+            <many-to-one
+                field="reservation"
+                target-entity="App\Entity\Reservation"
+                inversed-by="tickets"
+                join-column="reservation_id"
+                nullable="false"
+            />
+    </entity>
+
+</doctrine-mapping>
