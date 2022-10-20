@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Your reservations{% endblock %}
+
+{% block body %}
+<main>
+  <h1>Your reservations</h1>
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Reference</th>
+      <th scope="col">Created at</th>
+      <th scope="col">Date of visit</th>
+      <th scope="col">Tickets</th>
+      <th scope="col">Total price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for reservation in reservationsList %}
+      <tr>
+        <th>{{ reservation.id }}</th>
+        <th>{{ reservation.createdAt | date("m/d/Y") }}</th>
+        <th>{{ reservation.dateOfVisit | date("m/d/Y") }}</th>
+        <th>
+          <ul>
+            {% for ticket in reservation.tickets %}
+              <li>{{ ticket.visitorName }}</li>
+            {% endfor %}
+          </ul>
+        </th>
+        <th>{{ reservation.totalPrice }} €</th>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</main>
+{% endblock %}

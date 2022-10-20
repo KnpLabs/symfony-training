@@ -2,9 +2,10 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Category;
+use App\Entity\Dinosaur;
 use App\Entity\User;
 use App\Entity\Species;
-use App\Entity\Dinosaur;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -33,7 +34,7 @@ class AppFixtures extends Fixture
         $manager->persist($admin);
 
         /**
-         * Create basic users with the default role ROLE_USER
+         * Create basik users with the default role ROLE_USER
          */
         for ($i = 0; $i < 10; $i++) {
             $user = new User(
@@ -139,6 +140,23 @@ class AppFixtures extends Fixture
             );
 
             $manager->persist($dinosaur);
+        }
+
+        $manager->flush();
+
+        /**
+         * Create categories
+         */
+        $prices = [
+            new Category('Full price', 126),
+            new Category('Student', 105),
+            new Category('Senior', 109.5),
+            new Category('Child (under 12)', 84),
+            new Category('Toddler (under 3)', 0),
+        ];
+
+        foreach ($prices as $price) {
+            $manager->persist($price);
         }
 
         $manager->flush();

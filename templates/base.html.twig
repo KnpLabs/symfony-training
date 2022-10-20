@@ -8,6 +8,7 @@
     {% block stylesheets %}
     {#{{ encore_entry_link_tags('app') }}#}
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     {% endblock %}
 
     {% block javascripts %}
@@ -36,8 +37,8 @@
               </li>
               {% if 'ROLE_ADMIN' in app.user.roles %}
                 <li class="nav-item">
-                  <a 
-                    class="nav-link{% if app.request.get('_route') == 'app_create_dinosaur' %} active{% endif %}" 
+                  <a
+                    class="nav-link{% if app.request.get('_route') == 'app_create_dinosaur' %} active{% endif %}"
                     href="{{ path('app_create_dinosaur') }}"
                   >
                     Create a dinosaur
@@ -45,7 +46,7 @@
                 </li>
               {% endif %}
               <li class="nav-item">
-                <a 
+                <a
                   class="nav-link{% if app.request.get('_route') == 'app_list_species' %} active{% endif %}"
                   aria-current="page"
                   href="{{ path('app_list_species') }}"
@@ -55,8 +56,8 @@
               </li>
               {% if 'ROLE_ADMIN' in app.user.roles %}
                 <li class="nav-item">
-                  <a 
-                    class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}" 
+                  <a
+                    class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}"
                     href="{{ path('app_create_species') }}"
                   >
                     Create a species
@@ -64,16 +65,32 @@
                 </li>
               {% endif %}
               <li class="nav-item">
-                <a 
-                  class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}" 
+                <a
+                  class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}"
                   href="{{ path('logout') }}"
                 >
                   Logout
                 </a>
               </li>
+              <li class="nav-item">
+                <a
+                  class="btn{% if app.request.get('_route') == 'app_create_reservation' %} active{% endif %} fw-bold btn btn-outline-primary ms-5"
+                  href="{{ path('app_create_reservation') }}"
+                >
+                  Reserve
+                </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link{% if app.request.get('_route') == 'app_list_reservations' %} active{% endif %}"
+                  href="{{ path('app_list_reservations') }}"
+                >
+                  My reservations
+                </a>
+              </li>
             {% else %}
               <li class="nav-item">
-                <a 
+                <a
                   class="nav-link{% if app.request.get('_route') == 'app_list_species' %} active{% endif %}"
                   aria-current="page"
                   href="{{ path('register') }}"
@@ -82,8 +99,8 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a 
-                  class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}" 
+                <a
+                  class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}"
                   href="{{ path('login') }}"
                 >
                   Login
