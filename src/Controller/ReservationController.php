@@ -8,7 +8,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ReservationController extends AbstractController
@@ -16,7 +15,7 @@ class ReservationController extends AbstractController
     #[Route('/reservation/create', name: 'app_create_reservation')]
     public function create(Request $request, ManagerRegistry $doctrine): Response
     {
-        $form = $this->createForm(ReservationType::class);
+        $form = $this->createForm(ReservationType::class, null, ['buyer' => $this->getUser()]);
 
         $form->handleRequest($request);
 

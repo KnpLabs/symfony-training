@@ -21,7 +21,8 @@ class ReservationType extends AbstractType
         $builder
             ->add('buyer', EntityType::class, [
                 'class' => User::class,
-                'choice_label' => 'userIdentifier',
+                'data' => $options['buyer'],
+                'disabled' => true,
             ])
             ->add('dateOfVisit', DateType::class)
             ->add('tickets', CollectionType::class, [
@@ -44,7 +45,10 @@ class ReservationType extends AbstractType
                     $form->get('dateOfVisit')->getData(),
                     $form->get('tickets')->getData(),
                 );
-            }
+            },
+            'buyer' => null,
         ]);
+
+        $resolver->setAllowedTypes('buyer', ['null', 'App\Entity\User']);
     }
 }

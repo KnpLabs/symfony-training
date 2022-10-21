@@ -63,6 +63,7 @@
         </svg>
       </p>
       <a href="{{ path('app_edit_dinosaur', {id: dinosaur.id}) }}" class="btn btn-primary">Edit</a>
+      <a href="{{ path('app_create_enclosure', {id: dinosaur.id}) }}" class="btn btn-secondary">Assign enclosure</a>
       <a href="{{ path('app_remove_dinosaur', {id: dinosaur.id}) }}" class="btn btn-danger">Remove</a>
     </div>
   </section>

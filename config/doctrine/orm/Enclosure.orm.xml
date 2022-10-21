@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+      xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Entity\Enclosure" table="enclosure">
+
+            <id name="id" type="integer" column="id">
+                <generator strategy="AUTO"/>
+            </id>
+
+            <field name="name" column="name" type="string" nullable="false" unique="false" />
+            <field name="fences" column="fences" type="string" nullable="false" unique="false" />
+            <field name="habitats" column="habitats" type="json" />
+            <field name="feeding" column="feeding" type="json" />
+
+            <one-to-many
+                field="dinosaurs"
+                target-entity="App\Entity\Dinosaur"
+                mapped-by="enclosure" />
+
+    </entity>
+
+</doctrine-mapping>

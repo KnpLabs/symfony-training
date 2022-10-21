@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Species;
+use App\Entity\Enclosure;
+
 class Dinosaur
 {
     private int $id;
@@ -10,19 +13,22 @@ class Dinosaur
     private Species $species;
     private int $age;
     private string $eyesColor;
+    private ?Enclosure $enclosure;
 
     public function __construct(
         string $name,
         string $gender,
         Species $species,
         int $age,
-        string $eyesColor
+        string $eyesColor,
+        ?Enclosure $enclosure = null
     ) {
         $this->name = $name;
         $this->gender = $gender;
         $this->species = $species;
         $this->age = $age;
         $this->eyesColor = $eyesColor;
+        $this->enclosure = $enclosure;
     }
 
     public function getId(): int
@@ -78,5 +84,15 @@ class Dinosaur
     public function setEyesColor(string $eyesColor): void
     {
         $this->eyesColor = $eyesColor;
+    }
+
+    public function getEnclosure(): Enclosure
+    {
+        return $this->enclosure;
+    }
+
+    public function setEnclosure(Enclosure $enclosure): void
+    {
+        $this->enclosure = $enclosure;
     }
 }

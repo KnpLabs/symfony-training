@@ -9,7 +9,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class SpeciesType extends AbstractType
@@ -18,16 +17,10 @@ class SpeciesType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('habitats', ChoiceType::class, [
-                'choices' => [
-                    'Forest' => 'Forest',
-                    'Sea' => 'Sea',
-                    'Desert' => 'Desert',
-                    'Air' => 'Air'
-                ],
-                'multiple' => true
+            ->add('habitats', HabitatType::class)
+            ->add('feeding', FeedingType::class, [
+                'can_be_multiple' => false,
             ])
-            ->add('feeding', FeedingType::class)
             ->add('submit', SubmitType::class)
         ;
     }
@@ -46,4 +39,3 @@ class SpeciesType extends AbstractType
         ]);
     }
 }
-
