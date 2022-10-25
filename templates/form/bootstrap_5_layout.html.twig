@@ -6,3 +6,9 @@
     {% endfor %}
   </datalist>
 {% endblock %}
+
+{% block submit_row %}
+  <div class="d-flex justify-content-center">
+    <button type="submit" class="btn btn-primary btn-lg">{{ label|default('Submit') }}</button>
+  </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% macro ticket_template(ticket) %}
+  <div class="row border border-secondary ms-2 mt-4 p-2 pb-0 rounded-top bg-light">
+    <div class="col md-6">
+      {{ form_row(ticket.visitorName) }}
+    </div>
+    <div class="col md-6">
+      {{ form_row(ticket.category) }}
+    </div>
+  </div>
+{% endmacro %}
+
+{% block _reservation_tickets_widget %}
+    <div id="tickets-fields-list"
+      data-prototype="{{ _self.ticket_template(form.vars.prototype)|e }}"
+      data-widget-tags="{{ '<div></div>'|e }}"
+      data-widget-counter="{{ form|length }}"
+    >
+      {% for ticketField in form.children %}
+        {{ _self.ticket_template(ticketField) }}
+      {% endfor %}
+    </div>
+{% endblock %}

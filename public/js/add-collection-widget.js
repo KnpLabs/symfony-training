@@ -2,13 +2,17 @@ jQuery(document).ready(function () {
     const addTicketDeleteLink = (ticket) => {
         const removeTicketButton = document.createElement('button');
         removeTicketButton.innerText = 'Remove this ticket';
-        removeTicketButton.classList.add('btn', 'btn-outline-danger');
+        removeTicketButton.classList.add('btn', 'btn-outline-danger', 'm-2');
 
-        ticket.append(removeTicketButton);
+        const removeTicketButtonContainer = document.createElement('div');
+        removeTicketButtonContainer.classList.add('row', 'border', 'border-top-0', 'border-secondary', 'ms-2', 'p-2', 'rounded-bottom', 'justify-content-center');
+
+        removeTicketButtonContainer.appendChild(removeTicketButton);
+        ticket.append(removeTicketButtonContainer);
 
         removeTicketButton.addEventListener('click', (e) => {
             e.preventDefault();
-            // remove the li for the ticket form
+            // remove the div for the ticket form
             ticket.remove();
         });
     }

@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme form with [
+  'form/fields/ticket.html.twig'
+] %}
+
 {% block title %}Make a reservation{% endblock %}
 
 {% block body %}
@@ -8,30 +12,17 @@
 
   {{ form_start(form) }}
     <div class="my-custom-class-for-errors">
-        {{ form_errors(form) }}
+      {{ form_errors(form) }}
     </div>
 
     {{ form_row(form.dateOfVisit) }}
-    {{ form_label(form.tickets) }}
-
-    <ul id="tickets-fields-list"
-        data-prototype="{{ form_widget(form.tickets.vars.prototype)|e }}"
-        data-widget-tags="{{ '<li></li>'|e }}"
-        data-widget-counter="{{ form.tickets|length }}"
-    >
-    {# {% for ticketField in form.tickets %}
-        <li>
-            {{ form_errors(ticketField) }}
-            {{ form_widget(ticketField) }}
-        </li>
-    {% endfor %} #}
-    </ul>
+    {{ form_row(form.tickets) }}
 
     <button type="button"
-        class="add-another-collection-widget btn btn-outline-secondary mb-3"
-        data-list-selector="#tickets-fields-list"
+      class="add-another-collection-widget btn btn-outline-secondary mb-3 d-block w-60 mx-auto"
+      data-list-selector="#tickets-fields-list"
     >
-        + Add another ticket
+      + Add another ticket
     </button>
 
     {{ form_row(form.submit) }}
