@@ -1,23 +1,15 @@
 jQuery(document).ready(function () {
-    const addTicketDeleteLink = (ticket) => {
-        const removeTicketButton = document.createElement('button');
-        removeTicketButton.innerText = 'Remove this ticket';
-        removeTicketButton.classList.add('btn', 'btn-outline-danger', 'm-2');
+    var $wrapper = $('#tickets-fields-list');
 
-        const removeTicketButtonContainer = document.createElement('div');
-        removeTicketButtonContainer.classList.add('row', 'border', 'border-top-0', 'border-secondary', 'ms-2', 'p-2', 'rounded-bottom', 'justify-content-center');
-
-        removeTicketButtonContainer.appendChild(removeTicketButton);
-        ticket.append(removeTicketButtonContainer);
-
-        removeTicketButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            // remove the div for the ticket form
-            ticket.remove();
-        });
-    }
+    $wrapper.on('click', '.remove-ticket-btn', function (e) {
+        console.log('remove');
+        e.preventDefault();
+        $(this).closest('.ticket').remove();
+    });
 
     jQuery('.add-another-collection-widget').click(function (e) {
+        e.preventDefault();
+
         var list = jQuery(jQuery(this).attr('data-list-selector'));
         // Try to find the counter of the list or use the length of the list
         var counter = list.data('widget-counter') || list.children().length;
@@ -36,7 +28,6 @@ jQuery(document).ready(function () {
         // create a new list element and add it to the list
         var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
 
-        addTicketDeleteLink(newElem);
         newElem.appendTo(list);
     });
 });
