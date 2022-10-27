@@ -5,6 +5,7 @@ namespace App\Form\Type;
 use App\Entity\User;
 use App\Entity\Reservation;
 use App\Form\Type\TicketType;
+use App\Validator\ContainsAdult;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -30,7 +31,7 @@ class ReservationType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new GreaterThan([
-                        'value' => 'today',
+                        'value' => 'today - 1 day',
                         'message' => 'Without a time machine, you can\'t book a ticket for the past.',
                     ]),
                 ],
@@ -45,7 +46,9 @@ class ReservationType extends AbstractType
                         'min' => 1,
                         'minMessage' => "You haven't added any tickets."
                     ]),
+                    new ContainsAdult(),
                 ],
+                'help' => 'Children must be accompanied by an adult.',
             ])
             ->add('submit', SubmitType::class)
         ;

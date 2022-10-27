@@ -45,4 +45,9 @@ class Category
     {
         return $this->name;
     }
+
+    public function isAdult(): bool
+    {
+        return (!str_contains($this->name, 'Child') && !str_contains($this->name, 'Toddler'));
+    }
 }

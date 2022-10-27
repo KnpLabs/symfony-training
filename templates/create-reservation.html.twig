@@ -7,27 +7,32 @@
 {% block title %}Make a reservation{% endblock %}
 
 {% block body %}
-<main class="w-25 p-3">
-  <h1>Make a reservation</h1>
+<main class="d-flex justify-content-center">
+  <div class="w-50">
+    <h1 class="text-center">Make a reservation</h1>
 
-  {{ form_start(form) }}
-    <div class="my-custom-class-for-errors">
-      {{ form_errors(form) }}
-    </div>
+    {{ form_start(form) }}
+      <div class="my-custom-class-for-errors">
+        {{ form_errors(form) }}
+      </div>
 
-    {{ form_row(form.dateOfVisit) }}
-    {{ form_row(form.tickets) }}
+      {{ form_row(form.dateOfVisit) }}
+      {{ form_label(form.tickets) }}
+      {{ form_help(form.tickets) }}
+      {{ form_errors(form.tickets) }}
+      {{ form_widget(form.tickets) }}
 
-    <button type="button"
-      class="add-another-collection-widget btn btn-outline-secondary mb-3 mt-3 d-block w-60 mx-auto"
-      data-list-selector="#tickets-fields-list"
-    >
-      + Add another ticket
-    </button>
+      <button type="button"
+        class="add-another-collection-widget btn btn-outline-secondary mb-3 mt-3 d-block w-60 mx-auto"
+        data-list-selector="#tickets-fields-list"
+      >
+        + Add another ticket
+      </button>
 
-    {{ form_row(form.submit) }}
-    {{ form_row(form._token) }}
-  {{ form_end(form, {'render_rest': false}) }}
+      {{ form_row(form.submit) }}
+      {{ form_row(form._token) }}
+    {{ form_end(form, {'render_rest': false}) }}
+  </div>
 </main>
 
 <script src="{{ asset('js/add-collection-widget.js') }}"></script>
