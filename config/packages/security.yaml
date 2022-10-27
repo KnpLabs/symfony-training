@@ -4,9 +4,7 @@ security:
 
     providers:
         app_user_provider:
-          entity:
-              class: Domain\Model\User
-              property: email
+          id: Application\Security\UserProvider
 
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
