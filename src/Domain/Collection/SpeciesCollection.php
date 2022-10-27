@@ -13,7 +13,7 @@ interface SpeciesCollection
     /**
      * @return array<Species>
      */
-    public function findAll(): array;
+    public function findAll();
 
     public function add(Species $species): void;
 

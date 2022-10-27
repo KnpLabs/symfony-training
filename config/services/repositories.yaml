@@ -9,3 +9,9 @@ services:
 
     Domain\Collection\DinosaursCollection:
       alias: Infrastructure\Doctrine\Repository\DinosaurRepository
+
+    Domain\Collection\SpeciesCollection:
+      alias: Infrastructure\Doctrine\Repository\SpeciesRepository
+
+    Domain\Collection\UsersCollection:
+      alias: Infrastructure\Doctrine\Repository\UserRepository

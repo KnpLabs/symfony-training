@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Model;
 
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User
 {
     private int $id;
     private string $email;
@@ -24,14 +21,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getUserIdentifier(): string
+    public function getEmail(): string
     {
         return $this->email;
-    }
-
-    public function getRoles(): array
-    {
-        return ['ROLE_USER'];
     }
 
     public function setHashedPassword(string $hashedPassword): void
@@ -42,9 +34,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getPassword(): ?string
     {
         return $this->password;
-    }
-
-    public function eraseCredentials()
-    {
     }
 }

@@ -2,16 +2,13 @@
 
 namespace Domain\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-
 class Species
 {
     private int $id;
     private string $name;
     private array $habitats;
     private string $feeding;
-    private Collection $dinosaurs;
+    private iterable $dinosaurs;
 
     public function __construct(
         string $name,
@@ -21,7 +18,7 @@ class Species
         $this->name = $name;
         $this->habitats = $habitats;
         $this->feeding = $feeding;
-        $this->dinosaurs = new ArrayCollection();
+        $this->dinosaurs = [];
     }
 
     public function getId(): int
@@ -59,19 +56,23 @@ class Species
         $this->feeding = $feeding;
     }
 
-    public function getDinosaurs(): Collection
+    public function getDinosaurs(): iterable
     {
-        return $this->dinosaurs;
+        yield from $this->dinosaurs;
     }
 
     public function addDinosaur(Dinosaur $dinosaur): void
     {
-        $this->dinosaurs->add($dinosaur);
+        $this->dinosaurs[] = $dinosaur;
     }
 
     public function removeDinosaur(Dinosaur $dinosaur): void
     {
-        $this->dinosaurs->remove($dinosaur);
+        $this->dinosaurs = array_filter(
+            [...$this->dinosaurs],
+            function (Dinosaur $d) use ($dinosaur) {
+                return $d->getId() !== $dinosaur->getId();
+            }
+        );
     }
 }
-
