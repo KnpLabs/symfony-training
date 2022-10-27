@@ -16,18 +16,30 @@
         {{ form_errors(form) }}
       </div>
 
-      {{ form_row(form.dateOfVisit) }}
-      {{ form_label(form.tickets) }}
-      {{ form_help(form.tickets) }}
-      {{ form_errors(form.tickets) }}
-      {{ form_widget(form.tickets) }}
+      {% if form.gift is defined and (not form.vars.valid and form.vars.errors is empty) %}
+        {{ form_row(form.dateOfVisit, {'attr': {'readonly': 'readonly'}}) }}
+        {{ form_row(form.tickets, { 'shouldDisplayGift': true }) }}
+        <button type="button"
+          class="add-another-collection-widget btn btn-outline-secondary mb-3 mt-3 d-block w-60 mx-auto disabled"
+          data-list-selector="#tickets-fields-list"
+        >
+          + Add another ticket
+        </button>
+        {{ form_row(form.gift) }}
+      {% else %}
+        {{ form_row(form.dateOfVisit) }}
+        {{ form_label(form.tickets) }}
+        {{ form_help(form.tickets) }}
+        {{ form_errors(form.tickets) }}
+        {{ form_widget(form.tickets, { 'shouldDisplayGift': false }) }}
 
-      <button type="button"
-        class="add-another-collection-widget btn btn-outline-secondary mb-3 mt-3 d-block w-60 mx-auto"
-        data-list-selector="#tickets-fields-list"
-      >
-        + Add another ticket
-      </button>
+        <button type="button"
+          class="add-another-collection-widget btn btn-outline-secondary mb-3 mt-3 d-block w-60 mx-auto"
+          data-list-selector="#tickets-fields-list"
+        >
+          + Add another ticket
+        </button>
+      {% endif %}
 
       {{ form_row(form.submit) }}
       {{ form_row(form._token) }}

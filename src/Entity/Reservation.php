@@ -12,17 +12,20 @@ class Reservation
     private \DateTime $dateOfVisit;
     private Collection $tickets;
     private \DateTime $createdAt;
+    private ?string $gift;
 
     public function __construct(
         User $buyer,
         \DateTime $dateOfVisit,
-        array $tickets
+        array $tickets,
+        ?string $gift = null
     ) {
         $this->buyer = $buyer;
         $this->dateOfVisit = $dateOfVisit;
         $this->tickets = new ArrayCollection($tickets);
         $this->createdAt = new \DateTime();
         $this->assignTicketsToReservation();
+        $this->gift = $gift;
     }
 
     public function getId(): int
@@ -106,5 +109,15 @@ class Reservation
         }
 
         return $totalPrice;
+    }
+
+    public function getGift(): ?string
+    {
+        return $this->gift;
+    }
+
+    public function setGift(?string $gift): void
+    {
+        $this->gift = $gift;
     }
 }

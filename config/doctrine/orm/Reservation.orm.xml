@@ -12,6 +12,7 @@
 
             <field name="dateOfVisit" column="dateOfVisit" type="datetime" nullable="false" unique="false" />
             <field name="createdAt" column="createdAt" type="datetime" nullable="false" unique="false" />
+            <field name="gift" column="gift" type="string" nullable="true" unique="false" />
 
             <many-to-one
                 field="buyer"

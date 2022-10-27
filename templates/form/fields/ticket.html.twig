@@ -1,14 +1,34 @@
-{% macro ticket_template(ticket) %}
-  <div class="ticket row border border-secondary ms-2 mt-4 p-2 pb-0 rounded-top bg-light justify-content-center">
-    <div class="col md-6">
-      {{ form_row(ticket.visitorName) }}
-    </div>
-    <div class="col md-6">
-      {{ form_row(ticket.category) }}
-    </div>
-    <button type="button" class="remove-ticket-btn btn btn-outline-danger m-2">
-      Remove this ticket
-    </button>
+{% macro ticket_template(ticket, shouldDisplayGift) %}
+  <div class="ticket row border border-secondary mt-4 p-2 pb-0 rounded-top bg-light justify-content-center">
+    {% if shouldDisplayGift %}
+      <div class="col md-6">
+        {{ form_label(ticket.visitorName) }}:</br>
+        {{ form_widget(ticket.visitorName, {'attr': {'class': 'd-none'}}) }}
+        {{ ticket.visitorName.vars.data }}
+      </div>
+      <div class="col md-6">
+        {{ form_label(ticket.category) }}:</br>
+        {{ form_widget(ticket.category, {'attr': {'class': 'd-none'}}) }}
+        {{ ticket.category.vars.data.name }}
+      </div>
+      <div class="col md-6">
+        Ticket price:</br>
+        {{ ticket.category.vars.data.price }} €
+      </div>
+      <button type="button" class="remove-ticket-btn btn btn-outline-danger m-2 disabled">
+        Remove this ticket
+      </button>
+    {% else %}
+      <div class="col md-6">
+        {{ form_row(ticket.visitorName) }}
+      </div>
+      <div class="col md-6">
+        {{ form_row(ticket.category) }}
+      </div>
+      <button type="button" class="remove-ticket-btn btn btn-outline-danger m-2">
+        Remove this ticket
+      </button>
+    {% endif %}
   </div>
 {% endmacro %}
 
@@ -19,7 +39,7 @@
     data-widget-counter="{{ form|length }}"
   >
     {% for ticketField in form.children %}
-      {{ _self.ticket_template(ticketField) }}
+      {{ _self.ticket_template(ticketField, shouldDisplayGift) }}
     {% endfor %}
   </div>
 {% endblock %}
