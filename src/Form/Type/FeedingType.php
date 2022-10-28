@@ -3,37 +3,15 @@
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class FeedingType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function getParent()
     {
-        if ($options['feeding'] === 'Carnivore') {
-            $choices = ['Carnivore' => 'Carnivore'];
-        } else if ($options['feeding'] === 'Herbivore' || $options['feeding'] === 'Omnivore') {
-            $choices = [
-                'Herbivore' => 'Herbivore',
-                'Omnivore' => 'Omnivore'
-            ];
-        } else {
-            $choices = [
-                'Carnivore' => 'Carnivore',
-                'Herbivore' => 'Herbivore',
-                'Omnivore' => 'Omnivore'
-            ];
-        }
-
-        $builder
-            ->add('feeding', ChoiceType::class, [
-                'label' => false,
-                'choices' => $choices,
-                'multiple' => $options['can_be_multiple'],
-                'expanded' => true,
-            ])
-        ;
+        return ChoiceType::class;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -41,9 +19,31 @@ class FeedingType extends AbstractType
         $resolver->setDefaults([
             'feeding' => null,
             'can_be_multiple' => true,
+            'expanded' => true,
         ]);
 
         $resolver->setAllowedTypes('feeding', ['null', 'string']);
         $resolver->setAllowedTypes('can_be_multiple', ['bool']);
+
+        $resolver->setDefault('choices', function (Options $options) {
+            if ($options['feeding'] === 'Carnivore') {
+                return ['Carnivore' => 'Carnivore'];
+            } else if ($options['feeding'] === 'Herbivore' || $options['feeding'] === 'Omnivore') {
+                return [
+                    'Herbivore' => 'Herbivore',
+                    'Omnivore' => 'Omnivore'
+                ];
+            } else {
+                return [
+                    'Carnivore' => 'Carnivore',
+                    'Herbivore' => 'Herbivore',
+                    'Omnivore' => 'Omnivore'
+                ];
+            }
+        });
+
+        $resolver->setDefault('multiple', function (Options $options) {
+            return $options['can_be_multiple'];
+        });
     }
 }

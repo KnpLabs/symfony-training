@@ -69,6 +69,8 @@ class SpeciesController extends AbstractController
 
         $form = $this->createForm(SpeciesType::class, $species);
 
+        $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $doctrine->getManager();
             $species = $form->getData();

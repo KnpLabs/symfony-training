@@ -73,9 +73,8 @@ class EnclosureType extends AbstractType
                 return new Enclosure(
                     $form->get('name')->getData(),
                     $form->get('fences')->getData(),
-                    $form->get('habitat')->getData(),
+                    $form->get('habitats')->getData(),
                     $form->get('feeding')->getData(),
-                    $form->get('maxDinosaurs')->getData(),
                 );
             },
             'dinosaur' => null,
