@@ -6,11 +6,11 @@ class Category
 {
     private int $id;
     private string $name;
-    private float $price;
+    private int $price;
 
     public function __construct(
         string $name,
-        float $price
+        int $price
     ) {
         $this->name = $name;
         $this->price = $price;
@@ -31,12 +31,12 @@ class Category
         $this->name = $name;
     }
 
-    public function getPrice(): float
+    public function getPrice(): int
     {
         return $this->price;
     }
 
-    public function setPrice(float $price): void
+    public function setPrice(int $price): void
     {
         $this->price = $price;
     }

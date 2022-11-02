@@ -37,6 +37,9 @@ security:
         - { path: ^/species/, roles: ROLE_ADMIN }
         - { path: ^/reservations$, roles: ROLE_USER }
         - { path: ^/reservation/, roles: ROLE_USER }
+        - { path: ^/categories$, roles: ROLE_ADMIN }
+        - { path: ^/categories/\d+$, roles: ROLE_ADMIN }
+        - { path: ^/categories/, roles: ROLE_ADMIN }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

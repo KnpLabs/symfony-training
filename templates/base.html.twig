@@ -63,6 +63,23 @@
                     Create a species
                   </a>
                 </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link{% if app.request.get('_route') == 'app_list_categories' %} active{% endif %}"
+                    aria-current="page"
+                    href="{{ path('app_list_categories') }}"
+                  >
+                    Categories list
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link{% if app.request.get('_route') == 'app_create_category' %} active{% endif %}"
+                    href="{{ path('app_create_category') }}"
+                  >
+                    Create a category
+                  </a>
+                </li>
               {% endif %}
               <li class="nav-item">
                 <a

@@ -70,14 +70,14 @@ class ReservationType extends AbstractType
                         $totalPrice += $ticket->getCategory()->getPrice();
                     }
 
-                    if ($totalPrice >= 105 && $totalPrice <= 252) {
+                    if ($totalPrice >= 10500 && $totalPrice <= 25200) {
                         $choices = [
                             'Poster of the T-Rex' => 'poster',
                             'Dessert at the park\'s restaurant' => 'dessert',
                             'Key ring of the park' => 'key_ring',
                             'Mug of the park' => 'mug',
                         ];
-                    } else if ($totalPrice > 252 && $totalPrice <= 500) {
+                    } else if ($totalPrice > 25200 && $totalPrice <= 50000) {
                         $choices = [
                             'Portrait in the Valley of Diplodocus' => 'portrait',
                             'Meal at the park\'s restaurant' => 'meal',

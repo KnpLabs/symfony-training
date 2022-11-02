@@ -148,10 +148,10 @@ class AppFixtures extends Fixture
          * Create categories
          */
         $prices = [
-            new Category('Full price', 126),
-            new Category('Student', 105),
-            new Category('Senior', 109.5),
-            new Category('Child (under 12)', 84),
+            new Category('Full price', 12600),
+            new Category('Student', 10500),
+            new Category('Senior', 10950),
+            new Category('Child (under 12)', 8400),
             new Category('Toddler (under 3)', 0),
         ];
 

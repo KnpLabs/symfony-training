@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categories{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('css/dinosaurs.css') }}" />
+{% endblock %}
+
+{% block body %}
+<main>
+  <div class="list-group">
+    {% for category in categoriesList %}
+    <a class="list-group-item list-group-item-action d-flex gap-3 py-3"
+      href="{{ path('app_edit_category', {id: category.id}) }}"
+    >
+      <div class="d-flex gap-2 w-100 justify-content-between">
+        {{ category.name }}
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</main>
+{% endblock %}
