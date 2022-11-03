@@ -72,4 +72,14 @@ class Species
             }
         );
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'habitats' => $this->habitats,
+            'feeding' => $this->feeding,
+        ];
+    }
 }

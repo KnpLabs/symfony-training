@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Application\Controller;
 
 use Application\Form\Type\UserType;
+use Application\MessageBus\CommandBus;
 use Domain\Collection\UsersCollection;
+use Domain\Exception\UserAlreadyExistsException;
+use Domain\UseCase\RegisterUser\Input;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +18,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 final class AuthenticationController extends AbstractController
 {
     public function __construct(
-        private UsersCollection $usersCollection
+        private UsersCollection $usersCollection,
+        private CommandBus $commandBus
     ) {
     }
 
@@ -29,11 +33,20 @@ final class AuthenticationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
 
-            $this->usersCollection->add($user);
+            $input = new Input(
+                email: $user['email'],
+                password: $user['password'],
+            );
 
-            $this->addFlash('success', 'You have been sucessfully registered!');
+            try {
+                $this->commandBus->dispatch($input);
 
-            return $this->redirectToRoute('login');
+                $this->addFlash('success', 'You have been sucessfully registered!');
+
+                return $this->redirectToRoute('login');
+            } catch (UserAlreadyExistsException $e) {
+                $this->addFlash('danger', 'The email is already in use.');
+            }
         }
 
         return $this->render('register.html.twig', [

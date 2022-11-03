@@ -20,6 +20,16 @@ class DinosaurRepository extends ServiceEntityRepository implements DinosaursCol
         $this->objectManager = $registry->getManager();
     }
 
+    public function findByName(string $name): ?Dinosaur
+    {
+        return $this->createQueryBuilder('d')
+            ->where('d.name = :name')
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function search(?string $q): array
     {
         if (null === $q) {

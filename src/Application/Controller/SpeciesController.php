@@ -5,7 +5,13 @@ declare(strict_types=1);
 namespace Application\Controller;
 
 use Application\Form\Type\SpeciesType;
+use Application\MessageBus\CommandBus;
 use Domain\Collection\SpeciesCollection;
+use Domain\Exception\SpeciesAlreadyExistsException;
+use Domain\Exception\SpeciesNotFoundException;
+use Domain\UseCase\CreateSpecies;
+use Domain\UseCase\EditSpecies;
+use Domain\UseCase\RemoveSpecies;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +21,7 @@ final class SpeciesController extends AbstractController
 {
     public function __construct(
         private SpeciesCollection $speciesCollection,
+        private CommandBus $commandBus
     ) {
     }
 
@@ -38,13 +45,23 @@ final class SpeciesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $species = $form->getData();
+            $rawSpecies = $form->getData();
 
-            $this->speciesCollection->add($species);
+            $input = new CreateSpecies\Input(
+                name: $rawSpecies['name'],
+                habitats: $rawSpecies['habitats'],
+                feeding: $rawSpecies['feeding']
+            );
 
-            $this->addFlash('success', 'The species has been created!');
+            try {
+                $output = $this->commandBus->dispatch($input);
 
-            return $this->redirectToRoute('app_list_species');
+                $this->addFlash('success', 'The species has been created!');
+
+                return $this->redirectToRoute('app_list_species');
+            } catch (SpeciesAlreadyExistsException $e) {
+                $this->addFlash('error', $e->getMessage());
+            }
         }
 
         return $this->render('create-species.html.twig', [
@@ -57,7 +74,7 @@ final class SpeciesController extends AbstractController
         name: 'app_edit_species',
         requirements: ['id' => '\d+']
     )]
-    public function edit(Request $request, int $id): Response
+    public function edit(Request $request, string $id): Response
     {
         $species = $this
             ->speciesCollection
@@ -67,18 +84,30 @@ final class SpeciesController extends AbstractController
             throw $this->createNotFoundException('The species you are looking for does not exists.');
         }
 
-        $form = $this->createForm(SpeciesType::class, $species);
-
+        $form = $this->createForm(SpeciesType::class, $species->toArray());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $species = $form->getData();
+            $rawSpecies = $form->getData();
 
-            $this->speciesCollection->add($species);
+            $input = new EditSpecies\Input(
+                speciesId: $id,
+                name: $rawSpecies['name'],
+                habitats: $rawSpecies['habitats'],
+                feeding: $rawSpecies['feeding']
+            );
 
-            $this->addFlash('success', 'The species has been edited!');
+            try {
+                $this->commandBus->dispatch($input);
 
-            return $this->redirectToRoute('app_list_species');
+                $this->addFlash('success', 'The species has been updated!');
+
+                return $this->redirectToRoute('app_list_species');
+            } catch (SpeciesAlreadyExistsException $e) {
+                $this->addFlash('error', $e->getMessage());
+            } catch (SpeciesNotFoundException $e) {
+                throw $this->createNotFoundException($e->getMessage());
+            }
         }
 
         return $this->render('edit-species.html.twig', [
@@ -91,17 +120,13 @@ final class SpeciesController extends AbstractController
         name: 'app_remove_species',
         requirements: ['id' => '\d+']
     )]
-    public function remove(int $id): Response
+    public function remove(string $id): Response
     {
-        $species = $this
-            ->speciesCollection
-            ->find($id);
-
-        if (false === $species) {
-            throw $this->createNotFoundException('The species you are looking for does not exists.');
+        try {
+            $this->commandBus->dispatch(new RemoveSpecies\Input($id));
+        } catch (SpeciesNotFoundException $e) {
+            throw $this->createNotFoundException($e->getMessage());
         }
-
-        $this->speciesCollection->remove($species);
 
         $this->addFlash('success', 'The species has been removed!');
 

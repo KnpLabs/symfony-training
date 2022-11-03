@@ -2,7 +2,6 @@
 
 namespace Application\Form\Type;
 
-use Domain\Model\Dinosaur;
 use Domain\Model\Species;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -11,8 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class DinosaurType extends AbstractType
 {
@@ -33,21 +30,5 @@ final class DinosaurType extends AbstractType
             ->add('age', NumberType::class)
             ->add('eyesColor', ColorType::class)
             ->add('submit', SubmitType::class);
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => Dinosaur::class,
-            'empty_data' => function (FormInterface $form) {
-                return new Dinosaur(
-                    $form->get('name')->getData(),
-                    $form->get('gender')->getData(),
-                    $form->get('species')->getData(),
-                    $form->get('age')->getData(),
-                    $form->get('eyesColor')->getData(),
-                );
-            },
-        ]);
     }
 }

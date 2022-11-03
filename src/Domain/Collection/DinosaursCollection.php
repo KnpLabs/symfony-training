@@ -10,6 +10,8 @@ interface DinosaursCollection
 {
     public function find(string $id);
 
+    public function findByName(string $name): ?Dinosaur;
+
     /**
      * @return array<Dinosaur>
      */

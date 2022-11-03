@@ -69,4 +69,16 @@ class Dinosaur
     {
         $this->eyesColor = $eyesColor;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'gender' => $this->gender,
+            'species' => $this->species,
+            'age' => $this->age,
+            'eyesColor' => $this->eyesColor,
+        ];
+    }
 }
