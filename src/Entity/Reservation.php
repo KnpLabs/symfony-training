@@ -13,12 +13,14 @@ class Reservation
     private Collection $tickets;
     private \DateTime $createdAt;
     private ?string $gift;
+    private ?string $comment;
 
     public function __construct(
         User $buyer,
         \DateTime $dateOfVisit,
         array $tickets,
-        ?string $gift = null
+        ?string $gift = null,
+        ?string $comment = null
     ) {
         $this->buyer = $buyer;
         $this->dateOfVisit = $dateOfVisit;
@@ -26,6 +28,7 @@ class Reservation
         $this->createdAt = new \DateTime();
         $this->assignTicketsToReservation();
         $this->gift = $gift;
+        $this->comment = $comment;
     }
 
     public function getId(): int
@@ -119,5 +122,15 @@ class Reservation
     public function setGift(?string $gift): void
     {
         $this->gift = $gift;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): void
+    {
+        $this->comment = $comment;
     }
 }

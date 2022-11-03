@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ReservationType extends AbstractType
@@ -53,6 +54,10 @@ class ReservationType extends AbstractType
                     new ContainsAdult(),
                 ],
                 'help' => 'Children must be accompanied by an adult.',
+            ])
+            ->add('comment', TextareaType::class, [
+                'required' => false,
+                'help' => 'Anything you want to share with us?',
             ])
             ->add('submit', SubmitType::class)
         ;
