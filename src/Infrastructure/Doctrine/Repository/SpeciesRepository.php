@@ -20,16 +20,24 @@ class SpeciesRepository extends ServiceEntityRepository implements SpeciesCollec
         $this->objectManager = $registry->getManager();
     }
 
+    public function findByName(string $name): ?Species
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.name = :name')
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function add(Species $species): void
     {
         $this->objectManager->persist($species);
-        $this->objectManager->flush();
     }
 
     public function remove(Species $species): void
     {
         $this->objectManager->remove($species);
-        $this->objectManager->flush();
     }
 }
 

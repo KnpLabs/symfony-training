@@ -29,10 +29,10 @@ security:
     access_control:
         - { path: ^/dinosaurs$, roles: ROLE_USER }
         - { path: ^/dinosaurs/\d+$, roles: ROLE_USER }
-        - { path: ^/dinosaurs/, roles: ROLE_ADMIN }
+        # - { path: ^/dinosaurs/, roles: ROLE_ADMIN }
         - { path: ^/species$, roles: ROLE_USER }
         - { path: ^/species/\d+$, roles: ROLE_USER }
-        - { path: ^/species/, roles: ROLE_ADMIN }
+        # - { path: ^/species/, roles: ROLE_ADMIN }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

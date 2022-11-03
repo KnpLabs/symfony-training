@@ -15,6 +15,8 @@ interface SpeciesCollection
      */
     public function findAll();
 
+    public function findByName(string $name): ?Species;
+
     public function add(Species $species): void;
 
     public function remove(Species $species): void;

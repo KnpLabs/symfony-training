@@ -9,6 +9,7 @@ class User
     private int $id;
     private string $email;
     private ?string $password;
+    private ?string $plainPassword = null;
 
     public function __construct(
         string $email,
@@ -24,6 +25,16 @@ class User
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    public function setPlainPassword(string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
     }
 
     public function setHashedPassword(string $hashedPassword): void

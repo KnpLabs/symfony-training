@@ -20,6 +20,16 @@ class UserRepository extends ServiceEntityRepository implements UsersCollection
         $this->objectManager = $registry->getManager();
     }
 
+    public function findByEmail(string $email): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function add(User $user): void
     {
         $this->objectManager->persist($user);

@@ -2,7 +2,6 @@
 
 namespace Application\Form\Type;
 
-use Domain\Model\Species;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -40,15 +39,7 @@ class SpeciesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Species::class,
-            'empty_data' => function (FormInterface $form) {
-                return new Species(
-                    $form->get('name')->getData(),
-                    $form->get('habitats')->getData(),
-                    $form->get('feeding')->getData(),
-                );
-            }
+            'compound' => true,
         ]);
     }
 }
-
