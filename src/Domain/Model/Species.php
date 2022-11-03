@@ -67,9 +67,19 @@ class Species
     {
         $this->dinosaurs = array_filter(
             [...$this->dinosaurs],
-            function (Dinosaur $d) use ($dinosaur) {
+            static function (Dinosaur $d) use ($dinosaur) {
                 return $d->getId() !== $dinosaur->getId();
             }
         );
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'habitats' => $this->habitats,
+            'feeding' => $this->feeding,
+        ];
     }
 }

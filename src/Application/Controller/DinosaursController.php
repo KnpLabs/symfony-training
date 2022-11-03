@@ -4,7 +4,12 @@ namespace Application\Controller;
 
 use Application\Form\Type\DinosaurType;
 use Application\Form\Type\SearchType;
+use Application\MessageBus\CommandBus;
 use Domain\Collection\DinosaursCollection;
+use Domain\UseCase\CreateDinosaur;
+use Domain\UseCase\EditDinosaur;
+use Domain\UseCase\RemoveDinosaur;
+use DomainException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +19,7 @@ final class DinosaursController extends AbstractController
 {
     public function __construct(
         private DinosaursCollection $dinosaursCollection,
+        private CommandBus $commandBus
     ) {
     }
 
@@ -71,11 +77,23 @@ final class DinosaursController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $dinosaur = $form->getData();
 
-            $this->dinosaursCollection->add($dinosaur);
+            $input = new CreateDinosaur\Input(
+                $dinosaur['name'],
+                $dinosaur['gender'],
+                $dinosaur['species']->getId(),
+                $dinosaur['age'],
+                $dinosaur['eyesColor']
+            );
 
-            $this->addFlash('success', 'The dinosaur has been created!');
+            try {
+                $this->commandBus->dispatch($input);
 
-            return $this->redirectToRoute('app_list_dinosaurs');
+                $this->addFlash('success', 'The dinosaur has been created!');
+
+                return $this->redirectToRoute('app_list_dinosaurs');
+            } catch (DomainException $e) {
+                $this->addFlash('danger', $e->getMessage());
+            }
         }
 
         return $this->render('create-dinosaur.html.twig', [
@@ -98,18 +116,31 @@ final class DinosaursController extends AbstractController
             throw $this->createNotFoundException('The dinosaur you are looking for does not exists.');
         }
 
-        $form = $this->createForm(DinosaurType::class, $dinosaur);
+        $form = $this->createForm(DinosaurType::class, $dinosaur->toArray());
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $dinosaur = $form->getData();
 
-            $this->dinosaursCollection->add($dinosaur);
+            $input = new EditDinosaur\Input(
+                $id,
+                $dinosaur['name'],
+                $dinosaur['gender'],
+                $dinosaur['species']->getId(),
+                $dinosaur['age'],
+                $dinosaur['eyesColor']
+            );
 
-            $this->addFlash('success', 'The dinosaur has been edited!');
+            try {
+                $this->commandBus->dispatch($input);
 
-            return $this->redirectToRoute('app_list_dinosaurs');
+                $this->addFlash('success', 'The dinosaur has been updated!');
+
+                return $this->redirectToRoute('app_list_dinosaurs');
+            } catch (DomainException $e) {
+                $this->addFlash('danger', $e->getMessage());
+            }
         }
 
         return $this->render('edit-dinosaur.html.twig', [
@@ -124,17 +155,15 @@ final class DinosaursController extends AbstractController
     )]
     public function remove(int $id): Response
     {
-        $dinosaur = $this
-            ->dinosaursCollection
-            ->find($id);
+        $input = new RemoveDinosaur\Input($id);
 
-        if (false === $dinosaur) {
-            throw $this->createNotFoundException('The dinosaur you are looking for does not exists.');
+        try {
+            $this->commandBus->dispatch($input);
+
+            $this->addFlash('success', 'The dinosaur has been removed!');
+        } catch (DomainException $e) {
+            $this->addFlash('danger', $e->getMessage());
         }
-
-        $this->dinosaursCollection->remove($dinosaur);
-
-        $this->addFlash('success', 'The dinosaur has been removed!');
 
         return $this->redirectToRoute('app_list_dinosaurs');
     }
