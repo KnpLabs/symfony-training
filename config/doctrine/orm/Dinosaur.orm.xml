@@ -17,7 +17,6 @@
         <field name="name" column="name" type="string" length="255" nullable="false" unique="false" />
         <field name="gender" column="gender" type="string" length="255" nullable="false" unique="false" />
         <field name="age" column="age" type="integer" />
-        <field name="eyesColor" column="eyesColor" type="string" lenght="7" nullable="false" unique="false" />
 
         <many-to-one
             field="species"
@@ -28,6 +27,15 @@
             field="enclosure"
             target-entity="App\Entity\Enclosure"
             inversed-by="dinosaurs" />
+
+        <one-to-one
+            field="eyesColor"
+            target-entity="App\Entity\EyesColor"
+        >
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-one>
 
     </entity>
 

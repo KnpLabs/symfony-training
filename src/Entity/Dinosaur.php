@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Species;
+use App\Entity\EyesColor;
 use App\Entity\Enclosure;
 
 class Dinosaur
@@ -12,7 +13,7 @@ class Dinosaur
     private string $gender;
     private Species $species;
     private int $age;
-    private string $eyesColor;
+    private EyesColor $eyesColor;
     private ?Enclosure $enclosure;
 
     public function __construct(
@@ -20,7 +21,7 @@ class Dinosaur
         string $gender,
         Species $species,
         int $age,
-        string $eyesColor,
+        EyesColor $eyesColor,
         ?Enclosure $enclosure = null
     ) {
         $this->name = $name;
@@ -76,12 +77,12 @@ class Dinosaur
         $this->age = $age;
     }
 
-    public function getEyesColor(): string
+    public function getEyesColor(): EyesColor
     {
         return $this->eyesColor;
     }
 
-    public function setEyesColor(string $eyesColor): void
+    public function setEyesColor(EyesColor $eyesColor): void
     {
         $this->eyesColor = $eyesColor;
     }

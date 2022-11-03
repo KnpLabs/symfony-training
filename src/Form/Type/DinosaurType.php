@@ -2,17 +2,18 @@
 
 namespace App\Form\Type;
 
-use App\Entity\Dinosaur;
 use App\Entity\Species;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Dinosaur;
+use App\Form\Type\EyesColorType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DinosaurType extends AbstractType
 {
@@ -31,7 +32,7 @@ class DinosaurType extends AbstractType
                 'choice_label' => 'name'
             ])
             ->add('age', NumberType::class)
-            ->add('eyesColor', ColorType::class)
+            ->add('eyesColor', EyesColorType::class)
             ->add('submit', SubmitType::class)
         ;
     }

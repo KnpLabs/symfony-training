@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Category;
 use App\Entity\Dinosaur;
+use App\Entity\EyesColor;
 use App\Entity\User;
 use App\Entity\Species;
 use Doctrine\Persistence\ObjectManager;
@@ -136,7 +137,7 @@ class AppFixtures extends Fixture
                 $gender[array_rand($gender)],
                 $speciesList[array_rand($speciesList)],
                 rand(1, 40),
-                "#000000"
+                new EyesColor(0, 0, 0)
             );
 
             $manager->persist($dinosaur);
