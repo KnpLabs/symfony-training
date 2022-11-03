@@ -24,9 +24,9 @@ class Reservation
     ) {
         $this->buyer = $buyer;
         $this->dateOfVisit = $dateOfVisit;
-        $this->tickets = new ArrayCollection($tickets);
+        $this->tickets = new ArrayCollection();
+        $this->addTickets($tickets);
         $this->createdAt = new \DateTime();
-        $this->assignTicketsToReservation();
         $this->gift = $gift;
         $this->comment = $comment;
     }
@@ -69,17 +69,6 @@ class Reservation
         foreach ($tickets as $ticket) {
             $this->addTicket($ticket);
         }
-
-        $this->assignTicketsToReservation();
-    }
-
-    private function assignTicketsToReservation(): void
-    {
-        $this->tickets->forAll(function ($key, Ticket $ticket) {
-            $ticket->setReservation($this);
-
-            return true;
-        });
     }
 
     public function addTicket(Ticket $ticket): void
@@ -108,7 +97,7 @@ class Reservation
         $totalPrice = 0;
 
         foreach ($this->tickets as $ticket) {
-            $totalPrice += $ticket->getCategory()->getPrice();
+            $totalPrice += $ticket->getCategory()->getEuroPrice();
         }
 
         return $totalPrice;

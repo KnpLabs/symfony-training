@@ -7,6 +7,7 @@ use App\Entity\Reservation;
 use App\Form\Type\TicketType;
 use App\Validator\ContainsAdult;
 use Symfony\Component\Form\FormEvent;
+use App\Repository\CategoryRepository;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
@@ -16,14 +17,17 @@ use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ReservationType extends AbstractType
 {
+    public function __construct(CategoryRepository $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -62,54 +66,21 @@ class ReservationType extends AbstractType
             ->add('submit', SubmitType::class)
         ;
 
-        $builder->get('tickets')->addEventListener(
-            FormEvents::POST_SUBMIT,
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT,
             function (FormEvent $event) {
-                $tickets = $event->getForm()->getData();
-                $form = $event->getForm()->getParent();
+                $reservation = $event->getData();
+                $form = $event->getForm();
 
-                if ($tickets) {
-                    $choices = [];
+                if (isset($reservation['tickets'])) {
                     $totalPrice = 0;
-                    foreach ($tickets as $ticket) {
-                        $totalPrice += $ticket->getCategory()->getPrice();
+                    foreach ($reservation['tickets'] as $ticket) {
+                        $category = $this->categoryRepository->find($ticket['category']);
+                        $totalPrice += $category->getEuroPrice();
                     }
 
-                    if ($totalPrice >= 10500 && $totalPrice <= 25200) {
-                        $choices = [
-                            'Poster of the T-Rex' => 'poster',
-                            'Dessert at the park\'s restaurant' => 'dessert',
-                            'Key ring of the park' => 'key_ring',
-                            'Mug of the park' => 'mug',
-                        ];
-                    } else if ($totalPrice > 25200 && $totalPrice <= 50000) {
-                        $choices = [
-                            'Portrait in the Valley of Diplodocus' => 'portrait',
-                            'Meal at the park\'s restaurant' => 'meal',
-                            'Access to the meal of the Parasaurolophus event' => 'event_p_meal',
-                            'T-shirt of the park' => 't-shirt',
-                        ];
-                    } else {
-                        $choices = [
-                            'Night at the park\'s hotel' => 'hotel',
-                            'Access to the meal of the T-Rex event (adults only)' => 'event_t_meal',
-                            'VIP car ride inside the Valley of Diplodocus' => 'car_ride',
-                            'Bag of goodies' => 'goodies',
-                        ];
-                    }
-
-                    $form->add('gift', ChoiceType::class, [
-                        'choices' => $choices,
-                        'expanded' => false,
-                        'multiple' => false,
-                        'required' => true,
-                        'placeholder' => 'Choose an option',
-                        'constraints' => [
-                            new NotBlank([
-                                'message' => '',
-                            ]),
-                        ],
-                        'help' => 'Thank you for your future visit! You can choose one gift. It will be given to you at your arrival at the park.',
+                    $form->add('gift', GiftType::class, [
+                        'totalPrice' => $totalPrice,
                     ]);
                 }
             }

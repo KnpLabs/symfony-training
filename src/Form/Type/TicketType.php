@@ -22,7 +22,7 @@ class TicketType extends AbstractType
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => function(Category $category) {
-                    return sprintf('%s - %s €', $category->getName(), ($category->getPrice()/100));
+                    return sprintf('%s - %s €', $category->getName(), ($category->getEuroPrice()));
                 },
             ])
         ;

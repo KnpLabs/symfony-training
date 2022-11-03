@@ -25,36 +25,12 @@ class EnclosureType extends AbstractType
             ->add('name', TextType::class)
         ;
 
-        if ($feeding === 'Carnivore' && !in_array('Air', $habitats)) {
-            $builder
-                ->add('fences', ChoiceType::class, [
-                    'choices' => [
-                        'Electric Fence' => 'electric_fence'
-                    ],
-                ])
-            ;
-        } else if ($habitats && in_array('Air', $habitats)) {
-            $builder
-                ->add('fences', ChoiceType::class, [
-                    'choices' => [
-                        'Aviary' => 'aviary',
-                    ],
-                ])
-            ;
-        } else {
-            $builder
-                ->add('fences', ChoiceType::class, [
-                    'choices' => [
-                        'Standard Fence' => 'standard_fence',
-                        'Electric Fence' => 'electric_fence',
-                        'No Fence' => 'no_fence',
-                        'Aviary' => 'aviary'
-                    ],
-                ])
-            ;
-        }
+        $fenceChoices = $this->getFenceChoices($feeding, $habitats);
 
         $builder
+            ->add('fences', ChoiceType::class, [
+                'choices' => $fenceChoices,
+            ])
             ->add('habitats', HabitatType::class, [
                 'habitats' => $habitats,
             ])
@@ -81,5 +57,27 @@ class EnclosureType extends AbstractType
         ]);
 
         $resolver->setAllowedTypes('dinosaur', ['null', 'App\Entity\Dinosaur']);
+    }
+
+    private function getFenceChoices($feeding, $habitats)
+    {
+        if ($feeding === 'Carnivore' && !in_array('Air', $habitats)) {
+            $choices = [
+                'Electric Fence' => 'electric_fence'
+            ];
+        } else if ($habitats && in_array('Air', $habitats)) {
+            $choices = [
+                'Aviary' => 'aviary',
+            ];
+        } else {
+            $choices = [
+                'Standard Fence' => 'standard_fence',
+                'Electric Fence' => 'electric_fence',
+                'No Fence' => 'no_fence',
+                'Aviary' => 'aviary'
+            ];
+        }
+
+        return $choices;
     }
 }

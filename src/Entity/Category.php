@@ -36,6 +36,11 @@ class Category
         return $this->price;
     }
 
+    public function getEuroPrice(): int
+    {
+        return $this->price / 100;
+    }
+
     public function setPrice(int $price): void
     {
         $this->price = $price;

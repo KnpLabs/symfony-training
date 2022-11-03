@@ -1,34 +1,23 @@
 {% macro ticket_template(ticket, shouldDisplayGift) %}
   <div class="ticket row border border-secondary mt-4 p-2 pb-0 rounded-top bg-light justify-content-center">
+    <div class="col md-6">
+      {{ form_row(ticket.visitorName) }}
+    </div>
+    <div class="col md-6">
+      {{ form_row(ticket.category) }}
+    </div>
     {% if shouldDisplayGift %}
-      <div class="col md-6">
-        {{ form_label(ticket.visitorName) }}:</br>
-        {{ form_widget(ticket.visitorName, {'attr': {'class': 'd-none'}}) }}
-        {{ ticket.visitorName.vars.data }}
-      </div>
-      <div class="col md-6">
-        {{ form_label(ticket.category) }}:</br>
-        {{ form_widget(ticket.category, {'attr': {'class': 'd-none'}}) }}
-        {{ ticket.category.vars.data.name }}
-      </div>
-      <div class="col md-6">
-        Ticket price:</br>
-        {{ ticket.category.vars.data.price / 100 }} €
-      </div>
-      <button type="button" class="remove-ticket-btn btn btn-outline-danger m-2 disabled">
-        Remove this ticket
-      </button>
-    {% else %}
-      <div class="col md-6">
-        {{ form_row(ticket.visitorName) }}
-      </div>
-      <div class="col md-6">
-        {{ form_row(ticket.category) }}
-      </div>
-      <button type="button" class="remove-ticket-btn btn btn-outline-danger m-2">
-        Remove this ticket
-      </button>
+      <p class="text-center">
+      {% if ticket.category.vars.data.isAdult %}
+        Adult ticket for {{ ticket.visitorName.vars.value }}
+      {% else %}
+        Child ticket for {{ ticket.visitorName.vars.value }}
+      {% endif %}
+      </p>
     {% endif %}
+    <button type="button" class="remove-ticket-btn btn btn-outline-danger m-2">
+      Remove this ticket
+    </button>
   </div>
 {% endmacro %}
 

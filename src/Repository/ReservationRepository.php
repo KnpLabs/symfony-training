@@ -17,7 +17,7 @@ class ReservationRepository extends ServiceEntityRepository
     public function findByBuyer(User $buyer): array
     {
         return $this->createQueryBuilder('reservation')
-            ->where('reservation.user_id = :buyer')
+            ->where('reservation.buyer = :buyer')
             ->setParameter('buyer', $buyer)
             ->getQuery()
             ->getResult()

@@ -2,7 +2,6 @@ jQuery(document).ready(function () {
     var $wrapper = $('#tickets-fields-list');
 
     $wrapper.on('click', '.remove-ticket-btn', function (e) {
-        console.log('remove');
         e.preventDefault();
         $(this).closest('.ticket').remove();
     });
