@@ -6,9 +6,11 @@ namespace Application\Controller;
 
 use Application\Form\Type\SpeciesType;
 use Application\MessageBus\CommandBus;
-use Domain\Collection\SpeciesCollection;
+use Application\MessageBus\QueryBus;
 use Domain\Exception\SpeciesAlreadyExistsException;
 use Domain\Exception\SpeciesNotFoundException;
+use Domain\Query\GetAllSpecies;
+use Domain\Query\GetSingleSpecies;
 use Domain\UseCase\CreateSpecies;
 use Domain\UseCase\EditSpecies;
 use Domain\UseCase\RemoveSpecies;
@@ -20,17 +22,15 @@ use Symfony\Component\Routing\Annotation\Route;
 final class SpeciesController extends AbstractController
 {
     public function __construct(
-        private SpeciesCollection $speciesCollection,
-        private CommandBus $commandBus
+        private CommandBus $commandBus,
+        private QueryBus $queryBus
     ) {
     }
 
     #[Route('/species', name: 'app_list_species')]
     public function list(): Response
     {
-        $speciesList = $this
-            ->speciesCollection
-            ->findAll();
+        $speciesList = $this->queryBus->dispatch(new GetAllSpecies\Query());
 
         return $this->render('species-list.html.twig', [
             'speciesList' => $speciesList,
@@ -76,26 +76,21 @@ final class SpeciesController extends AbstractController
     )]
     public function edit(Request $request, string $id): Response
     {
-        $species = $this
-            ->speciesCollection
-            ->find($id);
-
-        if (false === $species) {
-            throw $this->createNotFoundException('The species you are looking for does not exists.');
+        try {
+            $species = $this->queryBus->dispatch(new GetSingleSpecies\Query($id));
+        } catch (SpeciesNotFoundException $e) {
+            throw $this->createNotFoundException(
+                'The species you are looking for does not exists.'
+            );
         }
 
-        $form = $this->createForm(SpeciesType::class, $species->toArray());
+        $form = $this->createForm(SpeciesType::class, $species);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $rawSpecies = $form->getData();
+            $species = $form->getData();
 
-            $input = new EditSpecies\Input(
-                speciesId: $id,
-                name: $rawSpecies['name'],
-                habitats: $rawSpecies['habitats'],
-                feeding: $rawSpecies['feeding']
-            );
+            $input = EditSpecies\Input::fromReadModel($species);
 
             try {
                 $this->commandBus->dispatch($input);

@@ -5,7 +5,10 @@ namespace Application\Controller;
 use Application\Form\Type\DinosaurType;
 use Application\Form\Type\SearchType;
 use Application\MessageBus\CommandBus;
-use Domain\Collection\DinosaursCollection;
+use Application\MessageBus\QueryBus;
+use Domain\Exception\DinosaurNotFoundException;
+use Domain\Query\GetSingleDinosaur;
+use Domain\Query\GetAllDinosaurs;
 use Domain\UseCase\CreateDinosaur;
 use Domain\UseCase\EditDinosaur;
 use Domain\UseCase\RemoveDinosaur;
@@ -18,8 +21,8 @@ use Symfony\Component\Routing\Annotation\Route;
 final class DinosaursController extends AbstractController
 {
     public function __construct(
-        private DinosaursCollection $dinosaursCollection,
-        private CommandBus $commandBus
+        private CommandBus $commandBus,
+        private QueryBus $queryBus
     ) {
     }
 
@@ -37,9 +40,7 @@ final class DinosaursController extends AbstractController
             $q = $search['q'];
         }
 
-        $dinosaurs = $this
-            ->dinosaursCollection
-            ->search($q);
+        $dinosaurs = $this->queryBus->dispatch(new GetAllDinosaurs\Query($q));
 
         return $this->render('dinosaurs-list.html.twig', [
             'dinosaurs' => $dinosaurs,
@@ -108,29 +109,22 @@ final class DinosaursController extends AbstractController
     )]
     public function edit(Request $request, int $id): Response
     {
-        $dinosaur = $this
-            ->dinosaursCollection
-            ->find($id);
-
-        if (false === $dinosaur) {
-            throw $this->createNotFoundException('The dinosaur you are looking for does not exists.');
+        try {
+            $dinosaur = $this->queryBus->dispatch(new GetSingleDinosaur\Query($id));
+        } catch (DinosaurNotFoundException $e) {
+            throw $this->createNotFoundException(
+                'The dinosaur you are looking for does not exists.'
+            );
         }
 
-        $form = $this->createForm(DinosaurType::class, $dinosaur->toArray());
+        $form = $this->createForm(DinosaurType::class, $dinosaur);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $dinosaur = $form->getData();
 
-            $input = new EditDinosaur\Input(
-                $id,
-                $dinosaur['name'],
-                $dinosaur['gender'],
-                $dinosaur['species']->getId(),
-                $dinosaur['age'],
-                $dinosaur['eyesColor']
-            );
+            $input = EditDinosaur\Input::fromReadModel($dinosaur);
 
             try {
                 $this->commandBus->dispatch($input);
