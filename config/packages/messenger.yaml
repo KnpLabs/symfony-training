@@ -8,3 +8,5 @@ framework:
       command.bus:
         middleware:
           - doctrine_transaction
+
+      query.bus: ~

@@ -11,3 +11,8 @@ services:
   Application\MessageBus\CommandBus:
     alias: Infrastructure\Symfony\Messenger\CommandBus
 
+  Infrastructure\Symfony\Messenger\QueryBus:
+    $messageBus: '@query.bus'
+
+  Application\MessageBus\QueryBus:
+    alias: Infrastructure\Symfony\Messenger\QueryBus
