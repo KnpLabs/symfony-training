@@ -24,6 +24,7 @@
         "symfony/http-client": " 6.1.*",
         "symfony/intl": " 6.1.*",
         "symfony/mailer": " 6.1.*",
+        "symfony/messenger": " 6.1.*",
         "symfony/mime": " 6.1.*",
         "symfony/monolog-bundle": "^3.8",
         "symfony/notifier": " 6.1.*",
@@ -46,6 +47,7 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "phpunit/phpunit": "^9.5",
+        "qossmic/deptrac-shim": "^0.24.0",
         "symfony/browser-kit": " 6.1.*",
         "symfony/css-selector": " 6.1.*",
         "symfony/debug-bundle": " 6.1.*",
@@ -66,7 +68,10 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "src/",
+            "Application\\": "src/Application/",
+            "Domain\\": "src/Domain/",
+            "Infrastructure\\": "src/Infrastructure/"
         }
     },
     "autoload-dev": {

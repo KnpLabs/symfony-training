@@ -1,0 +1,12 @@
+framework:
+  messenger:
+    default_bus: command.bus
+    transports:
+      sync: 'sync://'
+
+    buses:
+      command.bus:
+        middleware:
+          - doctrine_transaction
+
+      query.bus: ~
