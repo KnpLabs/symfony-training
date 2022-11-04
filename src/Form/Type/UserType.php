@@ -42,21 +42,20 @@ class UserType extends AbstractType implements DataMapperInterface
             'empty_data' => function (FormInterface $form) {
                 return new User(
                     $form->get('email')->getData(),
-                    $form->get('password')->getData(),
                 );
             }
         ]);
     }
 
-    public function mapDataToForms($viewData, Traversable $forms) 
-    { 
+    public function mapDataToForms($viewData, Traversable $forms)
+    {
         if (null === $viewData) {
             return;
         }
     }
 
-    public function mapFormsToData(Traversable $forms, &$viewData) 
-    { 
+    public function mapFormsToData(Traversable $forms, &$viewData)
+    {
         $forms = iterator_to_array($forms);
 
         $viewData = new User(

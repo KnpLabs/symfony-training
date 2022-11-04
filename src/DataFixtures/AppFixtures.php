@@ -33,7 +33,7 @@ class AppFixtures extends Fixture
         $manager->persist($admin);
 
         /**
-         * Create basik users with the default role ROLE_USER
+         * Create basic users with the default role ROLE_USER
          */
         for ($i = 0; $i < 10; $i++) {
             $user = new User(
