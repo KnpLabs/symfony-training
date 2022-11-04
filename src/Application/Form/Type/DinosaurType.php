@@ -2,6 +2,7 @@
 
 namespace Application\Form\Type;
 
+use Application\Form\DataTransformer\SpeciesReadToModel;
 use Domain\Model\Species;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -13,6 +14,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class DinosaurType extends AbstractType
 {
+    public function __construct(
+        private SpeciesReadToModel $speciesReadToModel
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -30,5 +36,7 @@ final class DinosaurType extends AbstractType
             ->add('age', NumberType::class)
             ->add('eyesColor', ColorType::class)
             ->add('submit', SubmitType::class);
+
+        $builder->get('species')->addModelTransformer($this->speciesReadToModel);
     }
 }
