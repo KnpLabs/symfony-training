@@ -2,7 +2,7 @@
 
 namespace Domain\Model;
 
-class Dinosaur
+class Dinosaur implements AggregateRoot
 {
     private int $id;
 
