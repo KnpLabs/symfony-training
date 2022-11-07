@@ -6,12 +6,16 @@ namespace Domain\UseCase\CreateDinosaur;
 
 use Domain\Collection\DinosaursCollection;
 use Domain\Collection\SpeciesCollection;
+use Domain\Event\DinosaurIsBorn;
 use Domain\Exception\DinosaurAlreadyExistsException;
 use Domain\Exception\SpeciesNotFoundException;
+use Domain\HasEventsRegisterer;
 use Domain\Model\Dinosaur;
 
 class Handler
 {
+    use HasEventsRegisterer;
+
     public function __construct(
         private DinosaursCollection $dinosaursCollection,
         private SpeciesCollection $speciesCollection
@@ -47,6 +51,8 @@ class Handler
         );
 
         $this->dinosaursCollection->add($dinosaur);
+
+        $this->registerEvents(new DinosaurIsBorn($dinosaur));
 
         return new Output($dinosaur);
     }

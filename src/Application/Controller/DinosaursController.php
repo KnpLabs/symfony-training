@@ -5,7 +5,9 @@ namespace Application\Controller;
 use Application\Form\Type\DinosaurType;
 use Application\Form\Type\SearchType;
 use Application\MessageBus\CommandBus;
+use Application\MessageBus\EventBus;
 use Application\MessageBus\QueryBus;
+use Domain\Event\DinosaurIsBorn;
 use Domain\Exception\DinosaurNotFoundException;
 use Domain\Query\GetSingleDinosaur;
 use Domain\Query\GetAllDinosaurs;
@@ -22,7 +24,8 @@ final class DinosaursController extends AbstractController
 {
     public function __construct(
         private CommandBus $commandBus,
-        private QueryBus $queryBus
+        private QueryBus $queryBus,
+        private EventBus $eventBus
     ) {
     }
 
@@ -55,12 +58,10 @@ final class DinosaursController extends AbstractController
     )]
     public function single(string $id): Response
     {
-        $dinosaur = $this
-            ->dinosaursCollection
-            ->find($id);
-
-        if (false === $dinosaur) {
-            throw $this->createNotFoundException('The dinosaur you are looking for does not exists.');
+        try {
+            $dinosaur = $this->queryBus->dispatch(new GetSingleDinosaur\Query($id));
+        } catch (DinosaurNotFoundException $e) {
+            throw $this->createNotFoundException();
         }
 
         return $this->render('dinosaur.html.twig', [
