@@ -5,6 +5,9 @@ services:
     autoconfigure: true
     public: false
 
+  Infrastructure\Symfony\Messenger\Middleware\:
+    resource: '%kernel.project_dir%/src/Infrastructure/Symfony/Messenger/Middleware/**.php'
+
   Infrastructure\Symfony\Messenger\CommandBus:
     $messageBus: '@command.bus'
 
@@ -16,3 +19,9 @@ services:
 
   Application\MessageBus\QueryBus:
     alias: Infrastructure\Symfony\Messenger\QueryBus
+
+  Infrastructure\Symfony\Messenger\EventBus:
+    $messageBus: '@event.bus'
+
+  Application\MessageBus\EventBus:
+    alias: Infrastructure\Symfony\Messenger\EventBus

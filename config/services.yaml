@@ -12,3 +12,5 @@ services:
 
     Application\:
         resource: '../src/Application/'
+        exclude:
+          - '../src/Application/DomainEventsHandler/'
