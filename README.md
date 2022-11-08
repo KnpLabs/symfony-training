@@ -19,12 +19,13 @@ You can now access the application on [localhost](http://127.0.0.1/login).
 
 ## Commands
 
-| Commands     	    | Description                        	|
-|-----------------	|-----------------------------------	|
-| start        	    | Setup and start the stack         	|
-| cp-env       	    | Copie default .env if none exists 	|
-| build        	    | Build Docker's container          	|
-| install-deps    	| Install Composer dependencies     	|
-| database-create 	| Create database if none exists     	|
-| database-drop   	| Drop database                     	|
-| database-migrate 	| Run Doctrine migrations           	|
+| Commands     	| Description                       |
+|-----------------	|-----------------------------------|
+| start        	| Setup and start the stack         |
+| cp-env       	| Copie default .env if none exists |
+| build        	| Build Docker's container          |
+| install-deps    	| Install Composer dependencies     |
+| database-create 	| Create database if none exists    |
+| database-drop   	| Drop database                     |
+| database-migrate	| Run Doctrine migrations           |
+| fixtures-load 	| Load fixtures           	        |
