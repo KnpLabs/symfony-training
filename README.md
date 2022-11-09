@@ -27,7 +27,7 @@ For most of trainings, you will need some fixtures to be loaded. To do so, run:
 make fixtures-load
 ```
 
-At this point, you should be able to log in and access the application (Email: `admin@email.com`, Password: `admin`)
+At this point, you should be able to log in and access the application (Email: `admin@mail.com`, Password: `admin`)
 
 ## Commands
 
