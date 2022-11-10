@@ -4,6 +4,10 @@ twig:
       - 'bootstrap_5_layout.html.twig'
       - 'form/bootstrap_5_layout.html.twig'
 
+    paths:
+      '%kernel.project_dir%/assets/css': styles
+      '%kernel.project_dir%/assets/images': images
+
 when@test:
     twig:
         strict_variables: true
