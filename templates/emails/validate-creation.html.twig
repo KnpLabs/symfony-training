@@ -1,0 +1,17 @@
+{% apply inline_css(source('@styles/email.css')) %}
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>{{ email.subject }}</title>
+    </head>
+    <body>
+    <div>
+        <div>
+            <h1>Congratulations, you juste created a new dinosaur {{ dinosaur }}!</h1>
+            <img src="{{ email.image('@images/edgar.jpg') }}" alt="KNP Labs">
+        </div>
+    </div>
+    </body>
+    </html>
+{% endapply %}

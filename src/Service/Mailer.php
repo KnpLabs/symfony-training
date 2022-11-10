@@ -2,9 +2,9 @@
 
 namespace App\Service;
 
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Message;
 
 class Mailer
@@ -13,13 +13,14 @@ class Mailer
     {
     }
 
-    public function sendCreatedDinosaurEmail(): void
+    public function sendCreatedDinosaurEmail(string $name): void
     {
-        $email = (new Email())
+        $email = (new TemplatedEmail())
             ->from('hello@knplabs.com')
             ->to('edgar@knplabs.com')
             ->subject('New dinosaur has been created !')
-            ->text('Congratulations, you juste created a new dinosaur !')
+            ->htmlTemplate('emails/validate-creation.html.twig')
+            ->context(['dinosaur' => $name])
         ;
 
         $this->sendEmail($email);

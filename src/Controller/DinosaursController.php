@@ -76,7 +76,7 @@ class DinosaursController extends AbstractController
 
             $this->addFlash('success', 'The dinosaur has been created!');
 
-            $mailer->sendCreatedDinosaurEmail();
+            $mailer->sendCreatedDinosaurEmail($dinosaur->getName());
 
             return $this->redirectToRoute('app_list_dinosaurs');
         }
