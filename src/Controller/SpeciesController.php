@@ -4,14 +4,22 @@ namespace App\Controller;
 
 use App\Entity\Species;
 use App\Form\Type\SpeciesType;
+use App\Message\CreateSpecies;
+use App\Message\DeleteSpecies;
+use App\Message\EditSpecies;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class SpeciesController extends AbstractController
 {
+    public function __construct(private MessageBusInterface $bus)
+    {
+    }
+
     #[Route('/species', name: 'app_list_species')]
     public function list(ManagerRegistry $doctrine): Response
     {
@@ -32,11 +40,13 @@ final class SpeciesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $doctrine->getManager();
-            $species = $form->getData();
+            $data = $form->getData();
 
-            $em->persist($species);
-            $em->flush();
+            $this->bus->dispatch(new CreateSpecies(
+                name: $data->getName(),
+                feeding: $data->getFeeding(),
+                habitats: $data->getHabitats()
+            ));
 
             $this->addFlash('success', 'The species has been created!');
 
@@ -68,10 +78,14 @@ final class SpeciesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $doctrine->getManager();
-            $species = $form->getData();
+            $data = $form->getData();
 
-            $em->flush();
+            $this->bus->dispatch(new EditSpecies(
+                id: $id,
+                name: $data->getName(),
+                feeding: $data->getFeeding(),
+                habitats: $data->getHabitats()
+            ));
 
             $this->addFlash('success', 'The species has been edited!');
 
@@ -88,19 +102,9 @@ final class SpeciesController extends AbstractController
         name: 'app_remove_species',
         requirements: ['id' => '\d+']
     )]
-    public function remove(int $id, ManagerRegistry $doctrine): Response
+    public function remove(int $id): Response
     {
-        $species = $doctrine
-            ->getRepository(Species::class)
-            ->find($id);
-
-        if (false === $species) {
-            throw $this->createNotFoundException('The species you are looking for does not exists.');
-        }
-
-        $em = $doctrine->getManager();
-        $em->remove($species);
-        $em->flush();
+        $this->bus->dispatch(new DeleteSpecies($id));
 
         $this->addFlash('success', 'The species has been removed!');
 
