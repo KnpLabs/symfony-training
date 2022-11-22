@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Dinosaur;
 use App\Form\Type\DinosaurType;
 use App\Form\Type\SearchType;
+use App\Service\DinosaurList;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DinosaursController extends AbstractController
 {
+    public function __construct(private DinosaurList $dinosaurService)
+    {
+    }
+
     #[Route('/dinosaurs', name: 'app_list_dinosaurs')]
     public function list(Request $request, ManagerRegistry $doctrine): Response
     {
@@ -32,10 +37,7 @@ class DinosaursController extends AbstractController
             ->search($q)
         ;
 
-        return $this->render('dinosaurs-list.html.twig', [
-            'dinosaurs' => $dinosaurs,
-            'searchForm' => $form->createView(),
-        ]);
+        return new Response($this->dinosaurService->getList($dinosaurs));
     }
 
     #[Route(
