@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block javascripts  %}
+{{ parent() }}
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 {% endblock %}
 
@@ -19,10 +20,10 @@
         <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
       </svg>
     </a>
-    <h1>{{ dinosaur.name }}</h1>
+    <h1 id="dino-name">{{ dinosaur.name }}</h1>
   </header>
   <section>
-    <img src="{{ asset('img/dino.png') }}" alt="twbs" class="rounded-circle flex-shrink-0">
+    <img src="{{ asset('img/dino.png') }}" alt="twbs" class="rounded-circle flex-shrink-0 dino-image">
     <div>
       <p>
         {% if dinosaur.gender == 'Male' %}
