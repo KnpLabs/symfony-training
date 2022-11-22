@@ -32,3 +32,8 @@ fixtures-load:
 
 .PHONY: reset-db
 reset-db: database-drop database-create database-migrate fixtures-load
+	docker compose run --rm php bin/console doctrine:fixtures:load
+
+.PHONY: worker
+worker:
+	docker compose run --rm php bin/console messenger:consume async -vv
