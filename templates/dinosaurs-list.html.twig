@@ -13,6 +13,9 @@
 
 {% block body %}
 <main>
+    {% if app.debug %}
+        <p>Application Environment: {{ app.environment }}</p>
+    {% endif %}
     <div class="list-group">
         {% for dinosaur in dinosaurs %}
             {{ include('dinosaur-list.html.twig', {dinosaur: dinosaur}) }}
