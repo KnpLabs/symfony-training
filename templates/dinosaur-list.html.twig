@@ -1,0 +1,14 @@
+<a class="list-group-item list-group-item-action d-flex gap-3 py-3"
+      href="{{ path('app_single_dinosaur', {id: dinosaur.id}) }}"
+>
+      <img
+      src="{{ asset('img/dino.png') }}"
+      alt="twbs"
+      width="32"
+      height="32"
+      class="rounded-circle flex-shrink-0"
+      >
+      <div class="d-flex gap-2 w-100 justify-content-between">
+        {{ dinosaur.name }}
+      </div>
+</a>
