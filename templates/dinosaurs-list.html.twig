@@ -17,7 +17,7 @@
         <p>Application Environment: {{ app.environment }}</p>
     {% endif %}
     <div class="list-group">
-        {% for dinosaur in dinosaurs %}
+        {% for dinosaur in dinosaurs|under(20) %}
             {{ include('dinosaur-list.html.twig', {dinosaur: dinosaur}) }}
         {% endfor %}
     </div>
