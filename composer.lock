@@ -1443,6 +1443,95 @@
             "time": "2024-03-20T12:50:41+00:00"
         },
         {
+            "name": "knplabs/php-json-schema",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/php-json-schema.git",
+                "reference": "97a06f0124e958eba8c76d011bdf3f5e72a9af20"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/php-json-schema/zipball/97a06f0124e958eba8c76d011bdf3f5e72a9af20",
+                "reference": "97a06f0124e958eba8c76d011bdf3f5e72a9af20",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "KnpLabs\\JsonSchema\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Knp Labs",
+                    "email": "hello@knplabs.com"
+                }
+            ],
+            "description": "PHP json-schema implementation",
+            "support": {
+                "issues": "https://github.com/KnpLabs/php-json-schema/issues",
+                "source": "https://github.com/KnpLabs/php-json-schema/tree/v0.1.0"
+            },
+            "time": "2022-10-31T10:01:54+00:00"
+        },
+        {
+            "name": "knplabs/php-json-schema-bundle",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/php-json-schema-bundle.git",
+                "reference": "d665c2fd6f39bacfde14269c82832d303c4a65d5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/php-json-schema-bundle/zipball/d665c2fd6f39bacfde14269c82832d303c4a65d5",
+                "reference": "d665c2fd6f39bacfde14269c82832d303c4a65d5",
+                "shasum": ""
+            },
+            "require": {
+                "knplabs/php-json-schema": "~0.1.0",
+                "php": ">=8.0",
+                "swaggest/json-schema": ">=0.12.41",
+                "symfony/config": ">=6.0",
+                "symfony/dependency-injection": ">=6.0",
+                "symfony/http-kernel": ">=6.0",
+                "zircote/swagger-php": ">=4.4"
+            },
+            "require-dev": {
+                "vimeo/psalm": "5.x-dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "KnpLabs\\JsonSchemaBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "KnpLabs",
+                    "email": "hello@knplabs.com"
+                }
+            ],
+            "description": "A Symfony bundle for knplabs/php-json-schema",
+            "support": {
+                "issues": "https://github.com/KnpLabs/php-json-schema-bundle/issues",
+                "source": "https://github.com/KnpLabs/php-json-schema-bundle/tree/v0.1.0"
+            },
+            "time": "2022-10-31T11:00:50+00:00"
+        },
+        {
             "name": "laminas/laminas-code",
             "version": "4.13.0",
             "source": {
@@ -1827,6 +1916,54 @@
                 "source": "https://github.com/phpstan/phpdoc-parser/tree/1.28.0"
             },
             "time": "2024-04-03T18:51:33+00:00"
+        },
+        {
+            "name": "phplang/scope-exit",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phplang/scope-exit.git",
+                "reference": "239b73abe89f9414aa85a7ca075ec9445629192b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phplang/scope-exit/zipball/239b73abe89f9414aa85a7ca075ec9445629192b",
+                "reference": "239b73abe89f9414aa85a7ca075ec9445629192b",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpLang\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "authors": [
+                {
+                    "name": "Sara Golemon",
+                    "email": "pollita@php.net",
+                    "homepage": "https://twitter.com/SaraMG",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Emulation of SCOPE_EXIT construct from C++",
+            "homepage": "https://github.com/phplang/scope-exit",
+            "keywords": [
+                "cleanup",
+                "exit",
+                "scope"
+            ],
+            "support": {
+                "issues": "https://github.com/phplang/scope-exit/issues",
+                "source": "https://github.com/phplang/scope-exit/tree/master"
+            },
+            "time": "2016-09-17T00:15:18+00:00"
         },
         {
             "name": "psr/cache",
@@ -7313,6 +7450,84 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "zircote/swagger-php",
+            "version": "4.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zircote/swagger-php.git",
+                "reference": "eb84fb4d65a327e604812fbddc6c27f69b9ed6e2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/eb84fb4d65a327e604812fbddc6c27f69b9ed6e2",
+                "reference": "eb84fb4d65a327e604812fbddc6c27f69b9ed6e2",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/annotations": "^1.7",
+                "ext-json": "*",
+                "php": ">=7.2",
+                "psr/log": "^1.1 || ^2.0 || ^3.0",
+                "symfony/deprecation-contracts": "^2 || ^3",
+                "symfony/finder": ">=2.2",
+                "symfony/yaml": ">=3.3"
+            },
+            "require-dev": {
+                "composer/package-versions-deprecated": "^1.11",
+                "friendsofphp/php-cs-fixer": "^2.17 || ^3.0",
+                "phpstan/phpstan": "^1.6",
+                "phpunit/phpunit": ">=8",
+                "vimeo/psalm": "^4.23"
+            },
+            "bin": [
+                "bin/openapi"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "OpenApi\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Robert Allen",
+                    "email": "zircote@gmail.com"
+                },
+                {
+                    "name": "Bob Fanger",
+                    "email": "bfanger@gmail.com",
+                    "homepage": "https://bfanger.nl"
+                },
+                {
+                    "name": "Martin Rademacher",
+                    "email": "mano@radebatz.net",
+                    "homepage": "https://radebatz.net"
+                }
+            ],
+            "description": "swagger-php - Generate interactive documentation for your RESTful API using phpdoc annotations",
+            "homepage": "https://github.com/zircote/swagger-php/",
+            "keywords": [
+                "api",
+                "json",
+                "rest",
+                "service discovery"
+            ],
+            "support": {
+                "issues": "https://github.com/zircote/swagger-php/issues",
+                "source": "https://github.com/zircote/swagger-php/tree/4.5.1"
+            },
+            "time": "2022-11-09T00:17:13+00:00"
         }
     ],
     "packages-dev": [
