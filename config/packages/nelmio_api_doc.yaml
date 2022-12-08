@@ -1,0 +1,12 @@
+nelmio_api_doc:
+    documentation:
+        servers:
+          - url: http://localhost/api
+            description: Local API
+        info:
+            title: Dinotaupia
+            description: This is a application about dinosaurs
+            version: 1.0.0
+    areas: # to filter documented areas
+        path_patterns:
+            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc

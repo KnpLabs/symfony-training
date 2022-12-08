@@ -11,7 +11,10 @@ use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use KnpLabs\JsonSchema\Validator;
 use KnpLabs\JsonSchemaBundle\Exception\JsonSchemaException;
+use KnpLabs\JsonSchemaBundle\OpenApi\Attributes\JsonContent;
 use KnpLabs\JsonSchemaBundle\RequestHandler;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,6 +33,24 @@ class Create extends AbstractController
     }
 
     #[Route('/api/dinosaurs', methods: 'POST')]
+    #[OA\Tag('dinosaur')]
+    #[OA\RequestBody(
+        required: true,
+        content: new JsonContent(CreateSchema::class)
+    )]
+    #[OA\Response(
+        response: Response::HTTP_CREATED,
+        description: 'Create and return a dinosaur',
+        content: new Model(type: Dinosaur::class, groups: ['dinosaur'])
+    )]
+    #[OA\Response(
+        response: Response::HTTP_BAD_REQUEST,
+        description: 'Bad request'
+    )]
+    #[OA\Response(
+        response: Response::HTTP_UNPROCESSABLE_ENTITY,
+        description: 'The species ID does not exists'
+    )]
     public function __invoke(ManagerRegistry $manager, Request $request): Response
     {
         try {
@@ -46,7 +67,7 @@ class Create extends AbstractController
         if (!$species instanceof Species) {
             return new JsonResponse([
                 'message' => sprintf('Species with id %s not found', $dinosaurData['speciesId']),
-                Response::HTTP_NOT_FOUND
+                Response::HTTP_UNPROCESSABLE_ENTITY
             ]);
         }
 
