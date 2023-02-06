@@ -4,9 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Species;
 use App\Form\Type\SpeciesType;
-use App\Message\CreateSpecies;
-use App\Message\DeleteSpecies;
-use App\Message\EditSpecies;
+use App\Message\Species\Delete;
+use App\Message\Species\Edit;
+use App\Message\Species\Create;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +43,7 @@ class SpeciesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $this->bus->dispatch(new CreateSpecies(
+            $this->bus->dispatch(new Create(
                 name: $data->getName(),
                 feeding: $data->getFeeding(),
                 habitats: $data->getHabitats()
@@ -84,7 +84,7 @@ class SpeciesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $this->bus->dispatch(new EditSpecies(
+            $this->bus->dispatch(new Edit(
                 id: $id,
                 name: $data->getName(),
                 feeding: $data->getFeeding(),
@@ -108,7 +108,7 @@ class SpeciesController extends AbstractController
     )]
     public function remove(int $id): Response
     {
-        $this->bus->dispatch(new DeleteSpecies($id));
+        $this->bus->dispatch(new Delete($id));
 
         $this->addFlash('success', 'The species has been removed!');
 
