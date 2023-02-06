@@ -3,23 +3,24 @@
 namespace App\MessageHandler;
 
 use App\Entity\Species;
-use App\Message\DeleteSpecies;
+use App\Message\Species\Delete as DeleteMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-final class DeleteSpeciesHandler implements MessageHandlerInterface
+final class Delete implements MessageHandlerInterface
 {
-    public function __construct(private EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        private EntityManagerInterface $entityManager
+    ) {
     }
 
-    public function __invoke(DeleteSpecies $message)
+    public function __invoke(DeleteMessage $message)
     {
         $speciesRepository = $this->entityManager->getRepository(Species::class);
 
-        if (!$species = $speciesRepository->find($message->getId())) {
-            throw new NotFoundHttpException("Species with id {$message->getId()} not found");
+        if (!$species = $speciesRepository->find($message->id)) {
+            throw new NotFoundHttpException("Species with id {$message->id} not found");
         }
 
         $this->entityManager->remove($species);

@@ -5,9 +5,9 @@ namespace App\Controller;
 use App\Entity\Dinosaur;
 use App\Form\Type\DinosaurType;
 use App\Form\Type\SearchType;
-use App\Message\CreateDinosaur;
-use App\Message\DeleteDinosaur;
-use App\Message\EditDinosaur;
+use App\Message\Dinosaur\Create;
+use App\Message\Dinosaur\Delete;
+use App\Message\Dinosaur\Edit;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -75,7 +75,7 @@ final class DinosaursController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $this->bus->dispatch(new CreateDinosaur(
+            $this->bus->dispatch(new Create(
                 name: $data->getName(),
                 gender: $data->getGender(),
                 eyesColor: $data->getEyesColor(),
@@ -115,7 +115,7 @@ final class DinosaursController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $this->bus->dispatch(new EditDinosaur(
+            $this->bus->dispatch(new Edit(
                 id: $id,
                 name: $data->getName(),
                 gender: $data->getGender(),
@@ -141,7 +141,7 @@ final class DinosaursController extends AbstractController
     )]
     public function remove(int $id): Response
     {
-        $this->bus->dispatch(new DeleteDinosaur($id));
+        $this->bus->dispatch(new Delete($id));
 
         $this->addFlash('success', 'The dinosaur has been removed!');
 
