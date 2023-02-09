@@ -34,12 +34,14 @@ class ConsumeCommand extends Command
     {
         $dinosaurs = $this->dinosaurRepository->findAll();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $randomDinoKey = array_rand($dinosaurs);
 
-            $message = new Consume($dinosaurs[$randomDinoKey]->getId());
+            $dinosaur = $dinosaurs[$randomDinoKey];
 
-            $this->bus->dispatch($message);
+            $consumeMessage = new Consume($dinosaur->getId(), $dinosaur->getName());
+
+            $this->bus->dispatch($consumeMessage);
         }
 
         return Command::SUCCESS;

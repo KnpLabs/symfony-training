@@ -1,22 +1,28 @@
 framework:
     messenger:
-        failure_transport: failed
-        transports:
-            async_high_priority:
-              dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-              options:
-                  queue_name: high_priority
-            async_low_priority:
-              dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-              options:
-                  queue_name: low_priority
-            failed:
-              dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-              options:
-                  queue_name: failed
-        routing:
-            'App\Message\Dinosaur\Create': async_low_priority
-            'App\Message\Dinosaur\Edit': async_low_priority
-            'App\Message\Dinosaur\Delete': async_low_priority
-            'App\Message\Food\Consume': async_low_priority
-            'App\Message\Food\Refill': async_high_priority
+      default_bus: command_bus
+      buses:
+        command_bus:
+            middleware:
+                - doctrine_transaction
+                - App\Middleware\LockMiddleware
+      failure_transport: failed
+      transports:
+          async_high_priority:
+            dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+            options:
+                queue_name: high_priority
+          async_low_priority:
+            dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+            options:
+                queue_name: low_priority
+          failed:
+            dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+            options:
+                queue_name: failed
+      routing:
+          'App\Message\Dinosaur\Create': async_low_priority
+          'App\Message\Dinosaur\Edit': async_low_priority
+          'App\Message\Dinosaur\Delete': async_low_priority
+          'App\Message\Food\Consume': async_low_priority
+          'App\Message\Food\Refill': async_high_priority
