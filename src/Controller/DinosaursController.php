@@ -80,7 +80,8 @@ final class DinosaursController extends AbstractController
                 gender: $data->getGender(),
                 eyesColor: $data->getEyesColor(),
                 age: $data->getAge(),
-                speciesId: $data->getSpecies()->getId()
+                speciesId: $data->getSpecies()->getId(),
+                parkId: $data->getPark()->getId()
             ));
 
             $this->addFlash('success', 'The dinosaur has been created!');

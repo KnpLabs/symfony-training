@@ -11,7 +11,8 @@ class Dinosaur
         private string $gender,
         private Species $species,
         private int $age,
-        private string $eyesColor
+        private string $eyesColor,
+        private Park $park
     ) {
     }
 
@@ -68,5 +69,15 @@ class Dinosaur
     public function setEyesColor(string $eyesColor): void
     {
         $this->eyesColor = $eyesColor;
+    }
+
+    public function getPark(): Park
+    {
+        return $this->park;
+    }
+
+    public function setPark(Park $park): void
+    {
+        $this->park = $park;
     }
 }
