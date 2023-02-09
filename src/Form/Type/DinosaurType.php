@@ -3,6 +3,7 @@
 namespace App\Form\Type;
 
 use App\Entity\Dinosaur;
+use App\Entity\Park;
 use App\Entity\Species;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -30,6 +31,10 @@ class DinosaurType extends AbstractType
                 'class' => Species::class,
                 'choice_label' => 'name'
             ])
+            ->add('park', EntityType::class, [
+                'class' => Park::class,
+                'choice_label' => 'name'
+            ])
             ->add('age', NumberType::class)
             ->add('eyesColor', ColorType::class)
             ->add('submit', SubmitType::class)
@@ -47,6 +52,7 @@ class DinosaurType extends AbstractType
                     $form->get('species')->getData(),
                     $form->get('age')->getData(),
                     $form->get('eyesColor')->getData(),
+                    $form->get('park')->getData()
                 );
             }
         ]);

@@ -10,19 +10,22 @@ class Dinosaur
     private Species $species;
     private int $age;
     private string $eyesColor;
+    private Park $park;
 
     public function __construct(
         string $name,
         string $gender,
         Species $species,
         int $age,
-        string $eyesColor
+        string $eyesColor,
+        Park $park
     ) {
         $this->name = $name;
         $this->gender = $gender;
         $this->species = $species;
         $this->age = $age;
         $this->eyesColor = $eyesColor;
+        $this->park = $park;
     }
 
     public function getId(): int
@@ -78,5 +81,15 @@ class Dinosaur
     public function setEyesColor(string $eyesColor): void
     {
         $this->eyesColor = $eyesColor;
+    }
+
+    public function getPark(): Park
+    {
+        return $this->park;
+    }
+
+    public function setPark(Park $park): Park
+    {
+        return $this->park;
     }
 }
