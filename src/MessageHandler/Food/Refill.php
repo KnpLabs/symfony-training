@@ -9,9 +9,10 @@ use App\Message\Food\Refill as FoodRefill;
 use Doctrine\ORM\EntityManagerInterface;
 use DomainException;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class Refill implements MessageHandlerInterface
+#[AsMessageHandler]
+class Refill
 {
     public function __construct(
         private LoggerInterface $logger,

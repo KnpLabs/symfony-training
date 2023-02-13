@@ -6,9 +6,10 @@ use App\Entity\Species;
 use App\Message\Species\Delete as DeleteMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class Delete implements MessageHandlerInterface
+#[AsMessageHandler]
+final class Delete
 {
     public function __construct(
         private EntityManagerInterface $entityManager

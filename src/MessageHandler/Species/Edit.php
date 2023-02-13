@@ -6,9 +6,10 @@ use App\Entity\Species;
 use App\Message\Species\Edit as EditMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class Edit implements MessageHandlerInterface
+#[AsMessageHandler]
+final class Edit
 {
     public function __construct(
         private EntityManagerInterface $entityManager

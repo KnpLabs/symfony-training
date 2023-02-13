@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use App\Message\Lockable;
 use App\Stamp\LockStamp;
 use RuntimeException;
 use Symfony\Component\Lock\LockFactory;
@@ -21,6 +22,10 @@ class LockMiddleware implements MiddlewareInterface
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
         $message = $envelope->getMessage();
+
+        if (!$message instanceof Lockable) {
+            return $stack->next()->handle($envelope, $stack);
+        }
 
         if ([] === $envelope->all(LockStamp::class)) {
             $envelope = $envelope->with(new LockStamp(
