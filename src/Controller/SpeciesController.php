@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class SpeciesController extends AbstractController
@@ -42,13 +43,18 @@ final class SpeciesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $this->bus->dispatch(new Create(
+            $envelop =  $this->bus->dispatch(new Create(
                 name: $data->getName(),
                 feeding: $data->getFeeding(),
                 habitats: $data->getHabitats()
             ));
 
-            $this->addFlash('success', 'The species has been created!');
+            $result = $envelop->last(HandledStamp::class)->getResult();
+
+            $this->addFlash('success', sprintf(
+                'The species with id %s has been created!',
+                $result->id
+            ));
 
             return $this->redirectToRoute('app_list_species');
         }

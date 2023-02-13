@@ -9,9 +9,10 @@ use App\Message\Food\Consume as FoodConsume;
 use Doctrine\ORM\EntityManagerInterface;
 use DomainException;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class Consume implements MessageHandlerInterface
+#[AsMessageHandler]
+class Consume
 {
     public function __construct(
         private EntityManagerInterface $em,

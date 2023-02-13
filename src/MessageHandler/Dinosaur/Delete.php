@@ -6,16 +6,17 @@ use App\Entity\Dinosaur;
 use App\Message\Dinosaur\Delete as DeleteMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class Delete implements MessageHandlerInterface
+#[AsMessageHandler]
+final class Delete
 {
     public function __construct(
         private EntityManagerInterface $entityManager
     ) {
     }
 
-    public function __invoke(DeleteMessage $message): void
+    public function __invoke(DeleteMessage $message)
     {
         $dinoRepository = $this->entityManager->getRepository(Dinosaur::class);
 

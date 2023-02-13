@@ -4,17 +4,19 @@ namespace App\MessageHandler\Species;
 
 use App\Entity\Species;
 use App\Message\Species\Create as CreateMessage;
+use App\MessageResults\Species\Create as CreateMessageResult;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class Create implements MessageHandlerInterface
+#[AsMessageHandler]
+final class Create
 {
     public function __construct(
         private EntityManagerInterface $entityManager
     ) {
     }
 
-    public function __invoke(CreateMessage $message): void
+    public function __invoke(CreateMessage $message): CreateMessageResult
     {
         $species = new Species(
             name: $message->name,
@@ -24,5 +26,7 @@ final class Create implements MessageHandlerInterface
 
         $this->entityManager->persist($species);
         $this->entityManager->flush();
+
+        return new CreateMessageResult($species->getId());
     }
 }

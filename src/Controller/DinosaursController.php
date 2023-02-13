@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class DinosaursController extends AbstractController
@@ -75,7 +76,7 @@ final class DinosaursController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $this->bus->dispatch(new Create(
+            $envelop = $this->bus->dispatch(new Create(
                 name: $data->getName(),
                 gender: $data->getGender(),
                 eyesColor: $data->getEyesColor(),
@@ -84,7 +85,12 @@ final class DinosaursController extends AbstractController
                 parkId: $data->getPark()->getId()
             ));
 
-            $this->addFlash('success', 'The dinosaur has been created!');
+            $result = $envelop->last(HandledStamp::class)->getResult();
+
+            $this->addFlash('success', sprintf(
+                'The dinosaur with id %s has been created!',
+                $result->id
+            ));
 
             return $this->redirectToRoute('app_list_dinosaurs');
         }
