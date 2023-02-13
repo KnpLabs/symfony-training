@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Bus\CommandBus;
 use App\Entity\Species;
 use App\Form\Type\SpeciesType;
 use App\Message\Species\Delete;
@@ -11,14 +12,13 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Annotation\Route;
 
 class SpeciesController extends AbstractController
 {
-    public function __construct(private MessageBusInterface $bus)
-    {
+    public function __construct(
+        private CommandBus $bus
+    ) {
     }
 
     #[Route('/species', name: 'app_list_species')]
@@ -44,13 +44,11 @@ class SpeciesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $envelop =  $this->bus->dispatch(new Create(
+            $result =  $this->bus->dispatch(new Create(
                 name: $data->getName(),
                 feeding: $data->getFeeding(),
                 habitats: $data->getHabitats()
             ));
-
-            $result = $envelop->last(HandledStamp::class)->getResult();
 
             $this->addFlash('success', sprintf(
                 'The species with id %s has been created!',

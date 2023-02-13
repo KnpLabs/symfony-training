@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Bus\CommandBus;
 use App\Entity\Dinosaur;
 use App\Form\Type\DinosaurType;
 use App\Form\Type\SearchType;
@@ -12,14 +13,13 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DinosaursController extends AbstractController
 {
-    public function __construct(private MessageBusInterface $bus)
-    {
+    public function __construct(
+        private CommandBus $bus
+    ) {
     }
 
     #[Route('/dinosaurs', name: 'app_list_dinosaurs')]
@@ -80,7 +80,7 @@ class DinosaursController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $envelop = $this->bus->dispatch(new Create(
+            $result = $this->bus->dispatch(new Create(
                 name: $data->getName(),
                 gender: $data->getGender(),
                 eyesColor: $data->getEyesColor(),
@@ -88,8 +88,6 @@ class DinosaursController extends AbstractController
                 speciesId: $data->getSpecies()->getId(),
                 parkId: $data->getPark()->getId()
             ));
-
-            $result = $envelop->last(HandledStamp::class)->getResult();
 
             $this->addFlash('success', sprintf(
                 'The dinosaur with id %s has been created!',
