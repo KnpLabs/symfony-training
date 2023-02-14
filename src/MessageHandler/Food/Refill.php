@@ -5,18 +5,23 @@ declare(strict_types=1);
 namespace App\MessageHandler\Food;
 
 use App\Entity\Park;
+use App\Event\AbstractEvent\HasBeenRefilled;
 use App\Message\Food\Refill as FoodRefill;
 use Doctrine\ORM\EntityManagerInterface;
 use DomainException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
 #[AsMessageHandler]
 class Refill
 {
     public function __construct(
         private LoggerInterface $logger,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private MessageBusInterface $eventBus
     ) {
     }
 
@@ -38,6 +43,11 @@ class Refill
             $park->setFoodAmount(100);
         }
 
-        $this->entityManager->flush();
+        $envelop = new Envelope(new HasBeenRefilled($park->getId()));
+
+        $this
+            ->eventBus
+            ->dispatch($envelop->with(new DispatchAfterCurrentBusStamp()))
+        ;
     }
 }

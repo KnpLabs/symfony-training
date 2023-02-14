@@ -17,6 +17,7 @@
             field="dinosaurs"
             target-entity="App\Entity\Dinosaur"
             mapped-by="park" />
+
     </entity>
 
 </doctrine-mapping>

@@ -5,7 +5,12 @@ framework:
         command_bus:
             middleware:
                 - doctrine_transaction
+                - dispatch_after_current_bus
                 - App\Middleware\LockMiddleware
+        event_bus:
+            default_middleware: allow_no_handlers
+            middleware:
+                - doctrine_transaction
       failure_transport: failed
       transports:
           async_high_priority:
@@ -23,3 +28,4 @@ framework:
       routing:
           'App\Message\Food\Consume': async_low_priority
           'App\Message\Food\Refill': async_high_priority
+          'App\Event\Event': async_low_priority

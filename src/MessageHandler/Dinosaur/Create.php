@@ -3,32 +3,36 @@
 namespace App\MessageHandler\Dinosaur;
 
 use App\Entity\Dinosaur;
-use App\Entity\Park;
-use App\Entity\Species;
+use App\Event\Dinosaur\HasBeenCreated;
 use App\Message\Dinosaur\Create as CreateMessage;
 use App\MessageResults\Dinosaur\Create as CreateMessageResult;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\DinosaurRepository;
+use App\Repository\ParkRepository;
+use App\Repository\SpeciesRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
 #[AsMessageHandler]
 final class Create
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private DinosaurRepository $dinosaurRepository,
+        private SpeciesRepository $speciesRepository,
+        private ParkRepository $parkRepository,
+        private MessageBusInterface $eventBus
     ) {
     }
 
     public function __invoke(CreateMessage $message)
     {
-        $speciesRepository = $this->entityManager->getRepository(Species::class);
-        $parkRepository = $this->entityManager->getRepository(Park::class);
-
-        if (!$species = $speciesRepository->find($message->speciesId)) {
+        if (!$species = $this->speciesRepository->find($message->speciesId)) {
             throw new NotFoundHttpException("Species with id {$message->speciesId} not found");
         }
 
-        if (!$park = $parkRepository->find($message->parkId)) {
+        if (!$park = $this->parkRepository->find($message->parkId)) {
             throw new NotFoundHttpException("Park with id {$message->parkId} not found");
         }
 
@@ -41,9 +45,17 @@ final class Create
             park: $park
         );
 
-        $this->entityManager->persist($dino);
-        $this->entityManager->flush();
+        $this->dinosaurRepository->add($dino);
 
-        return new CreateMessageResult($dino->getId());
+        $id = $this->dinosaurRepository->findNextId();
+
+        $envelop = new Envelope(new HasBeenCreated($id));
+
+        $this
+            ->eventBus
+            ->dispatch($envelop->with(new DispatchAfterCurrentBusStamp()))
+        ;
+
+        return new CreateMessageResult($id);
     }
 }

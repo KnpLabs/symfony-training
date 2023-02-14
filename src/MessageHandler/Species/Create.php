@@ -3,16 +3,22 @@
 namespace App\MessageHandler\Species;
 
 use App\Entity\Species;
+use App\Event\Species\HasBeenCreated;
 use App\Message\Species\Create as CreateMessage;
 use App\MessageResults\Species\Create as CreateMessageResult;
+use App\Repository\SpeciesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
 #[AsMessageHandler]
 final class Create
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private SpeciesRepository $speciesRepository,
+        private MessageBusInterface $eventBus
     ) {
     }
 
@@ -24,9 +30,17 @@ final class Create
             feeding: $message->feeding
         );
 
-        $this->entityManager->persist($species);
-        $this->entityManager->flush();
+        $this->speciesRepository->persist($species);
 
-        return new CreateMessageResult($species->getId());
+        $id = $this->speciesRepository->findNextId();
+
+        $envelop = new Envelope(new HasBeenCreated($id));
+
+        $this
+            ->eventBus
+            ->dispatch($envelop->with(new DispatchAfterCurrentBusStamp()))
+        ;
+
+        return new CreateMessageResult($id);
     }
 }
