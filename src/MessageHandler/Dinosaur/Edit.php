@@ -4,16 +4,21 @@ namespace App\MessageHandler\Dinosaur;
 
 use App\Entity\Dinosaur;
 use App\Entity\Species;
+use App\Event\Dinosaur\HasBeenUpdated;
 use App\Message\Dinosaur\Edit as EditMessage;
 use App\MessageResults\Dinosaur\Edit as EditOutput;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
 #[AsMessageHandler]
 final class Edit
 {
     public function __construct(
+        private MessageBusInterface $eventBus,
         private EntityManagerInterface $entityManager
     ) {
     }
@@ -36,6 +41,11 @@ final class Edit
         $dinosaur->setAge($message->age);
         $dinosaur->setSpecies($species);
 
-        $this->entityManager->flush();
+        $envelop = new Envelope(new HasBeenUpdated($dinosaur->getId()));
+
+        $this
+            ->eventBus
+            ->dispatch($envelop->with(new DispatchAfterCurrentBusStamp()))
+        ;
     }
 }

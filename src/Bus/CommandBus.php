@@ -16,7 +16,7 @@ class CommandBus
     ) {
     }
 
-    public function dispatch(object $input): object
+    public function dispatch(object $input): ?object
     {
         return $this->handle($input);
     }
