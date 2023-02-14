@@ -4,7 +4,11 @@
       xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="App\Entity\Species" table="species">
+    <entity
+        name="App\Entity\Species"
+        repository-class="App\Repository\SpeciesRepository"
+        table="species"
+    >
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
