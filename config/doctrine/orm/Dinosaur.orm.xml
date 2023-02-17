@@ -10,9 +10,7 @@
         table="dinosaur"
     >
 
-        <id name="id" type="integer" column="id">
-            <generator strategy="AUTO"/>
-        </id>
+        <id name="id" type="uuid" />
 
         <field name="name" column="name" type="string" length="255" nullable="false" unique="false" />
         <field name="gender" column="gender" type="string" length="255" nullable="false" unique="false" />

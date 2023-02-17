@@ -59,6 +59,10 @@ class WorkerListener
 
         $handledStamp = $envelope->last(HandledStamp::class);
 
+        if (null === $handledStamp) {
+            return;
+        }
+
         $handlerName = $handledStamp->getHandlerName();
 
         $message = $envelope->getMessage();

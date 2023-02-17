@@ -49,7 +49,7 @@ final class DinosaursController extends AbstractController
     #[Route(
         '/dinosaurs/{id}',
         name: 'app_single_dinosaur',
-        requirements: ['id' => '\d+']
+        requirements: ['id' => '^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$']
     )]
     public function single(string $id, ManagerRegistry $doctrine): Response
     {
@@ -67,7 +67,7 @@ final class DinosaursController extends AbstractController
     }
 
     #[Route('/dinosaurs/create', name: 'app_create_dinosaur')]
-    public function create(Request $request, ManagerRegistry $doctrine): Response
+    public function create(Request $request): Response
     {
         $form = $this->createForm(DinosaurType::class);
 
@@ -101,9 +101,9 @@ final class DinosaursController extends AbstractController
     #[Route(
         '/dinosaurs/{id}/edit',
         name: 'app_edit_dinosaur',
-        requirements: ['id' => '\d+']
+        requirements: ['id' => '^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$']
     )]
-    public function edit(Request $request, int $id, ManagerRegistry $doctrine): Response
+    public function edit(Request $request, string $id, ManagerRegistry $doctrine): Response
     {
         $dinosaur = $doctrine
             ->getRepository(Dinosaur::class)
@@ -142,9 +142,9 @@ final class DinosaursController extends AbstractController
     #[Route(
         '/dinosaurs/{id}/remove',
         name: 'app_remove_dinosaur',
-        requirements: ['id' => '\d+']
+        requirements: ['id' => '^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$']
     )]
-    public function remove(int $id): Response
+    public function remove(string $id): Response
     {
         $this->bus->dispatch(new Delete($id));
 

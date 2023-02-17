@@ -37,7 +37,7 @@ class Indexer
         ]);
     }
 
-    public function delete(int $id)
+    public function delete(string $id)
     {
         $this->client->delete([
             'index' => self::INDEX_NAME,

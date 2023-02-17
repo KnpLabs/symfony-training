@@ -26,31 +26,31 @@ class UpsertDinosaurSummary
     #[AsMessageHandler]
     public function handleDinosaurHasBeenCreated(DinosaurHasBeenCreated $event): void
     {
-        $this->updateSummaryByDinosaur($event->getAggregateRootId());
+        $this->updateSummaryByDinosaur($event->getId());
     }
 
     #[AsMessageHandler]
     public function handleDinosaurHasBeenUpdated(DinosaurHasBeenUpdated $event): void
     {
-        $this->updateSummaryByDinosaur($event->getAggregateRootId());
+        $this->updateSummaryByDinosaur($event->getId());
     }
 
     #[AsMessageHandler]
     public function handleFoodHasBeenConsumed(HasBeenConsumed $event): void
     {
-        $this->updateSummariesByPark($event->getAggregateRootId());
+        $this->updateSummariesByPark((int) $event->getId());
     }
 
     #[AsMessageHandler]
     public function handleFoodHasBeenRefilled(HasBeenRefilled $event): void
     {
-        $this->updateSummariesByPark($event->getAggregateRootId());
+        $this->updateSummariesByPark((int) $event->getId());
     }
 
     #[AsMessageHandler]
     public function handleSpeciesHasBeenUpdated(SpeciesHasBeenUpdated $event): void
     {
-        $speciesId = $event->getAggregateRootId();
+        $speciesId = $event->getId();
 
         $species = $this ->speciesRepository->find($speciesId);
 
@@ -68,7 +68,7 @@ class UpsertDinosaurSummary
         }
     }
 
-    private function updateSummaryByDinosaur(int $dinosaurId): void
+    private function updateSummaryByDinosaur(string $dinosaurId): void
     {
         $dinosaur = $this->dinosaurRepository->find($dinosaurId);
 

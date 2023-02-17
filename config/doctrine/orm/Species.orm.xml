@@ -10,9 +10,7 @@
         table="species"
     >
 
-        <id name="id" type="integer" column="id">
-            <generator strategy="AUTO"/>
-        </id>
+        <id name="id" type="uuid" />
 
         <field name="name" column="name" type="string" length="255" nullable="false" unique="true" />
         <field name="habitats" column="habitats" type="simple_array" nullable="false" unique="false" />
