@@ -28,4 +28,4 @@ framework:
       routing:
           'App\Message\Food\Consume': async_low_priority
           'App\Message\Food\Refill': async_high_priority
-          'App\Event\Event': async_low_priority
+          'App\Event\AsyncLowPriorityEvent': async_low_priority

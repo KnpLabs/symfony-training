@@ -54,7 +54,7 @@ class Consume
 
         $park->setFoodAmount($park->getFoodAmount() - $consumedAmout);
 
-        $envelop = new Envelope(new HasBeenConsumed($park->getId()));
+        $envelop = new Envelope(new HasBeenConsumed((string) $park->getId()));
 
         $this
             ->eventBus

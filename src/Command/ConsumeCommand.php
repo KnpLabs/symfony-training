@@ -39,7 +39,10 @@ class ConsumeCommand extends Command
 
             $dinosaur = $dinosaurs[$randomDinoKey];
 
-            $consumeMessage = new Consume($dinosaur->getId(), $dinosaur->getName());
+            $consumeMessage = new Consume(
+                $dinosaur->getId()->toRfc4122(),
+                $dinosaur->getName()
+            );
 
             $this->bus->dispatch($consumeMessage);
         }

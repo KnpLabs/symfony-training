@@ -9,7 +9,7 @@ class Create
         public readonly string $gender,
         public readonly string $eyesColor,
         public readonly int $age,
-        public readonly int $speciesId,
+        public readonly string $speciesId,
         public readonly int $parkId,
     ) {
     }

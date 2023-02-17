@@ -2,12 +2,10 @@
 
 namespace App\MessageHandler\Dinosaur;
 
-use App\Entity\Dinosaur;
-use App\Entity\Species;
 use App\Event\Dinosaur\HasBeenUpdated;
 use App\Message\Dinosaur\Edit as EditMessage;
-use App\MessageResults\Dinosaur\Edit as EditOutput;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\DinosaurRepository;
+use App\Repository\SpeciesRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Envelope;
@@ -19,20 +17,18 @@ final class Edit
 {
     public function __construct(
         private MessageBusInterface $eventBus,
-        private EntityManagerInterface $entityManager
+        private DinosaurRepository $dinosaurRepository,
+        private SpeciesRepository $speciesRepository,
     ) {
     }
 
     public function __invoke(EditMessage $message)
     {
-        $dinosaurRepository = $this->entityManager->getRepository(Dinosaur::class);
-        $speciesRepository = $this->entityManager->getRepository(Species::class);
-
-        if (!$dinosaur = $dinosaurRepository->find($message->id)) {
+        if (!$dinosaur = $this->dinosaurRepository->find($message->id)) {
             throw new NotFoundHttpException("Dinosaur with id {$message->id} not found");
         }
 
-        if (!$species = $speciesRepository->find($message->speciesId)) {
+        if (!$species = $this->speciesRepository->find($message->speciesId)) {
             throw new NotFoundHttpException("Species with id {$message->id} not found");
         }
 
@@ -41,7 +37,7 @@ final class Edit
         $dinosaur->setAge($message->age);
         $dinosaur->setSpecies($species);
 
-        $envelop = new Envelope(new HasBeenUpdated($dinosaur->getId()));
+        $envelop = new Envelope(new HasBeenUpdated($dinosaur->getId()->toRfc4122()));
 
         $this
             ->eventBus

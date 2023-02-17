@@ -43,7 +43,7 @@ class Refill
             $park->setFoodAmount(100);
         }
 
-        $envelop = new Envelope(new HasBeenRefilled($park->getId()));
+        $envelop = new Envelope(new HasBeenRefilled((string) $park->getId()));
 
         $this
             ->eventBus

@@ -18,6 +18,6 @@ class DeleteDinosaurSummary
     #[AsMessageHandler]
     public function handleDinosaurHasBeenDeleted(DinosaurHasBeenDeleted $event): void
     {
-        $this->indexer->delete($event->getAggregateRootId());
+        $this->indexer->delete($event->getId());
     }
 }

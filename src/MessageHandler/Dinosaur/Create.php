@@ -47,15 +47,13 @@ final class Create
 
         $this->dinosaurRepository->add($dino);
 
-        $id = $this->dinosaurRepository->findNextId();
-
-        $envelop = new Envelope(new HasBeenCreated($id));
+        $envelop = new Envelope(new HasBeenCreated($dino->getId()->toRfc4122()));
 
         $this
             ->eventBus
             ->dispatch($envelop->with(new DispatchAfterCurrentBusStamp()))
         ;
 
-        return new CreateMessageResult($id);
+        return new CreateMessageResult($dino->getId()->toRfc4122());
     }
 }
