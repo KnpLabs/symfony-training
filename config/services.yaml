@@ -24,5 +24,16 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\Bus\CommandBus:
+        $messageBus: '@command_bus'
+
+    Elastic\Elasticsearch\Client:
+        class: Elastic\Elasticsearch\Client
+        factory: ['Elastic\Elasticsearch\ClientBuilder', 'fromConfig']
+        arguments:
+          -
+            hosts:
+              - 'elasticsearch:9200'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

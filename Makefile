@@ -29,3 +29,7 @@ database-drop:
 .PHONY: fixtures-load
 fixtures-load:
 	docker-compose run --rm php bin/console doctrine:fixtures:load
+
+.PHONY: worker
+worker:
+	docker-compose run --rm php bin/console messenger:consume async -vv

@@ -13,6 +13,11 @@ class DinosaurRepository extends ServiceEntityRepository
         parent::__construct($registry, Dinosaur::class);
     }
 
+    public function add(Dinosaur $dinosaur): void
+    {
+        $this->getEntityManager()->persist($dinosaur);
+    }
+
     public function search(?string $q): array
     {
         if ($q === null) {

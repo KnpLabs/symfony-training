@@ -10,9 +10,7 @@
         table="dinosaur"
     >
 
-        <id name="id" type="integer" column="id">
-            <generator strategy="AUTO"/>
-        </id>
+        <id name="id" type="uuid" />
 
         <field name="name" column="name" type="string" length="255" nullable="false" unique="false" />
         <field name="gender" column="gender" type="string" length="255" nullable="false" unique="false" />
@@ -22,6 +20,11 @@
         <many-to-one
             field="species"
             target-entity="App\Entity\Species"
+            inversed-by="dinosaurs" />
+
+        <many-to-one
+            field="park"
+            target-entity="App\Entity\Park"
             inversed-by="dinosaurs" />
 
     </entity>

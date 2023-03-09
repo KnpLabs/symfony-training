@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Entity\Dinosaur;
+
 class DinosaursFinder
 {
     /**
