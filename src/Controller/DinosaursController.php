@@ -9,7 +9,10 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 class DinosaursController extends AbstractController
 {
@@ -62,7 +65,12 @@ class DinosaursController extends AbstractController
     }
 
     #[Route('/dinosaurs/create', name: 'app_create_dinosaur')]
-    public function create(Request $request, ManagerRegistry $doctrine): Response
+    public function create(
+        Request $request,
+        ManagerRegistry $doctrine,
+        RouterInterface $router,
+        HubInterface $hub
+    ): Response
     {
         $form = $this->createForm(DinosaurType::class);
 
@@ -74,6 +82,16 @@ class DinosaursController extends AbstractController
 
             $em->persist($dinosaur);
             $em->flush();
+
+            $update = new Update(
+                'http://localhost/dinosaurs/create',
+                json_encode([
+                    'name' => $dinosaur->getName(),
+                    'link' => $router->generate('app_single_dinosaur', ['id' => $dinosaur->getId()])
+                ])
+            );
+
+            $hub->publish($update);
 
             $this->addFlash('success', 'The dinosaur has been created!');
 
