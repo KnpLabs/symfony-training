@@ -3,7 +3,7 @@ const template = document.querySelector('#dinosaur-item-template')
 const dinosaurList = document.querySelector('#dinosaur-list')
 
 const url = new URL("http://localhost:81/.well-known/mercure")
-url.searchParams.append('topic', 'http://localhost/dinosaurs/create')
+url.searchParams.append('topic', 'http://dinosaur-app/dinosaurs/create')
 
 const eventSource = new EventSource(url)
 

@@ -7,8 +7,10 @@ use App\Form\Type\DinosaurType;
 use App\Form\Type\SearchType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\Discovery;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,12 +48,19 @@ class DinosaursController extends AbstractController
         name: 'app_single_dinosaur',
         requirements: ['id' => '\d+']
     )]
-    public function single(string $id, ManagerRegistry $doctrine): Response
+    public function single(
+        string $id,
+        ManagerRegistry $doctrine,
+        Request $request,
+        Discovery $discovery
+    ): Response
     {
         $dinosaur = $doctrine
             ->getRepository(Dinosaur::class)
             ->find($id)
         ;
+
+        $discovery->addLink($request);
 
         if ($dinosaur === false) {
             throw $this->createNotFoundException(
@@ -61,6 +70,41 @@ class DinosaursController extends AbstractController
 
         return $this->render('dinosaur.html.twig', [
             'dinosaur' => $dinosaur
+        ]);
+    }
+
+    #[Route(
+        '/api/dinosaurs/{id}',
+        name: 'api_single_dinosaur',
+        requirements: ['id' => '\d+']
+    )]
+    public function apiSingle(
+        string $id,
+        ManagerRegistry $doctrine,
+        Request $request,
+        Discovery $discovery
+    ): Response
+    {
+        $dinosaur = $doctrine
+            ->getRepository(Dinosaur::class)
+            ->find($id)
+        ;
+
+        $discovery->addLink($request);
+
+        if ($dinosaur === false) {
+            throw $this->createNotFoundException(
+                'The dinosaur you are looking for does not exists.'
+            );
+        }
+
+        return new JsonResponse([
+            'id' => $dinosaur->getId(),
+            'name' => $dinosaur->getName(),
+            'gender' => $dinosaur->getGender(),
+            'age' => $dinosaur->getAge(),
+            'eyeColor' => $dinosaur->getEyesColor(),
+            'topic' => "http://dinosaur-app/api/dinosaurs/{$dinosaur->getId()}"
         ]);
     }
 

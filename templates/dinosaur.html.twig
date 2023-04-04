@@ -9,6 +9,7 @@
 
 {% block javascripts  %}
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/dinosaur.js') }}" defer></script>
 {% endblock %}
 
 {% block body %}
@@ -21,7 +22,7 @@
     </a>
     <h1>{{ dinosaur.name }}</h1>
   </header>
-  <section>
+  <section data-id="{{ dinosaur.id }}" id="dinosaur-section">
     <img src="{{ asset('img/dino.png') }}" alt="twbs" class="rounded-circle flex-shrink-0">
     <div>
       <p>
