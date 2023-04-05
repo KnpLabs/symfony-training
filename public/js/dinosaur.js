@@ -6,16 +6,26 @@ const dinosaurId = dinosaurSection.dataset.id
 
 fetch(`/api/dinosaurs/${dinosaurId}`)
   .then(async response => {
-    // Extract the hub URL from the Link header
+    const bearer = response.headers.get('x-mercure-token')
+
+    /*
+     * If no JWT is provided, it means that the user won't
+     * be able to subscribe to the updates.
+     */
+    if (!bearer) return
+
     const hubUrl = response.headers.get('Link').match(/<([^>]+)>;\s+rel=(?:mercure|"[^"]*mercure[^"]*")/)[1]
 
     const hub = new URL(hubUrl, window.origin);
     const body = await response.json()
 
-    console.log(body)
     hub.searchParams.append('topic', body.topic)
 
-    // Subscribe to updates
-    const eventSource = new EventSource(hub);
-    eventSource.onmessage = event => window.location.reload()
+    const es = new EventSourcePolyfill(hub, {
+      headers: {
+          'Authorization': bearer,
+      }
+    })
+
+    es.onmessage = event => console.log(event)
   });
