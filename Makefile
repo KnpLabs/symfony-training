@@ -24,8 +24,11 @@ database-create:
 
 .PHONY: database-drop
 database-drop:
-	docker-compose run --rm php bin/console doctrine:database:drop --force
+	docker-compose run --rm php bin/console doctrine:database:drop --if-exists --force
 
 .PHONY: fixtures-load
 fixtures-load:
 	docker-compose run --rm php bin/console doctrine:fixtures:load
+
+.PHONY: reset-db
+reset-db: database-drop database-create database-migrate fixtures-load
