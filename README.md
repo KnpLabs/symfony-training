@@ -1,6 +1,13 @@
 # Symfony Training
 
-This is the boilerplate project for KNP Labs Symfony trainning.
+This is the boilerplate project for KNP Labs Symfony training.
+
+## Requirements
+
+To run this project with docker you will need:
+
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
 ## Installation
 
@@ -40,3 +47,4 @@ At this point, you should be able to log in and access the application (Email: `
 | database-create  | Create database if none exists    |
 | database-drop    | Drop database                     |
 | database-migrate | Run Doctrine migrations           |
+| fixtures-load    | Load fixtures                     |
