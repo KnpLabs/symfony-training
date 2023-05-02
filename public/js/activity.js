@@ -1,23 +1,25 @@
 const activityContainer = document.querySelector('#activity')
 
-fetch(`/api/activity`)
+fetch(window.location)
   .then(async response => {
     const bearer = response.headers.get('x-mercure-token')
-
-    if (!bearer) return
-
-    const hubUrl = response.headers.get('Link').match(/<([^>]+)>;\s+rel=(?:mercure|"[^"]*mercure[^"]*")/)[1]
+    const topic  = response.headers.get('x-mercure-topic')
+    const hubUrl = response.headers.get('Link')
+        .match(/<([^>]+)>;\s+rel=(?:mercure|"[^"]*mercure[^"]*")/)[1]
 
     const hub = new URL(hubUrl, window.origin);
-    const body = await response.json()
 
-    hub.searchParams.append('topic', body.topic)
+    hub.searchParams.append('topic', topic)
 
-    const es = new EventSourcePolyfill(hub, {
-      headers: {
-          'Authorization': bearer,
-      }
-    })
+    const options = !bearer
+      ? {}
+      : {
+          headers: {
+              'Authorization': bearer,
+          }
+        }
+
+    const es = new EventSourcePolyfill(hub, options)
 
     es.onmessage = event => {
       const data = JSON.parse(event.data)
@@ -31,4 +33,4 @@ fetch(`/api/activity`)
 
       activityContainer.append(item)
     }
-  });
+  })

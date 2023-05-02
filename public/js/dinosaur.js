@@ -1,31 +1,25 @@
 const alertContainer = document.querySelector('#alert-container')
-const template = document.querySelector('#dinosaur-item-template')
-const dinosaurList = document.querySelector('#dinosaur-list')
-const dinosaurSection = document.querySelector('#dinosaur-section')
-const dinosaurId = dinosaurSection.dataset.id
 
-fetch(`/api/dinosaurs/${dinosaurId}`)
+fetch(window.location)
   .then(async response => {
-    const bearer = response.headers.get('x-mercure-token')
-
-    /*
-     * If no JWT is provided, it means that the user won't
-     * be able to subscribe to the updates.
-     */
-    if (!bearer) return
-
+    const topic = response.headers.get('x-mercure-topic')
     const hubUrl = response.headers.get('Link').match(/<([^>]+)>;\s+rel=(?:mercure|"[^"]*mercure[^"]*")/)[1]
 
-    const hub = new URL(hubUrl, window.origin);
-    const body = await response.json()
+    const hub = new URL(hubUrl);
 
-    hub.searchParams.append('topic', body.topic)
+    hub.searchParams.append('topic', topic)
 
-    const es = new EventSourcePolyfill(hub, {
-      headers: {
-          'Authorization': bearer,
-      }
-    })
+    const es = new EventSource(hub)
 
-    es.onmessage = event => console.log(event)
-  });
+    es.onmessage = e => {
+       const item = document.createElement('div')
+
+      item.setAttribute('class', 'alert alert-danger')
+      item.setAttribute('role', 'alert')
+
+      item.innerHTML = 'Dinosaur has changed !'
+
+      alertContainer.innerHTML = ''
+      alertContainer.append(item)
+    }
+  })
