@@ -73,38 +73,6 @@ class DinosaursController extends AbstractController
         ]);
     }
 
-    #[Route(
-        '/api/dinosaurs/{id}',
-        name: 'api_single_dinosaur',
-        requirements: ['id' => '\d+']
-    )]
-    public function apiSingle(
-        string $id,
-        ManagerRegistry $doctrine,
-        Request $request
-    ): Response
-    {
-        $dinosaur = $doctrine
-            ->getRepository(Dinosaur::class)
-            ->find($id)
-        ;
-
-        if ($dinosaur === false) {
-            throw $this->createNotFoundException(
-                'The dinosaur you are looking for does not exists.'
-            );
-        }
-
-        return new JsonResponse([
-            'id' => $dinosaur->getId(),
-            'name' => $dinosaur->getName(),
-            'gender' => $dinosaur->getGender(),
-            'age' => $dinosaur->getAge(),
-            'eyeColor' => $dinosaur->getEyesColor(),
-            'topic' => "https://dinosaur-app/api/dinosaurs/{$dinosaur->getId()}"
-        ]);
-    }
-
     #[Route('/dinosaurs/create', name: 'app_create_dinosaur')]
     public function create(
         Request $request,
@@ -130,6 +98,7 @@ class DinosaursController extends AbstractController
                 json_encode([
                     'link' => $this->router->generate('app_single_dinosaur', ['id' => $dinosaur->getId()]),
                     'name' => $dinosaur->getName(),
+                    'type' => 'create',
                     'message' => "{$dinosaur->getName()} has been created!"
                 ])
             );
@@ -177,11 +146,17 @@ class DinosaursController extends AbstractController
             $update = new Update(
                 [
                     sprintf('https://dinosaur-app/dinosaurs/edit/%d', $id),
+                    'https://dinosaur-app/dinosaurs',
                     'https://dinosaur-app/activity'
                 ],
                 json_encode([
                     'link' => $this->router->generate('app_single_dinosaur', ['id' => $dinosaur->getId()]),
-                    'message' => "{$dinosaur->getName()} has been edited!"
+                    'message' => "{$dinosaur->getName()} has been edited!",
+                    'type' => 'edit',
+                    'data' => [
+                        'id' => $dinosaur->getId(),
+                        'name' => $dinosaur->getName()
+                    ]
                 ])
             );
 
@@ -222,11 +197,14 @@ class DinosaursController extends AbstractController
         $update = new Update(
             [
                 sprintf('https://dinosaur-app/dinosaurs/remove/%d', $id),
+                'https://dinosaur-app/dinosaurs',
                 'https://dinosaur-app/activity'
             ],
             json_encode([
                 'link' => $this->router->generate('app_single_dinosaur', ['id' => $id]),
-                'message' => "{$dinosaur->getName()} has been removed!"
+                'message' => "{$dinosaur->getName()} has been removed!",
+                'type' => 'remove',
+                'id' => $id
             ])
         );
 
