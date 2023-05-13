@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Activity panel{% endblock %}
+
+{% block javascripts %}
+  <script src="{{ asset('js/polyfill.js') }}" defer></script>
+  <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('js/activity.js') }}" defer></script>
+{% endblock %}
+
+{% block body %}
+<main class="w-100 p-3">
+  <h1>Activity Panel</h1>
+
+  <div id="activity">
+    {# Here will go the realtime activity messages #}
+  </div>
+
+  <div type="application/json" id="mercure-url">
+    {{ mercure('https://example.com/books/1')|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
+  </script>
+</main>
+{% endblock %}

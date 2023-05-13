@@ -8,10 +8,19 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 class SpeciesController extends AbstractController
 {
+    public function __construct(
+        private HubInterface $hub,
+        private RouterInterface $router
+    ) {
+    }
+
     #[Route('/species', name: 'app_list_species')]
     public function list(ManagerRegistry $doctrine): Response
     {
@@ -39,6 +48,19 @@ class SpeciesController extends AbstractController
             $em->persist($species);
             $em->flush();
 
+            $update = new Update(
+                [
+                    'https://dinosaur-app/species/create',
+                    'https://dinosaur-app/activity'
+                ],
+                json_encode([
+                    'link' => $this->router->generate('app_single_species', ['id' => $species->getId()]),
+                    'message' => "{$species->getName()} species has been created!"
+                ])
+            );
+
+            $this->hub->publish($update);
+
             $this->addFlash('success', 'The species has been created!');
 
             return $this->redirectToRoute('app_list_species');
@@ -54,7 +76,7 @@ class SpeciesController extends AbstractController
         name: 'app_edit_species',
         requirements: ['id' => '\d+']
     )]
-    public function edit(Request $request, int $id, ManagerRegistry $doctrine): Response
+    public function edit(int $id, ManagerRegistry $doctrine): Response
     {
         $species = $doctrine
             ->getRepository(Species::class)
@@ -76,6 +98,19 @@ class SpeciesController extends AbstractController
             $species = $form->getData();
 
             $em->flush();
+
+            $update = new Update(
+                [
+                    "https://dinosaur-app/species/edit/{$id}",
+                    'https://dinosaur-app/activity'
+                ],
+                json_encode([
+                    'link' => $this->router->generate('app_single_species', ['id' => $species->getId()]),
+                    'message' => "{$species->getName()} species has been edited!"
+                ])
+            );
+
+            $this->hub->publish($update);
 
             $this->addFlash('success', 'The species has been edited!');
 
@@ -108,6 +143,18 @@ class SpeciesController extends AbstractController
         $em = $doctrine->getManager();
         $em->remove($species);
         $em->flush();
+
+        $update = new Update(
+            [
+                "https://dinosaur-app/species/remove/{$id}",
+                'https://dinosaur-app/activity'
+            ],
+            json_encode([
+                'message' => "{$species->getName()} species has been created!"
+            ])
+        );
+
+        $this->hub->publish($update);
 
         $this->addFlash('success', 'The species has been removed!');
 

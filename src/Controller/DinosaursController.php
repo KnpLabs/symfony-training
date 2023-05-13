@@ -5,16 +5,27 @@ namespace App\Controller;
 use App\Entity\Dinosaur;
 use App\Form\Type\DinosaurType;
 use App\Form\Type\SearchType;
+use App\Repository\DinosaurRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 class DinosaursController extends AbstractController
 {
+    public function __construct(
+        private HubInterface $hub,
+        private RouterInterface $router
+    ) {
+    }
+
     #[Route('/dinosaurs', name: 'app_list_dinosaurs')]
-    public function list(Request $request, ManagerRegistry $doctrine): Response
+    public function list(Request $request, ManagerRegistry $doctrine, DinosaurRepository $dinosaurRepository): Response
     {
         $q = null;
         $form = $this->createForm(SearchType::class);
@@ -27,10 +38,7 @@ class DinosaursController extends AbstractController
             $q = $search['q'];
         }
 
-        $dinosaurs = $doctrine
-            ->getRepository(Dinosaur::class)
-            ->search($q)
-        ;
+        $dinosaurs = $dinosaurRepository->search($q);
 
         return $this->render('dinosaurs-list.html.twig', [
             'dinosaurs' => $dinosaurs,
@@ -43,7 +51,11 @@ class DinosaursController extends AbstractController
         name: 'app_single_dinosaur',
         requirements: ['id' => '\d+']
     )]
-    public function single(string $id, ManagerRegistry $doctrine): Response
+    public function single(
+        string $id,
+        ManagerRegistry $doctrine,
+        Request $request
+    ): Response
     {
         $dinosaur = $doctrine
             ->getRepository(Dinosaur::class)
@@ -62,7 +74,10 @@ class DinosaursController extends AbstractController
     }
 
     #[Route('/dinosaurs/create', name: 'app_create_dinosaur')]
-    public function create(Request $request, ManagerRegistry $doctrine): Response
+    public function create(
+        Request $request,
+        ManagerRegistry $doctrine
+    ): Response
     {
         $form = $this->createForm(DinosaurType::class);
 
@@ -74,6 +89,21 @@ class DinosaursController extends AbstractController
 
             $em->persist($dinosaur);
             $em->flush();
+
+            $update = new Update(
+                [
+                    'https://dinosaur-app/dinosaurs',
+                    'https://dinosaur-app/activity'
+                ],
+                json_encode([
+                    'link' => $this->router->generate('app_single_dinosaur', ['id' => $dinosaur->getId()]),
+                    'name' => $dinosaur->getName(),
+                    'type' => 'create',
+                    'message' => "{$dinosaur->getName()} has been created!"
+                ])
+            );
+
+            $this->hub->publish($update);
 
             $this->addFlash('success', 'The dinosaur has been created!');
 
@@ -113,6 +143,25 @@ class DinosaursController extends AbstractController
 
             $em->flush();
 
+            $update = new Update(
+                [
+                    sprintf('https://dinosaur-app/dinosaurs/edit/%d', $id),
+                    'https://dinosaur-app/dinosaurs',
+                    'https://dinosaur-app/activity'
+                ],
+                json_encode([
+                    'link' => $this->router->generate('app_single_dinosaur', ['id' => $dinosaur->getId()]),
+                    'message' => "{$dinosaur->getName()} has been edited!",
+                    'type' => 'edit',
+                    'data' => [
+                        'id' => $dinosaur->getId(),
+                        'name' => $dinosaur->getName()
+                    ]
+                ])
+            );
+
+            $this->hub->publish($update);
+
             $this->addFlash('success', 'The dinosaur has been edited!');
 
             return $this->redirectToRoute('app_list_dinosaurs');
@@ -144,6 +193,22 @@ class DinosaursController extends AbstractController
         $em = $doctrine->getManager();
         $em->remove($dinosaur);
         $em->flush();
+
+        $update = new Update(
+            [
+                sprintf('https://dinosaur-app/dinosaurs/remove/%d', $id),
+                'https://dinosaur-app/dinosaurs',
+                'https://dinosaur-app/activity'
+            ],
+            json_encode([
+                'link' => $this->router->generate('app_single_dinosaur', ['id' => $id]),
+                'message' => "{$dinosaur->getName()} has been removed!",
+                'type' => 'remove',
+                'id' => $id
+            ])
+        );
+
+        $this->hub->publish($update);
 
         $this->addFlash('success', 'The dinosaur has been removed!');
 
