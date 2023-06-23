@@ -1,0 +1,31 @@
+name: Automatic rebase
+
+on:
+  workflow_dispatch: ~
+  push:
+    branches:
+      - master
+
+jobs:
+  rebase:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            const query = `query($owner:String!, $name:String!, $labels:[String!]) {
+              repository(owner:$owner, name:$name){
+                pullRequests(labels: $labels, first: 50) {
+                  nodes {
+                    headRefName
+                  }
+                }
+              }
+            }`;
+            const variables = {
+              owner: context.repo.owner,
+              name: context.repo.repo,
+              labels: ['Module']
+            }
+            const result = await github.graphql(query, variables)
+            console.log(result.data.repository.pullRequests.nodes)
