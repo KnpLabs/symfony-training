@@ -3,6 +3,7 @@ version: '3'
 
 services:
   php:
+    platform: linux/x86_64
     build:
       context: .
       dockerfile: Dockerfile
@@ -12,6 +13,7 @@ services:
     restart: unless-stopped
 
   nginx:
+    platform: linux/x86_64
     image: nginx:1.21.3-alpine
     ports:
       - 80:80
@@ -20,13 +22,14 @@ services:
       - ./public:/usr/src/app/public
     restart: unless-stopped
 
-  phpmyadmin:
-    image: phpmyadmin
-    environment:
-      - PMA_ARBITRARY=1
-    ports:
-      - 8080:80
-    restart: unless-stopped
+#   phpmyadmin:
+#     platform: linux/x86_64
+#     image: phpmyadmin
+#     environment:
+#       - PMA_ARBITRARY=1
+#     ports:
+#       - 8080:80
+#     restart: unless-stopped
 
   database:
     image: mysql:8.0.27
