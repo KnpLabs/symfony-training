@@ -50,14 +50,12 @@ class DinosaursController extends AbstractController
             ->find($id)
         ;
 
-        if ($dinosaur === false) {
-            throw $this->createNotFoundException(
-                'The dinosaur you are looking for does not exists.'
-            );
+        if (false === $dinosaur) {
+            throw $this->createNotFoundException('The dinosaur you are looking for does not exists.');
         }
 
         return $this->render('dinosaur.html.twig', [
-            'dinosaur' => $dinosaur
+            'dinosaur' => $dinosaur,
         ]);
     }
 
@@ -81,7 +79,7 @@ class DinosaursController extends AbstractController
         }
 
         return $this->renderForm('create-dinosaur.html.twig', [
-          'form' => $form
+          'form' => $form,
         ]);
     }
 
@@ -97,10 +95,8 @@ class DinosaursController extends AbstractController
             ->find($id)
         ;
 
-        if ($dinosaur === false) {
-            throw $this->createNotFoundException(
-                'The dinosaur you are looking for does not exists.'
-            );
+        if (false === $dinosaur) {
+            throw $this->createNotFoundException('The dinosaur you are looking for does not exists.');
         }
 
         $form = $this->createForm(DinosaurType::class, $dinosaur);
@@ -119,7 +115,7 @@ class DinosaursController extends AbstractController
         }
 
         return $this->renderForm('edit-dinosaur.html.twig', [
-          'form' => $form
+          'form' => $form,
         ]);
     }
 
@@ -135,10 +131,8 @@ class DinosaursController extends AbstractController
             ->find($id)
         ;
 
-        if ($dinosaur === false) {
-            throw $this->createNotFoundException(
-                'The dinosaur you are looking for does not exists.'
-            );
+        if (false === $dinosaur) {
+            throw $this->createNotFoundException('The dinosaur you are looking for does not exists.');
         }
 
         $em = $doctrine->getManager();

@@ -23,12 +23,12 @@ class DinosaurType extends AbstractType
             ->add('gender', DatalistType::class, [
                 'choices' => [
                     'Male',
-                    'Female'
-                ]
+                    'Female',
+                ],
             ])
             ->add('species', EntityType::class, [
                 'class' => Species::class,
-                'choice_label' => 'name'
+                'choice_label' => 'name',
             ])
             ->add('age', NumberType::class)
             ->add('eyesColor', ColorType::class)
@@ -48,7 +48,7 @@ class DinosaurType extends AbstractType
                     $form->get('age')->getData(),
                     $form->get('eyesColor')->getData(),
                 );
-            }
+            },
         ]);
     }
 }
