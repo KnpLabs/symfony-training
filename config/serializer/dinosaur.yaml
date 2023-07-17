@@ -1,0 +1,14 @@
+App\Entity\Dinosaur:
+  attributes:
+    id:
+      groups: ['dinosaur', 'dinosaurs']
+    name:
+      groups: ['dinosaur', 'dinosaurs']
+    gender:
+      groups: ['dinosaur']
+    age:
+      groups: ['dinosaur']
+    eyesColor:
+      groups: ['dinosaur']
+    species:
+      groups: ['dinosaur']
