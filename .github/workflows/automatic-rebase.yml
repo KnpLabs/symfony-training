@@ -28,4 +28,4 @@ jobs:
               labels: ['Module']
             }
             const result = await github.graphql(query, variables)
-            console.log(result.data.repository.pullRequests.nodes)
+            console.log(result.repository.pullRequests.nodes)
