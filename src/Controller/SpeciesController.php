@@ -21,7 +21,7 @@ class SpeciesController extends AbstractController
         ;
 
         return $this->render('species-list.html.twig', [
-            'speciesList' => $speciesList
+            'speciesList' => $speciesList,
         ]);
     }
 
@@ -45,7 +45,7 @@ class SpeciesController extends AbstractController
         }
 
         return $this->renderForm('create-species.html.twig', [
-            'form' =>  $form
+            'form' => $form,
         ]);
     }
 
@@ -61,10 +61,8 @@ class SpeciesController extends AbstractController
             ->find($id)
         ;
 
-        if ($species === false) {
-            throw $this->createNotFoundException(
-                'The species you are looking for does not exists.'
-            );
+        if (false === $species) {
+            throw $this->createNotFoundException('The species you are looking for does not exists.');
         }
 
         $form = $this->createForm(SpeciesType::class, $species);
@@ -99,10 +97,8 @@ class SpeciesController extends AbstractController
             ->find($id)
         ;
 
-        if ($species === false) {
-            throw $this->createNotFoundException(
-                'The species you are looking for does not exists.'
-            );
+        if (false === $species) {
+            throw $this->createNotFoundException('The species you are looking for does not exists.');
         }
 
         $em = $doctrine->getManager();

@@ -10,16 +10,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     private int $id;
-    private string $email;
     private ?string $password;
-    private array $roles = [];
 
     public function __construct(
-        string $email,
-        array $roles = []
+        private string $email,
+        private array $roles = []
     ) {
-        $this->email = $email;
-        $this->roles = $roles;
     }
 
     public function getId(): int

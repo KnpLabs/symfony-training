@@ -14,12 +14,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Traversable;
 
 class UserType extends AbstractType implements DataMapperInterface
 {
     public function __construct(
-        private UserPasswordHasherInterface $passwordHasher
+        private readonly UserPasswordHasherInterface $passwordHasher
     ) {
     }
 
@@ -29,7 +28,7 @@ class UserType extends AbstractType implements DataMapperInterface
             ->add('email', EmailType::class)
             ->add('password', PasswordType::class)
             ->add('submit', SubmitType::class, [
-                'label' => 'Register'
+                'label' => 'Register',
             ])
             ->setDataMapper($this)
         ;
@@ -43,18 +42,18 @@ class UserType extends AbstractType implements DataMapperInterface
                 return new User(
                     $form->get('email')->getData(),
                 );
-            }
+            },
         ]);
     }
 
-    public function mapDataToForms($viewData, Traversable $forms)
+    public function mapDataToForms($viewData, \Traversable $forms)
     {
         if (null === $viewData) {
             return;
         }
     }
 
-    public function mapFormsToData(Traversable $forms, &$viewData)
+    public function mapFormsToData(\Traversable $forms, &$viewData)
     {
         $forms = iterator_to_array($forms);
 

@@ -22,15 +22,15 @@ class SpeciesType extends AbstractType
                     'Forest' => 'Forest',
                     'Sea' => 'Sea',
                     'Desert' => 'Desert',
-                    'Air' => 'Air'
+                    'Air' => 'Air',
                 ],
-                'multiple' => true
+                'multiple' => true,
             ])
             ->add('feeding', ChoiceType::class, [
                 'choices' => [
                     'Carnivore' => 'Carnivore',
                     'Herbivore' => 'Herbivore',
-                    'Omnivore' => 'Omnivore'
+                    'Omnivore' => 'Omnivore',
                 ],
             ])
             ->add('submit', SubmitType::class)
@@ -47,8 +47,7 @@ class SpeciesType extends AbstractType
                     $form->get('habitats')->getData(),
                     $form->get('feeding')->getData(),
                 );
-            }
+            },
         ]);
     }
 }
-

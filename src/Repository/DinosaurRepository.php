@@ -15,7 +15,7 @@ class DinosaurRepository extends ServiceEntityRepository
 
     public function search(?string $q): array
     {
-        if ($q === null) {
+        if (null === $q) {
             return $this->findAll();
         }
 

@@ -2,25 +2,24 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\User;
-use App\Entity\Species;
 use App\Entity\Dinosaur;
-use Doctrine\Persistence\ObjectManager;
+use App\Entity\Species;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
     public function __construct(
-        private UserPasswordHasherInterface $passwordHasher
+        private readonly UserPasswordHasherInterface $passwordHasher
     ) {
-        $this->passwordHasher = $passwordHasher;
     }
 
     public function load(ObjectManager $manager): void
     {
         /**
-         * Create a user with the role ROLE_ADMIN
+         * Create a user with the role ROLE_ADMIN.
          */
         $admin = new User(
             'admin@mail.com',
@@ -32,12 +31,12 @@ class AppFixtures extends Fixture
 
         $manager->persist($admin);
 
-        /**
+        /*
          * Create basic users with the default role ROLE_USER
          */
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $user = new User(
-                'user_' . $i . '@mail.com'
+                'user_'.$i.'@mail.com'
             );
 
             $hashedPassword = $this->passwordHasher->hashPassword($user, 'password');
@@ -49,7 +48,7 @@ class AppFixtures extends Fixture
         $manager->flush();
 
         /**
-         * Create species
+         * Create species.
          */
         $species = [
             [
@@ -117,7 +116,7 @@ class AppFixtures extends Fixture
         $manager->flush();
 
         /**
-         * Create dinosaurs
+         * Create dinosaurs.
          */
         $speciesList = $manager
             ->getRepository(Species::class)
@@ -126,16 +125,16 @@ class AppFixtures extends Fixture
 
         $gender = [
             'Male',
-            'Female'
+            'Female',
         ];
 
-        for ($i = 0; $i < 15; $i++) {
+        for ($i = 0; $i < 15; ++$i) {
             $dinosaur = new Dinosaur(
-                'dinosaur_' . $i,
+                'dinosaur_'.$i,
                 $gender[array_rand($gender)],
                 $speciesList[array_rand($speciesList)],
                 rand(1, 40),
-                "#000000"
+                '#000000'
             );
 
             $manager->persist($dinosaur);

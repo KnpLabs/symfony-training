@@ -74,4 +74,3 @@ class Species
         $this->dinosaurs->remove($dinosaur);
     }
 }
-
