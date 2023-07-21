@@ -13,8 +13,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password;
 
     public function __construct(
-        private readonly string $email,
-        private readonly array $roles = []
+        private string $email,
+        private array $roles = []
     ) {
     }
 
