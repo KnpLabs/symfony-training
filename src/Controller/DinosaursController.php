@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Dinosaur;
 use App\Form\Type\DinosaurType;
 use App\Form\Type\SearchType;
+use App\Service\Mailer;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,7 +61,7 @@ class DinosaursController extends AbstractController
     }
 
     #[Route('/dinosaurs/create', name: 'app_create_dinosaur')]
-    public function create(Request $request, ManagerRegistry $doctrine): Response
+    public function create(Request $request, ManagerRegistry $doctrine, Mailer $mailer): Response
     {
         $form = $this->createForm(DinosaurType::class);
 
@@ -74,6 +75,8 @@ class DinosaursController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'The dinosaur has been created!');
+
+            $mailer->sendCreatedDinosaurEmail($dinosaur->getName());
 
             return $this->redirectToRoute('app_list_dinosaurs');
         }
