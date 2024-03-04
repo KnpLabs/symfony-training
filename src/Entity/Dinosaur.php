@@ -2,11 +2,9 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Uid\Uuid;
-
 class Dinosaur
 {
-    private ?Uuid $id;
+    private int $id;
     private string $name;
     private string $gender;
     private Species $species;
@@ -21,9 +19,7 @@ class Dinosaur
         int $age,
         string $eyesColor,
         Park $park,
-        ?Uuid $id = null
     ) {
-        $this->id = $id ?? Uuid::v4();
         $this->name = $name;
         $this->gender = $gender;
         $this->species = $species;
@@ -32,14 +28,9 @@ class Dinosaur
         $this->park = $park;
     }
 
-    public function getId(): ?Uuid
+    public function getId(): int
     {
         return $this->id;
-    }
-
-    public function setId(?Uuid $id): void
-    {
-        $this->id = $id;
     }
 
     public function getName(): string
@@ -97,8 +88,8 @@ class Dinosaur
         return $this->park;
     }
 
-    public function setPark(Park $park): Park
+    public function setPark(Park $park): void
     {
-        return $this->park;
+        $this->park = $park;
     }
 }

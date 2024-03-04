@@ -7,11 +7,11 @@ namespace App\Event;
 class AbstractEvent
 {
     public function __construct(
-        private string $id
+        private int $id
     ) {
     }
 
-    public function getId(): string
+    public function getId(): int
     {
         return $this->id;
     }

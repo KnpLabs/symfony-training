@@ -5,7 +5,7 @@ namespace App\Message\Dinosaur;
 class Delete
 {
     public function __construct(
-        public readonly string $id
+        public readonly int $id
     ) {
     }
 }

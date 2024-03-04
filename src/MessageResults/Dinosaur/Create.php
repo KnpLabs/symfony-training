@@ -7,7 +7,7 @@ namespace App\MessageResults\Dinosaur;
 class Create
 {
     public function __construct(
-        public readonly string $id,
+        public readonly int $id,
     ) {
     }
 }

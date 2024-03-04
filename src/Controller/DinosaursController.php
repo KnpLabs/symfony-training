@@ -50,7 +50,7 @@ class DinosaursController extends AbstractController
     #[Route(
         '/dinosaurs/{id}',
         name: 'app_single_dinosaur',
-        requirements: ['id' => '^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$']
+        requirements: ['id' => '\d+']
     )]
     public function single(string $id, ManagerRegistry $doctrine): Response
     {
@@ -105,7 +105,7 @@ class DinosaursController extends AbstractController
     #[Route(
         '/dinosaurs/{id}/edit',
         name: 'app_edit_dinosaur',
-        requirements: ['id' => '^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$']
+        requirements: ['id' => '\d+']
     )]
     public function edit(Request $request, string $id, ManagerRegistry $doctrine): Response
     {
@@ -149,7 +149,7 @@ class DinosaursController extends AbstractController
     #[Route(
         '/dinosaurs/{id}/remove',
         name: 'app_remove_dinosaur',
-        requirements: ['id' => '^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$']
+        requirements: ['id' => '\d+']
     )]
     public function remove(string $id): Response
     {

@@ -7,14 +7,14 @@ namespace App\Command;
 use App\Message\Food\Consume;
 use App\Repository\DinosaurRepository;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'app:food:consume')]
 class ConsumeCommand extends Command
 {
-    protected static $defaultName = 'app:food:consume';
-
     public function __construct(
         private MessageBusInterface $bus,
         private DinosaurRepository $dinosaurRepository
@@ -39,10 +39,7 @@ class ConsumeCommand extends Command
 
             $dinosaur = $dinosaurs[$randomDinoKey];
 
-            $consumeMessage = new Consume(
-                $dinosaur->getId()->toRfc4122(),
-                $dinosaur->getName()
-            );
+            $consumeMessage = new Consume($dinosaur->getId(), $dinosaur->getName());
 
             $this->bus->dispatch($consumeMessage);
         }

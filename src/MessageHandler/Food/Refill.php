@@ -31,6 +31,7 @@ class Refill
 
         $parkRepository = $this->entityManager->getRepository(Park::class);
 
+        /** @var Park[] $parks */
         $parks = $parkRepository->findAll();
 
         $dinosaurIsAttacking = random_int(0, 10);
@@ -43,7 +44,7 @@ class Refill
             $park->setFoodAmount(100);
         }
 
-        $envelop = new Envelope(new HasBeenRefilled((string) $park->getId()));
+        $envelop = new Envelope(new HasBeenRefilled($park->getId()));
 
         $this
             ->eventBus
