@@ -30,10 +30,10 @@ final class Create
             feeding: $message->feeding
         );
 
-        $this->speciesRepository->add($species);
+        $this->speciesRepository->add($species, flush: true);
 
         $envelop = new Envelope(new HasBeenCreated(
-            $species->getId()->toRfc4122()
+            $species->getId()
         ));
 
         $this
@@ -41,6 +41,6 @@ final class Create
             ->dispatch($envelop->with(new DispatchAfterCurrentBusStamp()))
         ;
 
-        return new CreateMessageResult($species->getId()->toRfc4122());
+        return new CreateMessageResult($species->getId());
     }
 }

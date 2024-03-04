@@ -45,15 +45,15 @@ final class Create
             park: $park
         );
 
-        $this->dinosaurRepository->add($dino);
+        $this->dinosaurRepository->add($dino, flush: true);
 
-        $envelop = new Envelope(new HasBeenCreated($dino->getId()->toRfc4122()));
+        $envelop = new Envelope(new HasBeenCreated($dino->getId()));
 
         $this
             ->eventBus
             ->dispatch($envelop->with(new DispatchAfterCurrentBusStamp()))
         ;
 
-        return new CreateMessageResult($dino->getId()->toRfc4122());
+        return new CreateMessageResult($dino->getId());
     }
 }

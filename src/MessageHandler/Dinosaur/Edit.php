@@ -37,7 +37,7 @@ final class Edit
         $dinosaur->setAge($message->age);
         $dinosaur->setSpecies($species);
 
-        $envelop = new Envelope(new HasBeenUpdated($dinosaur->getId()->toRfc4122()));
+        $envelop = new Envelope(new HasBeenUpdated($dinosaur->getId()));
 
         $this
             ->eventBus

@@ -38,13 +38,13 @@ class UpsertDinosaurSummary
     #[AsMessageHandler]
     public function handleFoodHasBeenConsumed(HasBeenConsumed $event): void
     {
-        $this->updateSummariesByPark((int) $event->getId());
+        $this->updateSummariesByPark($event->getId());
     }
 
     #[AsMessageHandler]
     public function handleFoodHasBeenRefilled(HasBeenRefilled $event): void
     {
-        $this->updateSummariesByPark((int) $event->getId());
+        $this->updateSummariesByPark($event->getId());
     }
 
     #[AsMessageHandler]
@@ -68,7 +68,7 @@ class UpsertDinosaurSummary
         }
     }
 
-    private function updateSummaryByDinosaur(string $dinosaurId): void
+    private function updateSummaryByDinosaur(int $dinosaurId): void
     {
         $dinosaur = $this->dinosaurRepository->find($dinosaurId);
 

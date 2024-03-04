@@ -31,6 +31,7 @@ class Consume
 
         $dinosaursRepository = $this->em->getRepository(Dinosaur::class);
 
+        /** @var Dinosaur $dinosaur */
         $dinosaur = $dinosaursRepository->find($dinosaurId);
 
         $park = $dinosaur->getPark();
@@ -54,7 +55,7 @@ class Consume
 
         $park->setFoodAmount($park->getFoodAmount() - $consumedAmout);
 
-        $envelop = new Envelope(new HasBeenConsumed((string) $park->getId()));
+        $envelop = new Envelope(new HasBeenConsumed($park->getId()));
 
         $this
             ->eventBus
