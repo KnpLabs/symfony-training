@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Dinosaur;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 class Park
@@ -23,7 +24,7 @@ class Park
     ) {
         $this->name = $name;
         $this->foodAmount = $foodAmount;
-        $this->dinosaurs = [];
+        $this->dinosaurs = new ArrayCollection();
     }
 
     public function addDinosaurs(Dinosaur ...$dinosaur): void

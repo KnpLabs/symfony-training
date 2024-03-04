@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Park;
 use App\Entity\Dinosaur;
 use App\Entity\Species;
 use App\Entity\User;
@@ -115,6 +116,10 @@ final class AppFixtures extends Fixture
 
         $manager->flush();
 
+        $park = new Park('Jurassic Park', 100);
+        $manager->persist($park);
+        $manager->flush();
+
         /**
          * Create dinosaurs.
          */
@@ -133,7 +138,8 @@ final class AppFixtures extends Fixture
                 $gender[array_rand($gender)],
                 $speciesList[array_rand($speciesList)],
                 rand(1, 40),
-                '#000000'
+                '#000000',
+                $park
             );
 
             $manager->persist($dinosaur);

@@ -65,7 +65,7 @@ final class SpeciesController extends AbstractController
     #[Route(
         '/species/{id}/edit',
         name: 'app_edit_species',
-        requirements: ['id' => '^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$']
+        requirements: ['id' => '\d+']
     )]
     public function edit(Request $request, string $id, ManagerRegistry $doctrine): Response
     {
@@ -104,7 +104,7 @@ final class SpeciesController extends AbstractController
     #[Route(
         '/species/{id}/remove',
         name: 'app_remove_species',
-        requirements: ['id' => '^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$']
+        requirements: ['id' => '\d+']
     )]
     public function remove(string $id): Response
     {

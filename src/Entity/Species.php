@@ -4,31 +4,23 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Uid\Uuid;
 
 class Species
 {
-    private ?Uuid $id;
+    private int $id;
     private Collection $dinosaurs;
 
     public function __construct(
         private string $name,
         private array $habitats,
         private string $feeding,
-        ?Uuid $id = null
     ) {
-        $this->id = $id ?? Uuid::v4();
         $this->dinosaurs = new ArrayCollection();
     }
 
-    public function getId(): ?Uuid
+    public function getId(): int
     {
         return $this->id;
-    }
-
-    public function setId(?Uuid $id): void
-    {
-        $this->id = $id;
     }
 
     public function getName(): string

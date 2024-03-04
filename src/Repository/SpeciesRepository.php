@@ -13,8 +13,11 @@ final class SpeciesRepository extends ServiceEntityRepository
         parent::__construct($registry, Species::class);
     }
 
-    public function add(Species $species): void
+    public function add(Species $species, bool $flush = false): void
     {
         $this->getEntityManager()->persist($species);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 }

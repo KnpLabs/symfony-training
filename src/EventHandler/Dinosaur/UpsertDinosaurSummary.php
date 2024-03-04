@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\EventHandler\Dinosaur;
 
-use App\Event\AbstractEvent\HasBeenRefilled;
+use App\Event\Food\HasBeenRefilled;
 use App\Event\Dinosaur\HasBeenCreated as DinosaurHasBeenCreated;
 use App\Event\Dinosaur\HasBeenUpdated as DinosaurHasBeenUpdated;
 use App\Event\Species\HasBeenUpdated as SpeciesHasBeenUpdated;
@@ -38,13 +38,13 @@ class UpsertDinosaurSummary
     #[AsMessageHandler]
     public function handleFoodHasBeenConsumed(HasBeenConsumed $event): void
     {
-        $this->updateSummariesByPark((int) $event->getId());
+        $this->updateSummariesByPark($event->getId());
     }
 
     #[AsMessageHandler]
     public function handleFoodHasBeenRefilled(HasBeenRefilled $event): void
     {
-        $this->updateSummariesByPark((int) $event->getId());
+        $this->updateSummariesByPark($event->getId());
     }
 
     #[AsMessageHandler]
@@ -52,7 +52,7 @@ class UpsertDinosaurSummary
     {
         $speciesId = $event->getId();
 
-        $species = $this ->speciesRepository->find($speciesId);
+        $species = $this->speciesRepository->find($speciesId);
 
         if (null === $species) {
             throw new \RuntimeException(sprintf(
@@ -68,7 +68,7 @@ class UpsertDinosaurSummary
         }
     }
 
-    private function updateSummaryByDinosaur(string $dinosaurId): void
+    private function updateSummaryByDinosaur(int $dinosaurId): void
     {
         $dinosaur = $this->dinosaurRepository->find($dinosaurId);
 
