@@ -23,7 +23,6 @@ class DinosaurRepository extends ServiceEntityRepository
             ->where('d.name = :q')
             ->setParameter('q', $q)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 }

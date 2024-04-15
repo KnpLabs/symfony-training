@@ -2,7 +2,9 @@
 
 namespace App;
 
-class DinosaursFinder
+use App\Entity\Dinosaur;
+
+final readonly class DinosaursFinder
 {
     /**
      * @param array<Dinosaur> $dinosaurs

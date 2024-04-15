@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DatalistType extends AbstractType
+final class DatalistType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver)
     {

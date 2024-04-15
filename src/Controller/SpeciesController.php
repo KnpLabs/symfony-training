@@ -10,15 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SpeciesController extends AbstractController
+final class SpeciesController extends AbstractController
 {
     #[Route('/species', name: 'app_list_species')]
     public function list(ManagerRegistry $doctrine): Response
     {
         $speciesList = $doctrine
             ->getRepository(Species::class)
-            ->findAll()
-        ;
+            ->findAll();
 
         return $this->render('species-list.html.twig', [
             'speciesList' => $speciesList,
@@ -44,7 +43,7 @@ class SpeciesController extends AbstractController
             return $this->redirectToRoute('app_list_species');
         }
 
-        return $this->renderForm('create-species.html.twig', [
+        return $this->render('create-species.html.twig', [
             'form' => $form,
         ]);
     }
@@ -58,8 +57,7 @@ class SpeciesController extends AbstractController
     {
         $species = $doctrine
             ->getRepository(Species::class)
-            ->find($id)
-        ;
+            ->find($id);
 
         if (false === $species) {
             throw $this->createNotFoundException('The species you are looking for does not exists.');
@@ -80,7 +78,7 @@ class SpeciesController extends AbstractController
             return $this->redirectToRoute('app_list_species');
         }
 
-        return $this->renderForm('edit-species.html.twig', [
+        return $this->render('edit-species.html.twig', [
             'form' => $form,
         ]);
     }
@@ -94,8 +92,7 @@ class SpeciesController extends AbstractController
     {
         $species = $doctrine
             ->getRepository(Species::class)
-            ->find($id)
-        ;
+            ->find($id);
 
         if (false === $species) {
             throw $this->createNotFoundException('The species you are looking for does not exists.');

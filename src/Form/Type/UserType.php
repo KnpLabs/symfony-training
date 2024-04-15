@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserType extends AbstractType implements DataMapperInterface
+final class UserType extends AbstractType implements DataMapperInterface
 {
     public function __construct(
         private readonly UserPasswordHasherInterface $passwordHasher
@@ -30,8 +30,7 @@ class UserType extends AbstractType implements DataMapperInterface
             ->add('submit', SubmitType::class, [
                 'label' => 'Register',
             ])
-            ->setDataMapper($this)
-        ;
+            ->setDataMapper($this);
     }
 
     public function configureOptions(OptionsResolver $resolver)
