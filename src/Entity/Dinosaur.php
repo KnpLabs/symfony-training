@@ -5,24 +5,14 @@ namespace App\Entity;
 class Dinosaur
 {
     private int $id;
-    private string $name;
-    private string $gender;
-    private Species $species;
-    private int $age;
-    private string $eyesColor;
 
     public function __construct(
-        string $name,
-        string $gender,
-        Species $species,
-        int $age,
-        string $eyesColor
+        private string $name,
+        private string $gender,
+        private Species $species,
+        private int $age,
+        private string $eyesColor
     ) {
-        $this->name = $name;
-        $this->gender = $gender;
-        $this->species = $species;
-        $this->age = $age;
-        $this->eyesColor = $eyesColor;
     }
 
     public function getId(): int

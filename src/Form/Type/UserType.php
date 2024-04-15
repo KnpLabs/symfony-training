@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserType extends AbstractType implements DataMapperInterface
+final class UserType extends AbstractType implements DataMapperInterface
 {
     public function __construct(
         private readonly UserPasswordHasherInterface $passwordHasher
@@ -30,11 +30,10 @@ class UserType extends AbstractType implements DataMapperInterface
             ->add('submit', SubmitType::class, [
                 'label' => 'Register',
             ])
-            ->setDataMapper($this)
-        ;
+            ->setDataMapper($this);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
@@ -46,14 +45,14 @@ class UserType extends AbstractType implements DataMapperInterface
         ]);
     }
 
-    public function mapDataToForms($viewData, \Traversable $forms)
+    public function mapDataToForms(mixed $viewData, \Traversable $forms): void
     {
         if (null === $viewData) {
             return;
         }
     }
 
-    public function mapFormsToData(\Traversable $forms, &$viewData)
+    public function mapFormsToData(\Traversable $forms, mixed &$viewData): void
     {
         $forms = iterator_to_array($forms);
 

@@ -7,9 +7,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class SearchType extends AbstractType
+final class SearchType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('q', TextType::class, [
@@ -17,7 +17,6 @@ class SearchType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Search',
-            ])
-        ;
+            ]);
     }
 }

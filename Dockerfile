@@ -2,23 +2,23 @@ FROM composer:2.5.8 as composer
 
 ##################################
 
-FROM php:8.2.8-fpm-alpine3.17
+FROM php:8.3.6-fpm-alpine3.19
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 RUN apk add --no-cache \
-    bash==5.2.15-r0 \
-    git==2.38.5-r0 \
-    icu-dev==72.1-r1
+    bash==5.2.21-r0 \
+    git==2.43.0-r0 \
+    icu-dev==74.1-r0
 
 RUN mkdir -p /usr/src/app \
     && addgroup docker \
     && adduser -S -h /home/docker -u ${USER_ID:-1000} -G docker docker \
     && chown -R docker /home/docker /usr/src/app \
     && apk add --no-cache --virtual=.build-deps \
-        autoconf==2.71-r1 \
-        g++==12.2.1_git20220924-r4 \
-        make==4.3-r1 \
+    autoconf==2.71-r2 \
+    g++==13.2.1_git20231014-r0 \
+    make==4.4.1-r2 \
     && docker-php-ext-configure intl \
     && docker-php-ext-install -j"$(nproc)" intl pdo_mysql \
     && pecl install apcu \

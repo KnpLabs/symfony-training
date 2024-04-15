@@ -6,7 +6,7 @@ use App\Entity\Species;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class SpeciesRepository extends ServiceEntityRepository
+final class SpeciesRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
