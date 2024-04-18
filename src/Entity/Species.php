@@ -8,15 +8,12 @@ use Doctrine\Common\Collections\Collection;
 class Species
 {
     private int $id;
-    private string $name;
-    private array $habitats;
-    private string $feeding;
     private Collection $dinosaurs;
 
     public function __construct(
-        string $name,
-        array $habitats,
-        string $feeding,
+        private string $name,
+        private array $habitats,
+        private string $feeding,
     ) {
         $this->name = $name;
         $this->habitats = $habitats;
@@ -71,6 +68,6 @@ class Species
 
     public function removeDinosaur(Dinosaur $dinosaur): void
     {
-        $this->dinosaurs->remove($dinosaur);
+        $this->dinosaurs->removeElement($dinosaur);
     }
 }

@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class AuthenticationController extends AbstractController
+final class AuthenticationController extends AbstractController
 {
     #[Route('/register', name: 'register')]
     public function register(Request $request, ManagerRegistry $doctrine): Response
@@ -46,9 +46,9 @@ class AuthenticationController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('login.html.twig', [
-             'controller_name' => 'AuthenticationController',
-             'last_username' => $lastUsername,
-             'error' => $error,
-         ]);
+            'controller_name' => 'AuthenticationController',
+            'last_username' => $lastUsername,
+            'error' => $error,
+        ]);
     }
 }
