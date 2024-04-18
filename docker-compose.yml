@@ -42,5 +42,11 @@ services:
             - db-data:/var/lib/mysql:rw
         restart: unless-stopped
 
+    mailhog:
+        image: mailhog/mailhog
+        restart: on-failure
+        ports:
+            - 127.0.0.1:8025:8025
+
 volumes:
     db-data: ~
