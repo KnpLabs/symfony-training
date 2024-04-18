@@ -6,6 +6,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use App\Entity\Dinosaur;
 use App\Entity\User;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 final readonly class Mailer
 {
@@ -18,10 +19,11 @@ final readonly class Mailer
         Dinosaur $dinosaur,
         User $user
     ): void {
-        $email = (new Email())
+        $email = (new TemplatedEmail())
             ->subject('Your dinosaur has been created !')
             ->to($user->getUserIdentifier())
-            ->html('<p>Congratulations ! ' . $dinosaur->getName() . ' has been created ! It is now part of your collection !</p>');
+            ->htmlTemplate('emails/dinosaur_has_been_created.html.twig')
+            ->context(['dinosaur' => $dinosaur]);
 
         $this->send($email);
     }
