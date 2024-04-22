@@ -11,7 +11,8 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 final readonly class Mailer
 {
     public function __construct(
-        private MailerInterface $mailer
+        private MailerInterface $mailer,
+        private string $pdfDirectory
     ) {
     }
 
@@ -23,7 +24,12 @@ final readonly class Mailer
             ->subject('Your dinosaur has been created !')
             ->to($user->getUserIdentifier())
             ->htmlTemplate('emails/dinosaur_has_been_created.html.twig')
-            ->context(['dinosaur' => $dinosaur]);
+            ->context(['dinosaur' => $dinosaur])
+            ->attachFromPath(
+                $this->pdfDirectory . '/cgu.pdf',
+                'CGU.pdf',
+                'application/pdf'
+            );
 
         $this->send($email);
     }
