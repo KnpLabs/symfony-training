@@ -3,16 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Dinosaur;
-use App\Entity\User;
 use App\Form\Type\DinosaurType;
 use App\Form\Type\SearchType;
-use App\Service\Mailer;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 final class DinosaursController extends AbstractController
 {
@@ -61,12 +58,8 @@ final class DinosaursController extends AbstractController
     }
 
     #[Route('/dinosaurs/create', name: 'app_create_dinosaur')]
-    public function create(
-        Request $request,
-        ManagerRegistry $doctrine,
-        #[CurrentUser] User $user,
-        Mailer $mailer
-    ): Response {
+    public function create(Request $request, ManagerRegistry $doctrine): Response
+    {
         $form = $this->createForm(DinosaurType::class);
 
         $form->handleRequest($request);
@@ -79,8 +72,6 @@ final class DinosaursController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'The dinosaur has been created!');
-
-            $mailer->sendDinausorHasBeenCreatedEmail($dinosaur, $user);
 
             return $this->redirectToRoute('app_list_dinosaurs');
         }
