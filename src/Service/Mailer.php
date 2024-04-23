@@ -7,11 +7,13 @@ use Symfony\Component\Mime\Email;
 use App\Entity\Dinosaur;
 use App\Entity\User;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final readonly class Mailer
 {
     public function __construct(
         private MailerInterface $mailer,
+        #[Autowire('%app.pdf_directory%')]
         private string $pdfDirectory
     ) {
     }
