@@ -1,0 +1,18 @@
+{% apply inline_css(source('@styles/email/layout.css')) %}
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>{{ email.subject }}</title>
+    </head>
+    <body>
+        {% block messageBody %}{% endblock %}
+        <footer>
+            <p>The Dino Park Team !</p>
+            <p>tel: 01 02 03 04 05</p>
+
+            <p>Please do not reply directly to this email as it is an automated one.</p>
+        </footer>
+    </body>
+</html>
+{% endapply %}
