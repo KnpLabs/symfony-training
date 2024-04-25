@@ -1,0 +1,4 @@
+App\Entity\Species:
+  attributes:
+    id:
+      groups: ['dinosaur']
