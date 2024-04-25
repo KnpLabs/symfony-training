@@ -1,0 +1,41 @@
+{
+    "type": "object",
+    "title": "Dinausor create",
+    "description": "Input data for creating a new dinausor",
+    "properties": {
+        "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Name of the dinausor",
+            "minLength": 1,
+            "maxLength": 255
+        },
+        "gender": {
+            "type": "string",
+            "title": "Gender",
+            "description": "Gender of the dinausor",
+            "enum": [
+                "Male",
+                "Female"
+            ]
+        },
+        "speciesId": {
+            "type": "integer",
+            "title": "Species ID",
+            "description": "Species of the dinausor"
+        },
+        "age": {
+            "type": "integer",
+            "title": "Age",
+            "description": "Age of the dinausor",
+            "exclusiveMinimum": 0
+        },
+        "eyesColor": {
+            "type": "string",
+            "title": "Eye color",
+            "description": "Eye color of the dinausor",
+            "minLength": 1,
+            "maxLength": 255
+        }
+    }
+}
