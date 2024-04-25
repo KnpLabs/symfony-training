@@ -15,10 +15,73 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use App\Validator\JsonSchema\Validator as JsonSchemaValidator;
 use App\Validator\JsonSchema\ValidationException as JsonSchemaValidationException;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 
 final class Create extends AbstractController
 {
     #[Route('/api/dinosaurs', methods: 'POST')]
+    #[OA\Tag('dinosaur')]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            schema: "DinosaurCreate",
+            title: "Dinosaur create",
+            description: "Input data for creating a new dinosaur",
+            required: ["name", "gender", "speciesId", "age", "eyesColor"],
+            properties: [
+                new OA\Property(
+                    property: "name",
+                    type: "string",
+                    description: "Name of the dinosaur",
+                    minLength: 1,
+                    maxLength: 255,
+                    example: 'Rex'
+                ),
+                new OA\Property(
+                    property: "gender",
+                    type: "string",
+                    enum: ["Male", "Female"],
+                    description: "Gender of the dinosaur",
+                    example: "Male"
+                ),
+                new OA\Property(
+                    property: "speciesId",
+                    type: "integer",
+                    description: "ID of the species",
+                    example: 1
+                ),
+                new OA\Property(
+                    property: "age",
+                    type: "integer",
+                    description: "Age of the dinosaur",
+                    exclusiveMinimum: 0,
+                    example: 10
+                ),
+                new OA\Property(
+                    property: "eyesColor",
+                    type: "string",
+                    description: "Color of the eyes",
+                    minLength: 1,
+                    maxLength: 255,
+                    example: 'red'
+                )
+            ]
+        )
+    )]
+    #[OA\Response(
+        response: Response::HTTP_CREATED,
+        description: 'Create and return a dinosaur',
+        content: new Model(type: Dinosaur::class, groups: ['dinosaur'])
+    )]
+    #[OA\Response(
+        response: Response::HTTP_BAD_REQUEST,
+        description: 'Bad request'
+    )]
+    #[OA\Response(
+        response: Response::HTTP_UNPROCESSABLE_ENTITY,
+        description: 'The species ID does not exists'
+    )]
     public function __invoke(
         ManagerRegistry $manager,
         Request $request,
@@ -44,7 +107,7 @@ final class Create extends AbstractController
         if (!$species instanceof Species) {
             return new JsonResponse([
                 'message' => sprintf('Species with id %s not found', $dinosaurData['speciesId']),
-                Response::HTTP_NOT_FOUND
+                Response::HTTP_UNPROCESSABLE_ENTITY
             ]);
         }
 

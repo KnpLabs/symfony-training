@@ -11,10 +11,26 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 
 final class GetAll extends AbstractController
 {
     #[Route('/api/dinosaurs', methods: 'GET')]
+    #[OA\Tag('dinosaur')]
+    #[OA\Response(
+        response: Response::HTTP_OK,
+        description: 'List all the dinosaurs',
+        content: new OA\JsonContent(
+            type: 'array',
+            items: new OA\Items(
+                ref: new Model(
+                    type: Dinosaur::class,
+                    groups: ['dinosaurs']
+                )
+            )
+        )
+    )]
     public function __invoke(
         ManagerRegistry $manager,
         SerializerInterface $serializer

@@ -11,10 +11,22 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 
 final class GetOne extends AbstractController
 {
     #[Route('/api/dinosaurs/{id}', methods: 'GET')]
+    #[OA\Tag('dinosaur')]
+    #[OA\Response(
+        response: Response::HTTP_UNPROCESSABLE_ENTITY,
+        description: 'Dinosaur with given ID not found'
+    )]
+    #[OA\Response(
+        response: Response::HTTP_OK,
+        description: 'Specified dinosaur',
+        content: new Model(type: Dinosaur::class, groups: ['dinosaur'])
+    )]
     public function __invoke(
         ManagerRegistry $manager,
         SerializerInterface $serializer,
