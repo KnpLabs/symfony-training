@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\API\Dinosaurs;
 
 use App\Entity\Dinosaur;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\DinosaurRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,11 +24,9 @@ final class Delete extends AbstractController
         response: Response::HTTP_NO_CONTENT,
         description: 'Dinosaur successfully deleted'
     )]
-    public function __invoke(ManagerRegistry $manager, string $id): Response
+    public function __invoke(DinosaurRepository $dinosaurRepository, string $id): Response
     {
-        $dinosaur = $manager
-            ->getRepository(Dinosaur::class)
-            ->find($id);
+        $dinosaur = $dinosaurRepository->find($id);
 
         if (!$dinosaur instanceof Dinosaur) {
             return new JsonResponse([
@@ -36,9 +34,8 @@ final class Delete extends AbstractController
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $em = $manager->getManager();
-        $em->remove($dinosaur);
-        $em->flush();
+        $dinosaurRepository->remove($dinosaur);
+        $dinosaurRepository->flush();
 
         return new Response(status: Response::HTTP_NO_CONTENT);
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\API\Dinosaurs;
 
 use App\Entity\Dinosaur;
+use App\Repository\DinosaurRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,13 +29,11 @@ final class GetOne extends AbstractController
         content: new Model(type: Dinosaur::class, groups: ['dinosaur'])
     )]
     public function __invoke(
-        ManagerRegistry $manager,
+        DinosaurRepository $dinosaurRepository,
         SerializerInterface $serializer,
         string $id
     ): Response {
-        $dinosaur = $manager
-            ->getRepository(Dinosaur::class)
-            ->find($id);
+        $dinosaur = $dinosaurRepository->find($id);
 
         if (!$dinosaur instanceof Dinosaur) {
             return new JsonResponse([

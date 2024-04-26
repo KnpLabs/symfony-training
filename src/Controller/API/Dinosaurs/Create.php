@@ -6,7 +6,8 @@ namespace App\Controller\API\Dinosaurs;
 
 use App\Entity\Dinosaur;
 use App\Entity\Species;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\DinosaurRepository;
+use App\Repository\SpeciesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -83,7 +84,8 @@ final class Create extends AbstractController
         description: 'The species ID does not exists'
     )]
     public function __invoke(
-        ManagerRegistry $manager,
+        DinosaurRepository $dinosaurRepository,
+        SpeciesRepository $speciesDinosaur,
         Request $request,
         SerializerInterface $serializer,
         JsonSchemaValidator $jsonSchemaValidator
@@ -100,9 +102,7 @@ final class Create extends AbstractController
 
         $dinosaurData = json_decode($request->getContent(), true);
 
-        $species = $manager
-            ->getRepository(Species::class)
-            ->find($dinosaurData['speciesId']);
+        $species = $speciesDinosaur->find($dinosaurData['speciesId']);
 
         if (!$species instanceof Species) {
             return new JsonResponse([
@@ -122,9 +122,8 @@ final class Create extends AbstractController
                 $dinosaurData['eyesColor'],
             );
 
-            $em = $manager->getManager();
-            $em->persist($dinosaur);
-            $em->flush();
+            $dinosaurRepository->persist($dinosaur);
+            $dinosaurRepository->flush();
 
             $content = $serializer->serialize(
                 $dinosaur,
