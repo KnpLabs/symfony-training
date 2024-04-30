@@ -8,10 +8,10 @@ use Domain\Collection\SpeciesCollection;
 use Domain\Exception\SpeciesNotFoundException;
 use Domain\ReadModel\Species;
 
-class Handler
+final readonly class Handler
 {
     public function __construct(
-        private readonly SpeciesCollection $speciesCollection,
+        private SpeciesCollection $speciesCollection,
     ) {
     }
 

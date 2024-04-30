@@ -7,14 +7,13 @@ namespace Domain\UseCase\RemoveDinosaur;
 use Domain\Collection\DinosaursCollection;
 use Domain\Event\DinosaurDied;
 use Domain\Exception\DinosaurNotFoundException;
-use Domain\HasEventsRegisterer;
+use Domain\EventsRegisterer;
 
-class Handler
+final class Handler
 {
-    use HasEventsRegisterer;
-
     public function __construct(
-        private DinosaursCollection $dinosaursCollection
+        private readonly DinosaursCollection $dinosaursCollection,
+        private readonly EventsRegisterer $eventsRegisterer
     ) {
     }
 
@@ -22,8 +21,7 @@ class Handler
     {
         $dinosaur = $this
             ->dinosaursCollection
-            ->find($input->id)
-        ;
+            ->find($input->id);
 
         if (null === $dinosaur) {
             throw new DinosaurNotFoundException($input->id);
@@ -31,7 +29,10 @@ class Handler
 
         $this->dinosaursCollection->remove($dinosaur);
 
-        $this->registerEvents(new DinosaurDied($dinosaur));
+        $this->eventsRegisterer->register(new DinosaurDied(
+            $dinosaur->getId(),
+            $dinosaur->getName()
+        ));
 
         return new Output();
     }

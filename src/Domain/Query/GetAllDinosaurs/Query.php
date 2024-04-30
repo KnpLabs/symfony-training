@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Domain\Query\GetAllDinosaurs;
 
-final class Query
+final readonly class Query
 {
     public function __construct(
-        public readonly ?string $search = null
+        public ?string $search = null
     ) {
     }
 }

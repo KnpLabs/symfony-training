@@ -8,7 +8,7 @@ use Domain\Collection\SpeciesCollection;
 use Domain\Model\Species as ModelSpecies;
 use Domain\ReadModel\Species;
 
-class Handler
+final readonly class Handler
 {
     public function __construct(
         private SpeciesCollection $speciesCollection

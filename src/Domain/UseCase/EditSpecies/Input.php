@@ -6,13 +6,13 @@ namespace Domain\UseCase\EditSpecies;
 
 use Domain\ReadModel\Species;
 
-final class Input
+final readonly class Input
 {
     public function __construct(
-        public readonly string $speciesId,
-        public readonly string $name,
-        public readonly array $habitats,
-        public readonly string $feeding
+        public string $speciesId,
+        public string $name,
+        public array $habitats,
+        public string $feeding
     ) {
     }
 

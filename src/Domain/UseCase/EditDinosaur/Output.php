@@ -6,10 +6,10 @@ namespace Domain\UseCase\EditDinosaur;
 
 use Domain\Model\Dinosaur;
 
-final class Output
+final readonly class Output
 {
     public function __construct(
-        public readonly Dinosaur $dinosaur
+        public Dinosaur $dinosaur
     ) {
     }
 }

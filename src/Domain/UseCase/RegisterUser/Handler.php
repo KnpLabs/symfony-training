@@ -8,7 +8,7 @@ use Domain\Collection\UsersCollection;
 use Domain\Exception\UserAlreadyExistsException;
 use Domain\Model\User;
 
-class Handler
+final readonly class Handler
 {
     public function __construct(
         private UsersCollection $usersCollection
@@ -17,7 +17,7 @@ class Handler
 
     public function __invoke(Input $input): Output
     {
-        $existingUser = $this->usersCollection->findByEmail($input->email);
+        $existingUser = $this->usersCollection->findOneByEmail($input->email);
 
         if (null !== $existingUser) {
             throw new UserAlreadyExistsException($input->email);

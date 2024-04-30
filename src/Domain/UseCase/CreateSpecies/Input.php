@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Domain\UseCase\CreateSpecies;
 
-final class Input
+final readonly class Input
 {
     public function __construct(
-        public readonly string $name,
-        public readonly array $habitats,
-        public readonly string $feeding,
+        public string $name,
+        public array $habitats,
+        public string $feeding,
     ) {
     }
 }

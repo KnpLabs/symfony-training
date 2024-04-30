@@ -7,7 +7,6 @@ use Application\Form\Type\SearchType;
 use Application\MessageBus\CommandBus;
 use Application\MessageBus\EventBus;
 use Application\MessageBus\QueryBus;
-use Domain\Event\DinosaurIsBorn;
 use Domain\Exception\DinosaurNotFoundException;
 use Domain\Query\GetSingleDinosaur;
 use Domain\Query\GetAllDinosaurs;
@@ -23,9 +22,9 @@ use Symfony\Component\Routing\Annotation\Route;
 final class DinosaursController extends AbstractController
 {
     public function __construct(
-        private CommandBus $commandBus,
-        private QueryBus $queryBus,
-        private EventBus $eventBus
+        private readonly CommandBus $commandBus,
+        private readonly QueryBus $queryBus,
+        private readonly EventBus $eventBus
     ) {
     }
 

@@ -22,8 +22,8 @@ use Symfony\Component\Routing\Annotation\Route;
 final class SpeciesController extends AbstractController
 {
     public function __construct(
-        private CommandBus $commandBus,
-        private QueryBus $queryBus
+        private readonly CommandBus $commandBus,
+        private readonly QueryBus $queryBus
     ) {
     }
 
