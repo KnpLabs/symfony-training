@@ -6,11 +6,10 @@ namespace Domain\UseCase\EditSpecies;
 
 use Domain\Model\Species;
 
-final class Output
+final readonly class Output
 {
     public function __construct(
-        public readonly Species $species
+        public Species $species
     ) {
     }
 }
-

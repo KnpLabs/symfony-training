@@ -6,11 +6,11 @@ namespace Domain\Exception;
 
 use DomainException;
 
-class UserAlreadyExistsException extends DomainException
+final class UserAlreadyExistsException extends DomainException
 {
-    public function __construct(string $email)
-    {
+    public function __construct(
+        private readonly string $email
+    ) {
         parent::__construct(sprintf('User "%s" already exists', $email));
     }
 }
-

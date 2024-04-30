@@ -4,24 +4,16 @@ declare(strict_types=1);
 
 namespace Domain\Event;
 
-use Domain\Model\Dinosaur;
-
-final class DinosaurDied implements EventInterface
+final readonly class DinosaurDied implements EventInterface
 {
-    private string $dinosaurName;
-
-    public function __construct(private Dinosaur $dinosaur)
-    {
-        $this->dinosaurName = $dinosaur->getName();
+    public function __construct(
+        public int $dinosaurId,
+        public string $dinosaurName,
+    ) {
     }
 
     public function getAggregateRootId(): string
     {
-        return (string) $this->dinosaur->getId();
-    }
-
-    public function getDinosaurName(): string
-    {
-        return $this->dinosaurName;
+        return (string) $this->dinosaurId;
     }
 }

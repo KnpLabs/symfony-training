@@ -9,11 +9,12 @@ use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class CommandBus implements CommandBusInterface
+final class CommandBus implements CommandBusInterface
 {
     use HandleTrait;
 
-    public function __construct(private MessageBusInterface $messageBus) {
+    public function __construct(private MessageBusInterface $messageBus)
+    {
     }
 
     public function dispatch(object $input): mixed
@@ -21,7 +22,7 @@ class CommandBus implements CommandBusInterface
         try {
             return $this->handle($input);
         } catch (HandlerFailedException $handlerFailedException) {
-            $nestedExceptions = $handlerFailedException->getNestedExceptions();
+            $nestedExceptions = $handlerFailedException->getWrappedExceptions();
 
             if (false === $nested = current($nestedExceptions)) {
                 throw $handlerFailedException;
@@ -31,4 +32,3 @@ class CommandBus implements CommandBusInterface
         }
     }
 }
-

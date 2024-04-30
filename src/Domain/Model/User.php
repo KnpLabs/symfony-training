@@ -45,4 +45,12 @@ class User
     {
         return $this->password;
     }
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
 }

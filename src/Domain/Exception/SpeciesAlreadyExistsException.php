@@ -6,10 +6,11 @@ namespace Domain\Exception;
 
 use DomainException;
 
-class SpeciesAlreadyExistsException extends DomainException
+final class SpeciesAlreadyExistsException extends DomainException
 {
-    public function __construct(string $name)
-    {
+    public function __construct(
+        private readonly string $name
+    ) {
         parent::__construct(sprintf('Species "%s" already exists', $name));
     }
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Domain\Query\GetAllSpecies;
 
-final class Query
+final readonly class Query
 {
-    public function __construct(
-    ) {
+    public function __construct()
+    {
     }
 }

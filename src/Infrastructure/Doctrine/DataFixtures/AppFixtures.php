@@ -2,9 +2,10 @@
 
 namespace Infrastructure\Doctrine\DataFixtures;
 
-use App\Entity\Dinosaur;
-use App\Entity\Species;
-use App\Entity\User;
+use Application\Security\User;
+use Domain\Model\User as ModelUser;
+use Domain\Model\Dinosaur;
+use Domain\Model\Species;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -21,12 +22,12 @@ final class AppFixtures extends Fixture
         /**
          * Create a user with the role ROLE_ADMIN.
          */
-        $admin = new User(
+        $admin = new ModelUser(
             'admin@mail.com',
             ['ROLE_ADMIN']
         );
 
-        $hashedPassword = $this->passwordHasher->hashPassword($admin, 'admin');
+        $hashedPassword = $this->passwordHasher->hashPassword(new User($admin), 'admin');
         $admin->setHashedPassword($hashedPassword);
 
         $manager->persist($admin);
@@ -35,11 +36,11 @@ final class AppFixtures extends Fixture
          * Create basic users with the default role ROLE_USER
          */
         for ($i = 0; $i < 10; ++$i) {
-            $user = new User(
+            $user = new ModelUser(
                 'user_' . $i . '@mail.com'
             );
 
-            $hashedPassword = $this->passwordHasher->hashPassword($user, 'password');
+            $hashedPassword = $this->passwordHasher->hashPassword(new User($user), 'password');
             $user->setHashedPassword($hashedPassword);
 
             $manager->persist($user);

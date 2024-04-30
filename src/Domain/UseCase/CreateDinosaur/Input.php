@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Domain\UseCase\CreateDinosaur;
 
-final class Input
+final readonly class Input
 {
     public function __construct(
-        public readonly string $name,
-        public readonly string $gender,
-        public readonly string $speciesId,
-        public readonly int $age,
-        public readonly string $eyesColor
+        public string $name,
+        public string $gender,
+        public string $speciesId,
+        public int $age,
+        public string $eyesColor
     ) {
     }
 }

@@ -9,11 +9,12 @@ use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class QueryBus implements QueryBusInterface
+final class QueryBus implements QueryBusInterface
 {
     use HandleTrait;
 
-    public function __construct(private MessageBusInterface $messageBus) {
+    public function __construct(private MessageBusInterface $messageBus)
+    {
     }
 
     public function dispatch(object $input): mixed
@@ -21,7 +22,7 @@ class QueryBus implements QueryBusInterface
         try {
             return $this->handle($input);
         } catch (HandlerFailedException $handlerFailedException) {
-            $nestedExceptions = $handlerFailedException->getNestedExceptions();
+            $nestedExceptions = $handlerFailedException->getWrappedExceptions();
 
             if (false === $nested = current($nestedExceptions)) {
                 throw $handlerFailedException;

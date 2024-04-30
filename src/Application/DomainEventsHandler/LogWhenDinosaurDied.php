@@ -5,31 +5,22 @@ declare(strict_types=1);
 namespace Application\DomainEventsHandler;
 
 use Domain\Event\DinosaurDied;
-use Domain\Event\EventInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class LogWhenDinosaurDied implements MessageSubscriberInterface
+#[AsMessageHandler]
+final class LogWhenDinosaurDied
 {
     public function __construct(
-        private LoggerInterface $logger
+        private readonly LoggerInterface $logger,
     ) {
     }
 
-    public function __invoke(EventInterface $event): void
+    public function __invoke(DinosaurDied $event): void
     {
-        if (!$event instanceof DinosaurDied) {
-            return;
-        }
-
         $this->logger->info(sprintf(
             'Dinosaur %s died',
-            $event->getDinosaurName()
+            $event->dinosaurName
         ));
-    }
-
-    public static function getHandledMessages(): iterable
-    {
-        yield DinosaurDied::class;
     }
 }
