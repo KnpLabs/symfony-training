@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 final class DinosaurType extends AbstractType
 {
     public function __construct(
-        private SpeciesReadToModel $speciesReadToModel
+        private readonly SpeciesReadToModel $speciesReadToModel
     ) {
     }
 

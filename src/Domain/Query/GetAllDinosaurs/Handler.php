@@ -8,7 +8,7 @@ use Domain\Collection\DinosaursCollection;
 use Domain\Model\Dinosaur as ModelDinosaur;
 use Domain\ReadModel\Dinosaur;
 
-class Handler
+final readonly class Handler
 {
     public function __construct(
         private DinosaursCollection $dinosaursCollection

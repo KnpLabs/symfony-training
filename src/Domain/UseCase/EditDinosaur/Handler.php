@@ -9,7 +9,7 @@ use Domain\Collection\SpeciesCollection;
 use Domain\Exception\DinosaurAlreadyExistsException;
 use Domain\Exception\SpeciesNotFoundException;
 
-class Handler
+final readonly class Handler
 {
     public function __construct(
         private DinosaursCollection $dinosaursCollection,
@@ -21,8 +21,7 @@ class Handler
     {
         $dinosaur = $this
             ->dinosaursCollection
-            ->find($input->id)
-        ;
+            ->find($input->id);
 
         if (null === $dinosaur) {
             throw new DinosaurAlreadyExistsException($input->name);
@@ -30,8 +29,7 @@ class Handler
 
         $species = $this
             ->speciesCollection
-            ->find($input->speciesId)
-        ;
+            ->find($input->speciesId);
 
         if (null === $species) {
             throw new SpeciesNotFoundException($input->speciesId);

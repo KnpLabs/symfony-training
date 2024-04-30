@@ -8,4 +8,3 @@ interface AggregateRoot
 {
     public function getId(): int;
 }
-

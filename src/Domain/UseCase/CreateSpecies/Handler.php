@@ -8,7 +8,7 @@ use Domain\Collection\SpeciesCollection;
 use Domain\Exception\SpeciesAlreadyExistsException;
 use Domain\Model\Species;
 
-class Handler
+final readonly class Handler
 {
     public function __construct(
         private SpeciesCollection $speciesCollection,

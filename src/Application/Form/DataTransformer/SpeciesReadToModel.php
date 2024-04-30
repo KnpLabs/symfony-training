@@ -10,14 +10,14 @@ use Domain\Model\Species as ModelSpecies;
 use Domain\ReadModel\Species;
 use Symfony\Component\Form\DataTransformerInterface;
 
-class SpeciesReadToModel implements DataTransformerInterface
+final class SpeciesReadToModel implements DataTransformerInterface
 {
     public function __construct(
-        private SpeciesCollection $speciesCollection
+        private readonly SpeciesCollection $speciesCollection
     ) {
     }
 
-    public function transform(mixed $value)
+    public function transform(mixed $value): mixed
     {
         if (!$value instanceof Species) {
             return $value;
@@ -34,7 +34,7 @@ class SpeciesReadToModel implements DataTransformerInterface
         return $species;
     }
 
-    public function reverseTransform(mixed $value)
+    public function reverseTransform(mixed $value): mixed
     {
         if (!$value instanceof ModelSpecies) {
             return $value;

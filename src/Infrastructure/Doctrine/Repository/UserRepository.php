@@ -10,7 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 use Domain\Collection\UsersCollection;
 use Domain\Model\User;
 
-class UserRepository extends ServiceEntityRepository implements UsersCollection
+final class UserRepository extends ServiceEntityRepository implements UsersCollection
 {
     private ObjectManager $objectManager;
 
@@ -20,14 +20,13 @@ class UserRepository extends ServiceEntityRepository implements UsersCollection
         $this->objectManager = $registry->getManager();
     }
 
-    public function findByEmail(string $email): ?User
+    public function findOneByEmail(string $email): ?User
     {
         return $this->createQueryBuilder('u')
             ->where('u.email = :email')
             ->setParameter('email', $email)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 
     public function add(User $user): void

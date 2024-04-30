@@ -6,10 +6,10 @@ namespace Domain\UseCase\RegisterUser;
 
 use Domain\Model\User;
 
-final class Output
+final readonly class Output
 {
     public function __construct(
-        public readonly User $user
+        public User $user
     ) {
     }
 }

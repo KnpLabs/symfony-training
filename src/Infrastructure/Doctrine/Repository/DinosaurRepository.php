@@ -10,7 +10,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Domain\Collection\DinosaursCollection;
 
-class DinosaurRepository extends ServiceEntityRepository implements DinosaursCollection
+final class DinosaurRepository extends ServiceEntityRepository implements DinosaursCollection
 {
     private ObjectManager $objectManager;
 
@@ -26,8 +26,7 @@ class DinosaurRepository extends ServiceEntityRepository implements DinosaursCol
             ->where('d.name = :name')
             ->setParameter('name', $name)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 
     public function search(?string $q): array

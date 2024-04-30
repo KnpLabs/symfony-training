@@ -7,18 +7,17 @@ namespace Domain\UseCase\CreateDinosaur;
 use Domain\Collection\DinosaursCollection;
 use Domain\Collection\SpeciesCollection;
 use Domain\Event\DinosaurIsBorn;
+use Domain\EventsRegisterer;
 use Domain\Exception\DinosaurAlreadyExistsException;
 use Domain\Exception\SpeciesNotFoundException;
-use Domain\HasEventsRegisterer;
 use Domain\Model\Dinosaur;
 
-class Handler
+final class Handler
 {
-    use HasEventsRegisterer;
-
     public function __construct(
-        private DinosaursCollection $dinosaursCollection,
-        private SpeciesCollection $speciesCollection
+        private readonly DinosaursCollection $dinosaursCollection,
+        private readonly SpeciesCollection $speciesCollection,
+        private readonly EventsRegisterer $eventsRegisterer
     ) {
     }
 
@@ -26,8 +25,7 @@ class Handler
     {
         $existingDinosaurs = $this
             ->dinosaursCollection
-            ->findByName($input->name)
-        ;
+            ->findByName($input->name);
 
         if (null !== $existingDinosaurs) {
             throw new DinosaurAlreadyExistsException($input->name);
@@ -35,8 +33,7 @@ class Handler
 
         $species = $this
             ->speciesCollection
-            ->find($input->speciesId)
-        ;
+            ->find($input->speciesId);
 
         if (null === $species) {
             throw new SpeciesNotFoundException($input->speciesId);
@@ -52,7 +49,7 @@ class Handler
 
         $this->dinosaursCollection->add($dinosaur);
 
-        $this->registerEvents(new DinosaurIsBorn($dinosaur));
+        $this->eventsRegisterer->register(new DinosaurIsBorn($dinosaur->getId()));
 
         return new Output($dinosaur);
     }

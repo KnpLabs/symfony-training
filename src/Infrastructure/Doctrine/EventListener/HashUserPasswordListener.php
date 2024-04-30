@@ -9,7 +9,7 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Domain\Model\User;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class HashUserPasswordListener
+final readonly class HashUserPasswordListener
 {
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher

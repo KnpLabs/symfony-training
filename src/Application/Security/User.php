@@ -11,16 +11,18 @@ use Symfony\Component\Security\Core\User\UserInterface;
 final class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public function __construct(
-        private ModelUser $user
+        private readonly ModelUser $user
     ) {
     }
 
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        return $this->user->getRoles();
     }
 
-    public function eraseCredentials() { }
+    public function eraseCredentials(): void
+    {
+    }
 
     public function getUserIdentifier(): string
     {

@@ -8,7 +8,7 @@ use Domain\Collection\DinosaursCollection;
 use Domain\Exception\DinosaurNotFoundException;
 use Domain\ReadModel\Dinosaur;
 
-class Handler
+final readonly class Handler
 {
     public function __construct(
         private DinosaursCollection $dinosaursCollection

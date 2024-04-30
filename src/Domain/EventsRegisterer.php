@@ -6,7 +6,7 @@ namespace Domain;
 
 use Domain\Event\EventInterface;
 
-class EventsRegisterer
+final class EventsRegisterer
 {
     /** @var array<EventInterface> */
     private array $events = [];

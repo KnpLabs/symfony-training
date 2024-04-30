@@ -6,7 +6,7 @@ namespace Domain\Exception;
 
 use DomainException;
 
-class DinosaurNotFoundException extends DomainException
+final class DinosaurNotFoundException extends DomainException
 {
     public function __construct(
         public readonly string $id

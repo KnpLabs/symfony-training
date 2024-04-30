@@ -18,8 +18,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 final class AuthenticationController extends AbstractController
 {
     public function __construct(
-        private UsersCollection $usersCollection,
-        private CommandBus $commandBus
+        private readonly UsersCollection $usersCollection,
+        private readonly CommandBus $commandBus
     ) {
     }
 

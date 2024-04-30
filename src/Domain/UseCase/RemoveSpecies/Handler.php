@@ -7,11 +7,12 @@ namespace Domain\UseCase\RemoveSpecies;
 use Domain\Collection\SpeciesCollection;
 use Domain\Exception\SpeciesNotFoundException;
 
-class Handler
+final readonly class Handler
 {
     public function __construct(
         private SpeciesCollection $speciesCollection
-    ) {}
+    ) {
+    }
 
     public function __invoke(Input $input): Output
     {
