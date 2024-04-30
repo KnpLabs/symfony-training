@@ -1,0 +1,21 @@
+framework:
+  messenger:
+    default_bus: command.bus
+    transports:
+      sync: 'sync://'
+
+    buses:
+      command.bus:
+        default_middleware: true
+        middleware:
+          - Infrastructure\Symfony\Messenger\Middleware\DomainEventDispatcher
+          - dispatch_after_current_bus
+          - doctrine_transaction
+
+      query.bus: ~
+
+      event.bus:
+        default_middleware: allow_no_handlers
+        middleware:
+          - dispatch_after_current_bus
+          - doctrine_transaction
