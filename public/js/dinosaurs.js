@@ -2,10 +2,16 @@ const alertContainer = document.querySelector('#alert-container')
 const template = document.querySelector('#dinosaur-item-template')
 const dinosaurList = document.querySelector('#dinosaurs-list')
 
-const hub = new URL('http://localhost:81/.well-known/mercure')
-hub.searchParams.append('topic', 'http://localhost/dinosaurs')
+const dicoverMercureHub = async () => fetch(window.location)
+    .then(response => {
+        const hubUrl = response
+            .headers
+            .get('Link')
+            .match(/<([^>]+)>;\s+rel=(?:mercure|"[^"]*mercure[^"]*")/)[1];
 
-const es = new EventSource(hub);
+        return new URL(hubUrl);
+    }
+)
 
 const displayToast = (message) => {
     alertContainer.innerHTML = `<div class='alert alert-success'>${message}</div>`
@@ -50,32 +56,40 @@ const removeDinosaur = (id, message) => {
     }
 }
 
-es.addEventListener('created', e => {
-    const message = JSON.parse(e.data)
+document.addEventListener('DOMContentLoaded', async () => {
+    const hubUrl = await dicoverMercureHub();
 
-    addDinosaur(
-        message.id,
-        message.name,
-        message.link,
-        message.message
-    )
-})
+    hubUrl.searchParams.append('topic', 'http://localhost/dinosaurs')
 
-es.addEventListener('updated', e => {
-    const message = JSON.parse(e.data)
+    const es = new EventSource(hubUrl);
 
-    updateDinosaur(
-        message.id,
-        message.name,
-        message.message
-    )
-})
+    es.addEventListener('created', e => {
+        const message = JSON.parse(e.data)
 
-es.addEventListener('deleted', e => {
-    const message = JSON.parse(e.data)
+        addDinosaur(
+            message.id,
+            message.name,
+            message.link,
+            message.message
+        )
+    })
 
-    removeDinosaur(
-        message.id,
-        message.message
-    )
-})
+    es.addEventListener('updated', e => {
+        const message = JSON.parse(e.data)
+
+        updateDinosaur(
+            message.id,
+            message.name,
+            message.message
+        )
+    })
+
+    es.addEventListener('deleted', e => {
+        const message = JSON.parse(e.data)
+
+        removeDinosaur(
+            message.id,
+            message.message
+        )
+    })
+});

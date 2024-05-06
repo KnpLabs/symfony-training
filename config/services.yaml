@@ -24,5 +24,9 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\Listener\MercureDiscoveryListener:
+        tags:
+            - { name: kernel.event_listener, event: ResponseEvent, method: onKernelResponse }
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

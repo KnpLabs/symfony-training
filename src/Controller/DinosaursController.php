@@ -13,6 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\Discovery;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class DinosaursController extends AbstractController
@@ -20,7 +21,7 @@ final class DinosaursController extends AbstractController
     #[Route('/dinosaurs', name: 'app_list_dinosaurs')]
     public function list(
         Request $request,
-        ManagerRegistry $doctrine
+        ManagerRegistry $doctrine,
     ): Response {
         $q = null;
         $form = $this->createForm(SearchType::class);
