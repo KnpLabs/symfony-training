@@ -5,13 +5,15 @@ namespace App\Controller;
 use App\Entity\Dinosaur;
 use App\Form\Type\DinosaurType;
 use App\Form\Type\SearchType;
+use App\Service\Realtime\Publisher;
+use App\Realtime\Trigger\DinosaurCreated;
+use App\Realtime\Trigger\DinosaurDeleted;
+use App\Realtime\Trigger\DinosaurUpdated;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Mercure\HubInterface;
-use Symfony\Component\Mercure\Update;
 
 final class DinosaursController extends AbstractController
 {
@@ -65,7 +67,7 @@ final class DinosaursController extends AbstractController
     public function create(
         Request $request,
         ManagerRegistry $doctrine,
-        HubInterface $hub
+        Publisher $publisher
     ): Response {
         $form = $this->createForm(DinosaurType::class);
 
@@ -80,15 +82,12 @@ final class DinosaursController extends AbstractController
 
             $this->addFlash('success', 'The dinosaur has been created!');
 
-            $hub->publish(new Update(
-                'http://localhost/dinosaurs',
-                json_encode([
-                    'type' => 'created',
-                    'id' => $dinosaur->getId(),
-                    'name' => $dinosaur->getName(),
-                    'link' => $this->generateUrl('app_single_dinosaur', ['id' => $dinosaur->getId()]),
-                    'message' => "The dinosaur {$dinosaur->getName()} has been created !"
-                ])
+            $publisher->publish(new DinosaurCreated(
+                $dinosaur,
+                $this->generateUrl(
+                    'app_single_dinosaur',
+                    ['id' => $dinosaur->getId()]
+                )
             ));
 
             return $this->redirectToRoute('app_list_dinosaurs');
@@ -108,7 +107,7 @@ final class DinosaursController extends AbstractController
         Request $request,
         int $id,
         ManagerRegistry $doctrine,
-        HubInterface $hub
+        Publisher $publisher
     ): Response {
         $dinosaur = $doctrine
             ->getRepository(Dinosaur::class)
@@ -132,15 +131,13 @@ final class DinosaursController extends AbstractController
 
             $this->addFlash('success', 'The dinosaur has been edited!');
 
-            $hub->publish(new Update(
-                'http://localhost/dinosaurs',
-                json_encode([
-                    'type' => 'updated',
-                    'id' => $dinosaur->getId(),
-                    'name' => $dinosaur->getName(),
-                    'link' => $this->generateUrl('app_single_dinosaur', ['id' => $dinosaur->getId()]),
-                    'message' => "The dinosaur {$oldName} has been edited !"
-                ]),
+            $publisher->publish(new DinosaurUpdated(
+                $dinosaur,
+                $oldName,
+                $this->generateUrl(
+                    'app_single_dinosaur',
+                    ['id' => $dinosaur->getId()]
+                )
             ));
 
             return $this->redirectToRoute('app_list_dinosaurs');
@@ -159,7 +156,7 @@ final class DinosaursController extends AbstractController
     public function remove(
         int $id,
         ManagerRegistry $doctrine,
-        HubInterface $hub
+        Publisher $publisher
     ): Response {
         $dinosaur = $doctrine
             ->getRepository(Dinosaur::class)
@@ -175,14 +172,7 @@ final class DinosaursController extends AbstractController
 
         $this->addFlash('success', 'The dinosaur has been removed!');
 
-        $hub->publish(new Update(
-            'http://localhost/dinosaurs',
-            json_encode([
-                'type' => 'deleted',
-                'id' => $id,
-                'message' => "The dinosaur {$dinosaur->getName()} has been removed !"
-            ])
-        ));
+        $publisher->publish(new DinosaurDeleted($id, $dinosaur));
 
         return $this->redirectToRoute('app_list_dinosaurs');
     }

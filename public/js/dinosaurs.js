@@ -40,7 +40,7 @@ const updateDinosaur = (id, name, message) => {
     }
 }
 
-const removeDinosaur = (id) => {
+const removeDinosaur = (id, message) => {
     const dinosaur = document.querySelector(`[data-id='${id}']`)
 
     if(dinosaur) {
@@ -50,30 +50,32 @@ const removeDinosaur = (id) => {
     }
 }
 
-es.onmessage = e => {
+es.addEventListener('created', e => {
     const message = JSON.parse(e.data)
 
-    switch(message.type) {
-        case 'created':
-            addDinosaur(
-                message.id,
-                message.name,
-                message.link,
-                message.message
-            )
-            break
-        case 'updated':
-            updateDinosaur(
-                message.id,
-                message.name,
-                message.message
-            )
-            break
-        case 'deleted':
-            removeDinosaur(
-                message.id,
-                message.message
-            )
-            break
-    }
-}
+    addDinosaur(
+        message.id,
+        message.name,
+        message.link,
+        message.message
+    )
+})
+
+es.addEventListener('updated', e => {
+    const message = JSON.parse(e.data)
+
+    updateDinosaur(
+        message.id,
+        message.name,
+        message.message
+    )
+})
+
+es.addEventListener('deleted', e => {
+    const message = JSON.parse(e.data)
+
+    removeDinosaur(
+        message.id,
+        message.message
+    )
+})
