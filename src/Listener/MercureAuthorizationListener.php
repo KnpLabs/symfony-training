@@ -7,14 +7,14 @@ namespace App\Listener;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
-use Symfony\Component\Mercure\Authorization;
+use Symfony\Component\Mercure\HubInterface;
 
 #[AsEventListener(event: ResponseEvent::class)]
 final readonly class MercureAuthorizationListener
 {
     public function __construct(
         private Security $security,
-        private Authorization $authorization
+        private HubInterface $hubInterface
     ) {
     }
 
@@ -34,8 +34,17 @@ final readonly class MercureAuthorizationListener
             return;
         }
 
-        $request = $event->getRequest();
+        $response = $event->getResponse();
 
-        $this->authorization->setCookie($request, $topics);
+        // Generate the JWT token
+        $JWTfactory = $this->hubInterface->getFactory();
+
+        if (null === $JWTfactory) {
+            throw new \RuntimeException('The hub factory is not available.');
+        }
+
+        $token = $JWTfactory->create($topics);
+
+        $response->headers->set('X-Mercure-JWT', $token);
     }
 }

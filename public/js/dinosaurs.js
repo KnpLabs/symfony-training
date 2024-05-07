@@ -9,7 +9,10 @@ const dicoverMercureHub = async () => fetch(window.location)
             .get('Link')
             .match(/<([^>]+)>;\s+rel=(?:mercure|"[^"]*mercure[^"]*")/)[1];
 
-        return new URL(hubUrl);
+        return {
+            url: new URL(hubUrl),
+            token: response.headers.get('X-Mercure-JWT'),
+        }
     }
 )
 
@@ -57,11 +60,13 @@ const removeDinosaur = (id, message) => {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const hubUrl = await dicoverMercureHub();
+    const { url, token } = await dicoverMercureHub();
 
-    hubUrl.searchParams.append('topic', 'http://localhost/dinosaurs')
+    url.searchParams.append('topic', 'http://localhost/dinosaurs')
 
-    const es = new EventSource(hubUrl, { withCredentials: true });
+    const options = token ? { headers: { Authorization: `Bearer ${token}` }, withCredentials: true } : {}
+
+    const es = new EventSourcePolyfill(url, options);
 
     es.addEventListener('created', e => {
         const message = JSON.parse(e.data)
