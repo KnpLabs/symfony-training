@@ -6,7 +6,7 @@ namespace App\Realtime;
 
 use JsonSerializable;
 
-abstract class Trigger implements JsonSerializable
+abstract readonly class Trigger implements JsonSerializable
 {
     /**
      * @param array<string> $topics
@@ -15,7 +15,8 @@ abstract class Trigger implements JsonSerializable
     public function __construct(
         public string $type,
         public array $topics,
-        private array $data
+        private array $data,
+        public bool $isPrivate = true
     ) {
     }
 

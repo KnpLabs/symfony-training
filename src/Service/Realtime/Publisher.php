@@ -20,7 +20,8 @@ final readonly class Publisher
         $this->hub->publish(new Update(
             $trigger->topics,
             json_encode($trigger),
-            type: $trigger->type
+            type: $trigger->type,
+            private: $trigger->isPrivate
         ));
     }
 }

@@ -28,5 +28,14 @@ services:
         tags:
             - { name: kernel.event_listener, event: ResponseEvent, method: onKernelResponse }
 
+    App\Listener\MercureAuthorizationListener:
+        tags:
+            - { name: kernel.event_listener, event: ResponseEvent, method: onKernelResponse }
+
+    App\Listener\AuthenticationListener:
+        tags:
+            - { name: kernel.event_listener, event: loginSuccessEvent, method: onLoginSuccess }
+            - { name: kernel.event_listener, event: loginFailureEvent, method: onLoginFailure }
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

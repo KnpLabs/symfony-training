@@ -7,7 +7,7 @@ namespace App\Realtime\Trigger;
 use App\Entity\Dinosaur;
 use App\Realtime\Trigger;
 
-class DinosaurCreated extends Trigger
+final readonly class DinosaurCreated extends Trigger
 {
     public function __construct(
         Dinosaur $dinosaur,

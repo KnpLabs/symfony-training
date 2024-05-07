@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     hubUrl.searchParams.append('topic', 'http://localhost/dinosaurs')
 
-    const es = new EventSource(hubUrl);
+    const es = new EventSource(hubUrl, { withCredentials: true });
 
     es.addEventListener('created', e => {
         const message = JSON.parse(e.data)
