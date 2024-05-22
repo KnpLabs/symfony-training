@@ -9,16 +9,24 @@ class Species
 {
     private int $id;
     private Collection $dinosaurs;
+    private Collection $habitats;
 
+    /**
+     * @param Habitat[] $habitats
+     */
     public function __construct(
         private string $name,
-        private array $habitats,
         private string $feeding,
+        ?Collection $habitats = null
     ) {
         $this->name = $name;
         $this->habitats = $habitats;
         $this->feeding = $feeding;
         $this->dinosaurs = new ArrayCollection();
+
+        if ($habitats !== null) {
+            $this->habitats = $habitats;
+        }
     }
 
     public function getId(): int
@@ -36,14 +44,9 @@ class Species
         $this->name = $name;
     }
 
-    public function getHabitats(): array
+    public function getHabitats(): Collection
     {
         return $this->habitats;
-    }
-
-    public function setHabitats(array $habitats): void
-    {
-        $this->habitats = $habitats;
     }
 
     public function getFeeding(): string

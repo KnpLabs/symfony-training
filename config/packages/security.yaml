@@ -35,6 +35,9 @@ security:
         - { path: ^/species$, roles: ROLE_USER }
         - { path: ^/species/\d+$, roles: ROLE_USER }
         - { path: ^/species/, roles: ROLE_ADMIN }
+        - { path: ^/habitats$, roles: ROLE_USER }
+        - { path: ^/habitats/\d+$, roles: ROLE_USER }
+        - { path: ^/habitats/, roles: ROLE_ADMIN }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
