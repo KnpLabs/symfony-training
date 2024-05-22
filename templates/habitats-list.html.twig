@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Species{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('css/dinosaurs.css') }}" />
+{% endblock %}
+
+{% block body %}
+<main>
+  <div class="list-group w-75">
+    {% for habitat in habitatsList %}
+    <a class="list-group-item list-group-item-action d-flex gap-3 py-3 flex-column"
+      href="{{ path('app_habitat', {id: habitat.id}) }}"
+    >
+      <div class="d-flex gap-2 w-100 justify-content-between">
+        {{ habitat.name }}
+      </div>
+      <p class="m-0" ><em>{{ habitat.description }}</em></p>
+    </a>
+    {% endfor %}
+  </div>
+</main>
+{% endblock %}

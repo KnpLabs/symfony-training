@@ -36,16 +36,35 @@
               </li>
               {% if 'ROLE_ADMIN' in app.user.roles %}
                 <li class="nav-item">
-                  <a 
-                    class="nav-link{% if app.request.get('_route') == 'app_create_dinosaur' %} active{% endif %}" 
+                  <a
+                    class="nav-link{% if app.request.get('_route') == 'app_create_dinosaur' %} active{% endif %}"
                     href="{{ path('app_create_dinosaur') }}"
                   >
                     Create a dinosaur
                   </a>
                 </li>
               {% endif %}
+               <li class="nav-item">
+                <a
+                  class="nav-link{% if app.request.get('_route') == 'app_list_habitats' %} active{% endif %}"
+                  aria-current="page"
+                  href="{{ path('app_list_habitats') }}"
+                >
+                  Habitats list
+                </a>
+              </li>
+              {% if 'ROLE_ADMIN' in app.user.roles %}
+                <li class="nav-item">
+                  <a
+                    class="nav-link{% if app.request.get('_route') == 'app_create_habitat' %} active{% endif %}"
+                    href="{{ path('app_create_habitat') }}"
+                  >
+                    Create an habitat
+                  </a>
+                </li>
+              {% endif %}
               <li class="nav-item">
-                <a 
+                <a
                   class="nav-link{% if app.request.get('_route') == 'app_list_species' %} active{% endif %}"
                   aria-current="page"
                   href="{{ path('app_list_species') }}"
@@ -55,8 +74,8 @@
               </li>
               {% if 'ROLE_ADMIN' in app.user.roles %}
                 <li class="nav-item">
-                  <a 
-                    class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}" 
+                  <a
+                    class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}"
                     href="{{ path('app_create_species') }}"
                   >
                     Create a species
@@ -64,8 +83,8 @@
                 </li>
               {% endif %}
               <li class="nav-item">
-                <a 
-                  class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}" 
+                <a
+                  class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}"
                   href="{{ path('logout') }}"
                 >
                   Logout
@@ -73,7 +92,7 @@
               </li>
             {% else %}
               <li class="nav-item">
-                <a 
+                <a
                   class="nav-link{% if app.request.get('_route') == 'app_list_species' %} active{% endif %}"
                   aria-current="page"
                   href="{{ path('register') }}"
@@ -82,8 +101,8 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a 
-                  class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}" 
+                <a
+                  class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}"
                   href="{{ path('login') }}"
                 >
                   Login

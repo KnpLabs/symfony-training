@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ habitat.name }}{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('css/habitats.css') }}" />
+{% endblock %}
+
+{% block javascripts  %}
+<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<main>
+  <section>
+    <header>
+        <a href="{{ path('app_list_habitats') }}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
+        </a>
+        <h1>{{ habitat.name }}</h1>
+    </header>
+    <p><em>{{ habitat.description }}</em></p>
+    <h4>It's home to the following species : </h4>
+    <ul>
+      {% for species in habitat.species %}
+        <li>
+            <a href="{{ path('app_edit_species', {id: species.id}) }}">{{ species.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+    <a href="{{ path('app_remove_habitat', {id: habitat.id}) }}" class="btn btn-danger mt-4">Remove</a>
+  </section>
+</main>
+{% endblock %}
