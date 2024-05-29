@@ -1,0 +1,46 @@
+html, body, main {
+    width: 100%;
+    height: 100%;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+main > .bg-blur {
+    height: 100%;
+    width: 100%;
+    background-image: url('../../img/park.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    filter: blur(8px);
+}
+
+main > section {
+    position: absolute;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 2rem;
+    color: white;
+    width: 50%;
+    border: 2px solid white;
+}
+
+main > section > header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+
+main > section > p {
+    font-size: 1.375rem;
+    margin: 2rem 0;
+}
