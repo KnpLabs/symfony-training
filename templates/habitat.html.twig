@@ -19,7 +19,8 @@
     </header>
     <p><em>{{ habitat.description }}</em></p>
     <h4>It's home to the following species :</h4>
-    {{ render(controller('App\\Controller\\SpeciesController::getSpeciesList', {habitat: habitat})) }}
+    {# {{ render(controller('App\\Controller\\SpeciesController::getSpeciesList', {habitat: habitat})) }} #}
+    {{ render_hinclude(controller('App\\Controller\\SpeciesController::getSpeciesList', {habitatId: habitat.id})) }}
     <a href="{{ path('app_remove_habitat', {id: habitat.id}) }}" class="btn btn-danger mt-4">Remove</a>
   </section>
 </main>

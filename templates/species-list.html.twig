@@ -8,7 +8,8 @@
 
 {% block body %}
 <main>
-    {{ render(controller('App\\Controller\\SpeciesController::getSpeciesList')) }}
+    {# {{ render(controller('App\\Controller\\SpeciesController::getSpeciesList')) }} #}
+    {{ render_hinclude(controller('App\\Controller\\SpeciesController::getSpeciesList')) }}
 </main>
 {% endblock %}
 

@@ -13,12 +13,20 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class SpeciesController extends AbstractController
 {
-    public function getSpeciesList(?Habitat $habitat = null, ManagerRegistry $doctrine): Response
+    public function getSpeciesList(?string $habitatId = null, ManagerRegistry $doctrine): Response
     {
         $speciesList = [];
 
-        if (null !== $habitat) {
-            $speciesList = $habitat->getSpecies();
+        if (
+            null !== $habitatId
+        ) {
+            $habitat = $doctrine
+                ->getRepository(Habitat::class)
+                ->find($habitatId);
+
+            if ($habitat instanceof Habitat) {
+                $speciesList = $habitat->getSpecies();
+            }
         } else {
             $speciesList = $doctrine
                 ->getRepository(Species::class)
