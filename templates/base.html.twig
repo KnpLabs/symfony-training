@@ -18,92 +18,24 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             {% if app.user is not null %}
-              <li class="nav-item">
-                <a
-                  class="nav-link{% if app.request.get('_route') == 'app_list_dinosaurs' %} active{% endif %}"
-                  aria-current="page"
-                  href="{{ path('app_list_dinosaurs') }}"
-                >
-                  Dinosaurs list
-                </a>
-              </li>
+              {{ include('_nav-item.html.twig', { route: { name: 'app_list_dinosaurs', title: 'Dinosaurs list' } }) }}
               {% if 'ROLE_ADMIN' in app.user.roles %}
-                <li class="nav-item">
-                  <a
-                    class="nav-link{% if app.request.get('_route') == 'app_create_dinosaur' %} active{% endif %}"
-                    href="{{ path('app_create_dinosaur') }}"
-                  >
-                    Create a dinosaur
-                  </a>
-                </li>
+                {{ include('_nav-item.html.twig', { route: { name: 'app_create_dinosaur', title: 'Create a dinosaur' } }) }}
               {% endif %}
-               <li class="nav-item">
-                <a
-                  class="nav-link{% if app.request.get('_route') == 'app_list_habitats' %} active{% endif %}"
-                  aria-current="page"
-                  href="{{ path('app_list_habitats') }}"
-                >
-                  Habitats list
-                </a>
-              </li>
+                {{ include('_nav-item.html.twig', { route: { name: 'app_list_habitats', title: 'Habitats list' } }) }}
               {% if 'ROLE_ADMIN' in app.user.roles %}
-                <li class="nav-item">
-                  <a
-                    class="nav-link{% if app.request.get('_route') == 'app_create_habitat' %} active{% endif %}"
-                    href="{{ path('app_create_habitat') }}"
-                  >
-                    Create an habitat
-                  </a>
-                </li>
+                {{ include('_nav-item.html.twig', { route: { name: 'app_create_habitat', title: 'Create an habitat' } }) }}
               {% endif %}
-              <li class="nav-item">
-                <a
-                  class="nav-link{% if app.request.get('_route') == 'app_list_species' %} active{% endif %}"
-                  aria-current="page"
-                  href="{{ path('app_list_species') }}"
-                >
-                  Species list
-                </a>
-              </li>
+                {{ include('_nav-item.html.twig', { route: { name: 'app_list_species', title: 'Species list' } }) }}
               {% if 'ROLE_ADMIN' in app.user.roles %}
-                <li class="nav-item">
-                  <a
-                    class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}"
-                    href="{{ path('app_create_species') }}"
-                  >
-                    Create a species
-                  </a>
-                </li>
+                {{ include('_nav-item.html.twig', { route: { name: 'app_create_species', title: 'Create a species' } }) }}
               {% endif %}
-              <li class="nav-item">
-                <a
-                  class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}"
-                  href="{{ path('logout') }}"
-                >
-                  Logout
-                </a>
-              </li>
+              {{ include('_nav-item.html.twig', { route: { name: 'logout', title: 'Logout' } }) }}
             {% else %}
-              <li class="nav-item">
-                <a
-                  class="nav-link{% if app.request.get('_route') == 'app_list_species' %} active{% endif %}"
-                  aria-current="page"
-                  href="{{ path('register') }}"
-                >
-                  Register
-                </a>
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}"
-                  href="{{ path('login') }}"
-                >
-                  Login
-                </a>
-              </li>
+              {{ include('_nav-item.html.twig', { route: { name: 'register' , title: 'Register' } }) }}
+              {{ include('_nav-item.html.twig', { route: { name: 'login' , title: 'Login' } }) }}
             {% endif %}
           </ul>
-
             {% if searchForm is defined %}
               {{ form_start(searchForm, { 'attr': {'class': 'd-flex'}}) }}
                 {{ form_widget(searchForm.q) }}
@@ -126,9 +58,9 @@
       <div id="container">
         {% for name, messages in app.session.flashbag.all %}
           {% for message in messages %}
-          <div class="alert alert-{{ name }}">
-            {{ message }}
-          </div>
+            <div class="alert alert-{{ name }}">
+                {{ message }}
+            </div>
           {% endfor %}
         {% endfor %}
       </div>
