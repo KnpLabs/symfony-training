@@ -3,8 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Welcome to {{title}}!</title>
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/index.css') }}" />
+    {{ importmap(['app', 'home']) }}
   </head>
   <body>
     <main>
@@ -33,3 +32,4 @@
     </main>
   </body>
 </html>
+

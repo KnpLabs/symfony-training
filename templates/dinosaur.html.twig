@@ -2,13 +2,8 @@
 
 {% block title %}{{ dinosaur.name }}{% endblock %}
 
-{% block stylesheets %}
-{{ parent() }}
-<link rel="stylesheet" href="{{ asset('css/dinosaurs.css') }}" />
-{% endblock %}
-
-{% block javascripts  %}
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+{% block importmap %}
+  {{ importmap(['app', 'dinosaurs']) }}
 {% endblock %}
 
 {% block body %}

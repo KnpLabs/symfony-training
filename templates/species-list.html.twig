@@ -2,9 +2,8 @@
 
 {% block title %}Species{% endblock %}
 
-{% block stylesheets %}
-{{ parent() }}
-<link rel="stylesheet" href="{{ asset('css/dinosaurs.css') }}" />
+{% block importmap %}
+  {{ importmap(['app', 'dinosaurs']) }}
 {% endblock %}
 
 {% block body %}
@@ -15,10 +14,10 @@
       href="{{ path('app_edit_species', {id: species.id}) }}"
     >
       <img
-      src="{{ asset('img/dino.png') }}" 
-      alt="twbs" 
-      width="32" 
-      height="32" 
+      src="{{ asset('img/dino.png') }}"
+      alt="twbs"
+      width="32"
+      height="32"
       class="rounded-circle flex-shrink-0"
       >
       <div class="d-flex gap-2 w-100 justify-content-between">

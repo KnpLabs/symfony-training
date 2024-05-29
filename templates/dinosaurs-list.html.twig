@@ -2,13 +2,8 @@
 
 {% block title %}Dinosaurs{% endblock %}
 
-{% block stylesheets %}
-{{ parent() }}
-<link rel="stylesheet" href="{{ asset('css/dinosaurs.css') }}" />
-{% endblock %}
-
-{% block javascripts  %}
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+{% block importmap %}
+  {{ importmap(['app', 'dinosaurs']) }}
 {% endblock %}
 
 {% block body %}
@@ -19,11 +14,11 @@
       href="{{ path('app_single_dinosaur', {id: dinosaur.id}) }}"
     >
       <img
-      src="{{ asset('img/dino.png') }}" 
-      alt="twbs" 
-      width="32" 
-      height="32" 
-      class="rounded-circle flex-shrink-0"
+        src="{{ asset('img/dino.png') }}"
+        alt="twbs"
+        width="32"
+        height="32"
+        class="rounded-circle flex-shrink-0"
       >
       <div class="d-flex gap-2 w-100 justify-content-between">
         {{ dinosaur.name }}

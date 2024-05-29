@@ -2,13 +2,8 @@
 
 {% block title %}{{ habitat.name }}{% endblock %}
 
-{% block stylesheets %}
-{{ parent() }}
-<link rel="stylesheet" href="{{ asset('css/habitats.css') }}" />
-{% endblock %}
-
-{% block javascripts  %}
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+{% block importmap %}
+  {{ importmap(['app', 'habitat']) }}
 {% endblock %}
 
 {% block body %}
@@ -35,3 +30,4 @@
   </section>
 </main>
 {% endblock %}
+
