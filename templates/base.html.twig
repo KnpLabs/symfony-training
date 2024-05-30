@@ -18,22 +18,22 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             {% if app.user is not null %}
-              {{ include('_nav-item.html.twig', { route: { name: 'app_list_dinosaurs', title: 'Dinosaurs list' } }) }}
+              <twig:Molecules:NavItem route='app_list_dinosaurs' title='Dinosaurs list' />
               {% if 'ROLE_ADMIN' in app.user.roles %}
-                {{ include('_nav-item.html.twig', { route: { name: 'app_create_dinosaur', title: 'Create a dinosaur' } }) }}
+                <twig:Molecules:NavItem route='app_create_dinosaur' title='Create a dinosaur' />
               {% endif %}
-                {{ include('_nav-item.html.twig', { route: { name: 'app_list_habitats', title: 'Habitats list' } }) }}
+                <twig:Molecules:NavItem route='app_list_habitats' title='Habitats list' />
               {% if 'ROLE_ADMIN' in app.user.roles %}
-                {{ include('_nav-item.html.twig', { route: { name: 'app_create_habitat', title: 'Create an habitat' } }) }}
+                <twig:Molecules:NavItem route='app_create_habitat' title='Create a habitat' />
               {% endif %}
-                {{ include('_nav-item.html.twig', { route: { name: 'app_list_species', title: 'Species list' } }) }}
+                <twig:Molecules:NavItem route='app_list_species' title='Species list' />
               {% if 'ROLE_ADMIN' in app.user.roles %}
-                {{ include('_nav-item.html.twig', { route: { name: 'app_create_species', title: 'Create a species' } }) }}
+                <twig:Molecules:NavItem route='app_create_species' title='Create a species' />
               {% endif %}
-              {{ include('_nav-item.html.twig', { route: { name: 'logout', title: 'Logout' } }) }}
+              <twig:Molecules:NavItem route='logout' title='Logout' />
             {% else %}
-              {{ include('_nav-item.html.twig', { route: { name: 'register' , title: 'Register' } }) }}
-              {{ include('_nav-item.html.twig', { route: { name: 'login' , title: 'Login' } }) }}
+              <twig:Molecules:NavItem route='register' title='Register' />
+              <twig:Molecules:NavItem route='login' title='Login' />
             {% endif %}
           </ul>
             {% if searchForm is defined %}

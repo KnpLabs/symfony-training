@@ -1,0 +1,9 @@
+<a
+    class='nav-link {% if this.isActive %}active{% endif %}'
+    href="{{ href }}"
+    {% if this.ariaCurrent is defined %}
+        aria-current="{{ this.ariaCurrent }}"
+    {% endif %}
+>
+    {{ title }}
+</a>
