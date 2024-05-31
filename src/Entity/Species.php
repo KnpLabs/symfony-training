@@ -15,9 +15,6 @@ class Species
         private array $habitats,
         private string $feeding,
     ) {
-        $this->name = $name;
-        $this->habitats = $habitats;
-        $this->feeding = $feeding;
         $this->dinosaurs = new ArrayCollection();
     }
 
