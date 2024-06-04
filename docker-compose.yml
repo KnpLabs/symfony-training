@@ -41,6 +41,18 @@ services:
         volumes:
             - db-data:/var/lib/mysql:rw
         restart: unless-stopped
+    mercure:
+        image: dunglas/mercure
+        restart: unless-stopped
+        command: /usr/bin/caddy run --config /etc/caddy/Caddyfile.dev
+        environment:
+            SERVER_NAME: ${MERCURE_SERVER_NAME}
+            MERCURE_PUBLISHER_JWT_KEY: ${MERCURE_JWT_KEY}
+            MERCURE_SUBSCRIBER_JWT_KEY: ${MERCURE_JWT_KEY}
+            MERCURE_EXTRA_DIRECTIVES: |
+                cors_origins ${MERCURE_CORS_ALLOWED_ORIGINS}
+        ports:
+            - 81:80
 
 volumes:
     db-data: ~

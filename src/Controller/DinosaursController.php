@@ -5,6 +5,10 @@ namespace App\Controller;
 use App\Entity\Dinosaur;
 use App\Form\Type\DinosaurType;
 use App\Form\Type\SearchType;
+use App\Service\Realtime\Publisher;
+use App\Realtime\Trigger\DinosaurCreated;
+use App\Realtime\Trigger\DinosaurDeleted;
+use App\Realtime\Trigger\DinosaurUpdated;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,8 +18,10 @@ use Symfony\Component\Routing\Annotation\Route;
 final class DinosaursController extends AbstractController
 {
     #[Route('/dinosaurs', name: 'app_list_dinosaurs')]
-    public function list(Request $request, ManagerRegistry $doctrine): Response
-    {
+    public function list(
+        Request $request,
+        ManagerRegistry $doctrine,
+    ): Response {
         $q = null;
         $form = $this->createForm(SearchType::class);
 
@@ -58,8 +64,11 @@ final class DinosaursController extends AbstractController
     }
 
     #[Route('/dinosaurs/create', name: 'app_create_dinosaur')]
-    public function create(Request $request, ManagerRegistry $doctrine): Response
-    {
+    public function create(
+        Request $request,
+        ManagerRegistry $doctrine,
+        Publisher $publisher
+    ): Response {
         $form = $this->createForm(DinosaurType::class);
 
         $form->handleRequest($request);
@@ -72,6 +81,14 @@ final class DinosaursController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'The dinosaur has been created!');
+
+            $publisher->publish(new DinosaurCreated(
+                $dinosaur,
+                $this->generateUrl(
+                    'app_single_dinosaur',
+                    ['id' => $dinosaur->getId()]
+                )
+            ));
 
             return $this->redirectToRoute('app_list_dinosaurs');
         }
@@ -86,11 +103,17 @@ final class DinosaursController extends AbstractController
         name: 'app_edit_dinosaur',
         requirements: ['id' => '\d+']
     )]
-    public function edit(Request $request, int $id, ManagerRegistry $doctrine): Response
-    {
+    public function edit(
+        Request $request,
+        int $id,
+        ManagerRegistry $doctrine,
+        Publisher $publisher
+    ): Response {
         $dinosaur = $doctrine
             ->getRepository(Dinosaur::class)
             ->find($id);
+
+        $oldName = $dinosaur->getName();
 
         if (false === $dinosaur) {
             throw $this->createNotFoundException('The dinosaur you are looking for does not exists.');
@@ -108,6 +131,15 @@ final class DinosaursController extends AbstractController
 
             $this->addFlash('success', 'The dinosaur has been edited!');
 
+            $publisher->publish(new DinosaurUpdated(
+                $dinosaur,
+                $oldName,
+                $this->generateUrl(
+                    'app_single_dinosaur',
+                    ['id' => $dinosaur->getId()]
+                )
+            ));
+
             return $this->redirectToRoute('app_list_dinosaurs');
         }
 
@@ -121,8 +153,11 @@ final class DinosaursController extends AbstractController
         name: 'app_remove_dinosaur',
         requirements: ['id' => '\d+']
     )]
-    public function remove(int $id, ManagerRegistry $doctrine): Response
-    {
+    public function remove(
+        int $id,
+        ManagerRegistry $doctrine,
+        Publisher $publisher
+    ): Response {
         $dinosaur = $doctrine
             ->getRepository(Dinosaur::class)
             ->find($id);
@@ -136,6 +171,8 @@ final class DinosaursController extends AbstractController
         $em->flush();
 
         $this->addFlash('success', 'The dinosaur has been removed!');
+
+        $publisher->publish(new DinosaurDeleted($id, $dinosaur));
 
         return $this->redirectToRoute('app_list_dinosaurs');
     }
