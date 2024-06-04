@@ -1,0 +1,13 @@
+{% extends 'emails/layout.html.twig' %}
+
+{% block messageBody %}
+{% apply inline_css(source('@styles/email/dinosaur_has_been_created.css')) %}
+
+<div id="title-wrapper">
+    <img src="{{ email.image('@images/email/dino.png') }}" alt="Dino Park" />
+    <h1>Congratulations ! {{ dinosaur.name }} has been created !</h1>
+</div>
+<p>It is now part of your collection !</p>
+
+{% endapply %}
+{% endblock %}
