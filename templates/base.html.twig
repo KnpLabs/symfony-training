@@ -3,15 +3,8 @@
   <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
-    {# Run `composer require symfony/webpack-encore-bundle`
-    and uncomment the following Encore helpers to start using Symfony UX #}
-    {% block stylesheets %}
-    {#{{ encore_entry_link_tags('app') }}#}
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" />
-    {% endblock %}
-
     {% block javascripts %}
-    {#{{ encore_entry_script_tags('app') }}#}
+      {% block importmap %}{{ importmap('app') }}{% endblock %}
     {% endblock %}
   </head>
   <body>
@@ -25,73 +18,24 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             {% if app.user is not null %}
-              <li class="nav-item">
-                <a
-                  class="nav-link{% if app.request.get('_route') == 'app_list_dinosaurs' %} active{% endif %}"
-                  aria-current="page"
-                  href="{{ path('app_list_dinosaurs') }}"
-                >
-                  Dinosaurs list
-                </a>
-              </li>
+              <twig:Molecules:NavItem route='app_list_dinosaurs'>Dinosaurs list</twig:Molecules:NavItem>
               {% if 'ROLE_ADMIN' in app.user.roles %}
-                <li class="nav-item">
-                  <a 
-                    class="nav-link{% if app.request.get('_route') == 'app_create_dinosaur' %} active{% endif %}" 
-                    href="{{ path('app_create_dinosaur') }}"
-                  >
-                    Create a dinosaur
-                  </a>
-                </li>
+                <twig:Molecules:NavItem route='app_create_dinosaur'>Create a dinosaur</twig:Molecules:NavItem>
               {% endif %}
-              <li class="nav-item">
-                <a 
-                  class="nav-link{% if app.request.get('_route') == 'app_list_species' %} active{% endif %}"
-                  aria-current="page"
-                  href="{{ path('app_list_species') }}"
-                >
-                  Species list
-                </a>
-              </li>
+                <twig:Molecules:NavItem route='app_list_habitats'>Habitats list</twig:Molecules:NavItem>
               {% if 'ROLE_ADMIN' in app.user.roles %}
-                <li class="nav-item">
-                  <a 
-                    class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}" 
-                    href="{{ path('app_create_species') }}"
-                  >
-                    Create a species
-                  </a>
-                </li>
+                <twig:Molecules:NavItem route='app_create_habitat'>Create a habitat</twig:Molecules:NavItem>
               {% endif %}
-              <li class="nav-item">
-                <a 
-                  class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}" 
-                  href="{{ path('logout') }}"
-                >
-                  Logout
-                </a>
-              </li>
+                <twig:Molecules:NavItem route='app_list_species'>Species list</twig:Molecules:NavItem>
+              {% if 'ROLE_ADMIN' in app.user.roles %}
+                <twig:Molecules:NavItem route='app_create_species'>Create a species</twig:Molecules:NavItem>
+              {% endif %}
+              <twig:Molecules:NavItem route='logout'>Logout</twig:Molecules:NavItem>
             {% else %}
-              <li class="nav-item">
-                <a 
-                  class="nav-link{% if app.request.get('_route') == 'app_list_species' %} active{% endif %}"
-                  aria-current="page"
-                  href="{{ path('register') }}"
-                >
-                  Register
-                </a>
-              </li>
-              <li class="nav-item">
-                <a 
-                  class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}" 
-                  href="{{ path('login') }}"
-                >
-                  Login
-                </a>
-              </li>
+              <twig:Molecules:NavItem route='register'>Register</twig:Molecules:NavItem>
+              <twig:Molecules:NavItem route='login'>Login</twig:Molecules:NavItem>
             {% endif %}
           </ul>
-
             {% if searchForm is defined %}
               {{ form_start(searchForm, { 'attr': {'class': 'd-flex'}}) }}
                 {{ form_widget(searchForm.q) }}
@@ -114,9 +58,9 @@
       <div id="container">
         {% for name, messages in app.session.flashbag.all %}
           {% for message in messages %}
-          <div class="alert alert-{{ name }}">
-            {{ message }}
-          </div>
+            <div class="alert alert-{{ name }}">
+                {{ message }}
+            </div>
           {% endfor %}
         {% endfor %}
       </div>

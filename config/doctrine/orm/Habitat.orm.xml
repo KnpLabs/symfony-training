@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+      xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity
+        name="App\Entity\Habitat"
+        repository-class="App\Repository\HabitatRepository"
+        table="habitat"
+    >
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="name" column="name" type="string" length="255" nullable="false" unique="true" />
+        <field name="description" column="habitats" type="string" length="255" nullable="false" unique="false" />
+        <many-to-many
+            field="species"
+            target-entity="App\Entity\Species"
+            mapped-by="habitats"
+        />
+    </entity>
+
+</doctrine-mapping>

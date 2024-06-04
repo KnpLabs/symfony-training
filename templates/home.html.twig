@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Welcome to {{title}}!</title>
+    {{ importmap(['app', 'home']) }}
+  </head>
+  <body>
+    <main>
+      <div class="bg-blur"></div>
+      <section>
+        <header>
+            <img
+                class="rounded-circle flex-shrink-0"
+                src="{{ asset('img/dino.png') }}"
+                alt="dinosaur"
+                width="64"
+                height="64"
+            >
+            <h1>Welcome to {{title}} !</h1>
+        </header>
+        <p>
+            Welcome to the {{title}}! We are happy to welcome you to our park. We have a wide variety of species and habitats to discover.
+        </p>
+        <p>
+            We hope you will enjoy your visit!
+        </p>
+        <a href="{{ path('app_list_habitats') }}" class="btn btn-primary">
+            Log in
+        </a>
+      </section>
+    </main>
+  </body>
+</html>
+

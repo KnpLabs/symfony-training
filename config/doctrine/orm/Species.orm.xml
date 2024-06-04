@@ -15,13 +15,22 @@
         </id>
 
         <field name="name" column="name" type="string" length="255" nullable="false" unique="true" />
-        <field name="habitats" column="habitats" type="simple_array" nullable="false" unique="false" />
         <field name="feeding" column="feeding" type="string" length="255" nullable="false" unique="false" />
 
-        <one-to-many
-            field="dinosaurs"
-            target-entity="App\Entity\Dinosaur"
-            mapped-by="species" />
+        <many-to-many
+            field="habitats"
+            target-entity="App\Entity\Habitat"
+            inversed-by="species"
+        >
+            <join-table name="species_habitats">
+                <join-columns>
+                    <join-column name="habitat_id" referenced-column-name="id" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="species_id" referenced-column-name="id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
     </entity>
 
 </doctrine-mapping>

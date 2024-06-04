@@ -1,0 +1,11 @@
+{% set isCurrentRoute = app.request.get('_route') == route.name %}
+
+<li class="nav-item">
+  <a
+    class="nav-link{% if isCurrentRoute %} active{% endif %}"
+    aria-current="{% if isCurrentRoute %}page{% endif %}"
+    href="{{ path(route.name) }}"
+  >
+    {{ route.title }}
+  </a>
+</li>

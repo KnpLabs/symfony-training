@@ -1,0 +1,8 @@
+<li class="nav-item">
+    <twig:Atoms:NavLink
+        href="{{ this.getRoutePath }}"
+        isActive="{{ this.isActive }}"
+    >
+        {{ block(outerBlocks.content)}}
+    </twig:Atoms:NavLink>
+</li>

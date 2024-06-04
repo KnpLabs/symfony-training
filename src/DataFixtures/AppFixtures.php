@@ -3,9 +3,11 @@
 namespace App\DataFixtures;
 
 use App\Entity\Dinosaur;
+use App\Entity\Habitat;
 use App\Entity\Species;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -48,57 +50,89 @@ final class AppFixtures extends Fixture
         $manager->flush();
 
         /**
+         * Create habitats.
+         */
+        $forest = new Habitat(
+            'Forest',
+            'A forest is a large area dominated by trees. Hundreds of more precise definitions of forest are used throughout the world, incorporating factors such as tree density, tree height, land use, legal standing, and ecological function.'
+        );
+
+        $manager->persist($forest);
+
+        $desert = new Habitat(
+            'Desert',
+            'A desert is a barren area of landscape where little precipitation occurs and, consequently, living conditions are hostile for plant and animal life.'
+        );
+
+        $manager->persist($desert);
+
+        $sea = new Habitat(
+            'Sea',
+            'The sea is the interconnected system of all the Earth\'s oceanic waters, including the Atlantic, Pacific, Indian, Southern, and Arctic Oceans.'
+        );
+
+        $manager->persist($sea);
+
+        $air = new Habitat(
+            'Air',
+            'Air is the Earth\'s atmosphere. Air around us is a mixture of many gases and dust particles.'
+        );
+
+        $manager->persist($air);
+
+
+        /**
          * Create species.
          */
         $species = [
             [
                 'name' => 'Tyrannosaurus rex',
-                'habitats' => ['Forest'],
+                'habitats' => new ArrayCollection([$forest]),
                 'feeding' => 'Carnivore',
             ],
             [
                 'name' => 'Velociraptor',
-                'habitats' => ['Air', 'Forest'],
+                'habitats' => new ArrayCollection([$air, $forest]),
                 'feeding' => 'Carnivore',
             ],
             [
                 'name' => 'Triceratops',
-                'habitats' => ['Forest'],
+                'habitats' => new ArrayCollection([$forest]),
                 'feeding' => 'Herbivore',
             ],
             [
                 'name' => 'Stegosaurus',
-                'habitats' => ['Forest'],
+                'habitats' => new ArrayCollection([$forest]),
                 'feeding' => 'Herbivore',
             ],
             [
                 'name' => 'Brachiosaurus',
-                'habitats' => ['Forest'],
+                'habitats' => new ArrayCollection([$forest]),
                 'feeding' => 'Herbivore',
             ],
             [
                 'name' => 'Allosaurus',
-                'habitats' => ['Forest'],
+                'habitats' => new ArrayCollection([$forest]),
                 'feeding' => 'Carnivore',
             ],
             [
                 'name' => 'Pteranodon',
-                'habitats' => ['Sea', 'Air'],
+                'habitats' => new ArrayCollection([$sea, $air]),
                 'feeding' => 'Carnivore',
             ],
             [
                 'name' => 'Diplodocus',
-                'habitats' => ['Forest'],
+                'habitats' => new ArrayCollection([$forest]),
                 'feeding' => 'Herbivore',
             ],
             [
                 'name' => 'Parasaurolophus',
-                'habitats' => ['Forest', 'Desert'],
+                'habitats' => new ArrayCollection([$forest, $desert]),
                 'feeding' => 'Herbivore',
             ],
             [
                 'name' => 'Spinosaurus',
-                'habitats' => ['Forest', 'Sea'],
+                'habitats' => new ArrayCollection([$forest, $sea]),
                 'feeding' => 'Carnivore',
             ],
         ];
@@ -106,8 +140,8 @@ final class AppFixtures extends Fixture
         foreach ($species as $specie) {
             $specie = new Species(
                 $specie['name'],
-                $specie['habitats'],
                 $specie['feeding'],
+                $specie['habitats']
             );
 
             $manager->persist($specie);

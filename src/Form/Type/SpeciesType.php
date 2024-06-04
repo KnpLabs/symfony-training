@@ -2,7 +2,9 @@
 
 namespace App\Form\Type;
 
+use App\Entity\Habitat;
 use App\Entity\Species;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -17,14 +19,11 @@ final class SpeciesType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('habitats', ChoiceType::class, [
-                'choices' => [
-                    'Forest' => 'Forest',
-                    'Sea' => 'Sea',
-                    'Desert' => 'Desert',
-                    'Air' => 'Air',
-                ],
+            ->add('habitats', EntityType::class, [
+                'class' => Habitat::class,
+                'choice_label' => 'name',
                 'multiple' => true,
+                'expanded' => true,
             ])
             ->add('feeding', ChoiceType::class, [
                 'choices' => [
@@ -43,8 +42,8 @@ final class SpeciesType extends AbstractType
             'empty_data' => function (FormInterface $form) {
                 return new Species(
                     $form->get('name')->getData(),
-                    $form->get('habitats')->getData(),
                     $form->get('feeding')->getData(),
+                    $form->get('habitats')->getData()
                 );
             },
         ]);

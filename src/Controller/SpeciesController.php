@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Habitat;
 use App\Entity\Species;
 use App\Form\Type\SpeciesType;
 use Doctrine\Persistence\ManagerRegistry;
@@ -12,6 +13,31 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class SpeciesController extends AbstractController
 {
+    public function getSpeciesList(?string $habitatId = null, ManagerRegistry $doctrine): Response
+    {
+        $speciesList = [];
+
+        if (
+            null !== $habitatId
+        ) {
+            $habitat = $doctrine
+                ->getRepository(Habitat::class)
+                ->find($habitatId);
+
+            if ($habitat instanceof Habitat) {
+                $speciesList = $habitat->getSpecies();
+            }
+        } else {
+            $speciesList = $doctrine
+                ->getRepository(Species::class)
+                ->findAll();
+        }
+
+        return $this->render('_species-list.html.twig', [
+            'speciesList' => $speciesList,
+        ]);
+    }
+
     #[Route('/species', name: 'app_list_species')]
     public function list(ManagerRegistry $doctrine): Response
     {
