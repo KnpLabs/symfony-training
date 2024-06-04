@@ -41,6 +41,8 @@ services:
         volumes:
             - db-data:/var/lib/mysql:rw
         restart: unless-stopped
+        ports:
+            - 3306:3306
 
 volumes:
     db-data: ~
