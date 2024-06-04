@@ -8,7 +8,7 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 RUN apk add --no-cache \
     bash==5.2.21-r0 \
-    git==2.43.0-r0 \
+    git==2.43.4-r0 \
     icu-dev==74.1-r0
 
 RUN mkdir -p /usr/src/app \
