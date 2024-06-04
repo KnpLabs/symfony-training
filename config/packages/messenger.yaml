@@ -1,0 +1,31 @@
+framework:
+    messenger:
+      default_bus: command_bus
+      buses:
+        command_bus:
+            middleware:
+                - doctrine_transaction
+                - dispatch_after_current_bus
+                - App\Middleware\LockMiddleware
+        event_bus:
+            default_middleware: allow_no_handlers
+            middleware:
+                - doctrine_transaction
+      failure_transport: failed
+      transports:
+          async_high_priority:
+            dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+            options:
+                queue_name: high_priority
+          async_low_priority:
+            dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+            options:
+                queue_name: low_priority
+          failed:
+            dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+            options:
+                queue_name: failed
+      routing:
+          'App\Message\Food\Consume': async_low_priority
+          'App\Message\Food\Refill': async_high_priority
+          'App\Event\AsyncLowPriorityEvent': async_low_priority

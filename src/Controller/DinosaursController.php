@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Bus\CommandBus;
 use App\Entity\Dinosaur;
 use App\Form\Type\DinosaurType;
 use App\Form\Type\SearchType;
+use App\Message\Dinosaur\Create;
+use App\Message\Dinosaur\Delete;
+use App\Message\Dinosaur\Edit;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +17,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class DinosaursController extends AbstractController
 {
+    public function __construct(
+        private CommandBus $bus
+    ) {
+    }
+
     #[Route('/dinosaurs', name: 'app_list_dinosaurs')]
     public function list(Request $request, ManagerRegistry $doctrine): Response
     {
@@ -58,20 +67,28 @@ final class DinosaursController extends AbstractController
     }
 
     #[Route('/dinosaurs/create', name: 'app_create_dinosaur')]
-    public function create(Request $request, ManagerRegistry $doctrine): Response
+    public function create(Request $request): Response
     {
         $form = $this->createForm(DinosaurType::class);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $doctrine->getManager();
-            $dinosaur = $form->getData();
+            $data = $form->getData();
 
-            $em->persist($dinosaur);
-            $em->flush();
+            $result = $this->bus->dispatch(new Create(
+                name: $data->getName(),
+                gender: $data->getGender(),
+                eyesColor: $data->getEyesColor(),
+                age: $data->getAge(),
+                speciesId: $data->getSpecies()->getId(),
+                parkId: $data->getPark()->getId()
+            ));
 
-            $this->addFlash('success', 'The dinosaur has been created!');
+            $this->addFlash('success', sprintf(
+                'The dinosaur with id %s has been created!',
+                $result->id
+            ));
 
             return $this->redirectToRoute('app_list_dinosaurs');
         }
@@ -86,7 +103,7 @@ final class DinosaursController extends AbstractController
         name: 'app_edit_dinosaur',
         requirements: ['id' => '\d+']
     )]
-    public function edit(Request $request, int $id, ManagerRegistry $doctrine): Response
+    public function edit(Request $request, string $id, ManagerRegistry $doctrine): Response
     {
         $dinosaur = $doctrine
             ->getRepository(Dinosaur::class)
@@ -101,10 +118,16 @@ final class DinosaursController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $doctrine->getManager();
-            $dinosaur = $form->getData();
+            $data = $form->getData();
 
-            $em->flush();
+            $this->bus->dispatch(new Edit(
+                id: $id,
+                name: $data->getName(),
+                gender: $data->getGender(),
+                eyesColor: $data->getEyesColor(),
+                age: $data->getAge(),
+                speciesId: $data->getSpecies()->getId()
+            ));
 
             $this->addFlash('success', 'The dinosaur has been edited!');
 
@@ -121,19 +144,9 @@ final class DinosaursController extends AbstractController
         name: 'app_remove_dinosaur',
         requirements: ['id' => '\d+']
     )]
-    public function remove(int $id, ManagerRegistry $doctrine): Response
+    public function remove(string $id): Response
     {
-        $dinosaur = $doctrine
-            ->getRepository(Dinosaur::class)
-            ->find($id);
-
-        if (false === $dinosaur) {
-            throw $this->createNotFoundException('The dinosaur you are looking for does not exists.');
-        }
-
-        $em = $doctrine->getManager();
-        $em->remove($dinosaur);
-        $em->flush();
+        $this->bus->dispatch(new Delete($id));
 
         $this->addFlash('success', 'The dinosaur has been removed!');
 

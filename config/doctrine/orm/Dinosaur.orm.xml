@@ -24,6 +24,11 @@
             target-entity="App\Entity\Species"
             inversed-by="dinosaurs" />
 
+        <many-to-one
+            field="park"
+            target-entity="App\Entity\Park"
+            inversed-by="dinosaurs" />
+
     </entity>
 
 </doctrine-mapping>
