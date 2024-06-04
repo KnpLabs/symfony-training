@@ -14,10 +14,6 @@ build:
 install-deps:
 	docker compose run --rm php composer install
 
-.PHONY: database-migrate
-database-migrate:
-	docker compose run --rm php bin/console doctrine:migrations:migrate
-
 .PHONY: database-create
 database-create:
 	docker compose run --rm php bin/console doctrine:database:create
@@ -25,10 +21,3 @@ database-create:
 .PHONY: database-drop
 database-drop:
 	docker compose run --rm php bin/console doctrine:database:drop --if-exists --force
-
-.PHONY: fixtures-load
-fixtures-load:
-	docker compose run --rm php bin/console doctrine:fixtures:load
-
-.PHONY: reset-db
-reset-db: database-drop database-create database-migrate fixtures-load

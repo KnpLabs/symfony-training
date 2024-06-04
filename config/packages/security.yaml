@@ -1,40 +1,27 @@
 security:
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
-
+    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        app_user_provider:
-          entity:
-              class: App\Entity\User
-              property: email
-
-    role_hierarchy:
-        ROLE_ADMIN: ROLE_USER
-
+        users_in_memory: { memory: null }
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
-            provider: app_user_provider
-            form_login:
-                login_path: login
-                check_path: login
-                default_target_path: app_list_dinosaurs
-            logout:
-                path: logout
-                target: login
+            provider: users_in_memory
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#the-firewall
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/dinosaurs$, roles: ROLE_USER }
-        - { path: ^/dinosaurs/\d+$, roles: ROLE_USER }
-        - { path: ^/dinosaurs/, roles: ROLE_ADMIN }
-        - { path: ^/species$, roles: ROLE_USER }
-        - { path: ^/species/\d+$, roles: ROLE_USER }
-        - { path: ^/species/, roles: ROLE_ADMIN }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

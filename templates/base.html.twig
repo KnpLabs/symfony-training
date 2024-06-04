@@ -1,128 +1,17 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
-    {# Run `composer require symfony/webpack-encore-bundle`
-    and uncomment the following Encore helpers to start using Symfony UX #}
-    {% block stylesheets %}
-    {#{{ encore_entry_link_tags('app') }}#}
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" />
-    {% endblock %}
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        {% block stylesheets %}
+        {% endblock %}
 
-    {% block javascripts %}
-    {#{{ encore_entry_script_tags('app') }}#}
-    {% endblock %}
-  </head>
-  <body>
-    {% block menu %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Dinosaurs</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            {% if app.user is not null %}
-              <li class="nav-item">
-                <a
-                  class="nav-link{% if app.request.get('_route') == 'app_list_dinosaurs' %} active{% endif %}"
-                  aria-current="page"
-                  href="{{ path('app_list_dinosaurs') }}"
-                >
-                  Dinosaurs list
-                </a>
-              </li>
-              {% if 'ROLE_ADMIN' in app.user.roles %}
-                <li class="nav-item">
-                  <a 
-                    class="nav-link{% if app.request.get('_route') == 'app_create_dinosaur' %} active{% endif %}" 
-                    href="{{ path('app_create_dinosaur') }}"
-                  >
-                    Create a dinosaur
-                  </a>
-                </li>
-              {% endif %}
-              <li class="nav-item">
-                <a 
-                  class="nav-link{% if app.request.get('_route') == 'app_list_species' %} active{% endif %}"
-                  aria-current="page"
-                  href="{{ path('app_list_species') }}"
-                >
-                  Species list
-                </a>
-              </li>
-              {% if 'ROLE_ADMIN' in app.user.roles %}
-                <li class="nav-item">
-                  <a 
-                    class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}" 
-                    href="{{ path('app_create_species') }}"
-                  >
-                    Create a species
-                  </a>
-                </li>
-              {% endif %}
-              <li class="nav-item">
-                <a 
-                  class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}" 
-                  href="{{ path('logout') }}"
-                >
-                  Logout
-                </a>
-              </li>
-            {% else %}
-              <li class="nav-item">
-                <a 
-                  class="nav-link{% if app.request.get('_route') == 'app_list_species' %} active{% endif %}"
-                  aria-current="page"
-                  href="{{ path('register') }}"
-                >
-                  Register
-                </a>
-              </li>
-              <li class="nav-item">
-                <a 
-                  class="nav-link{% if app.request.get('_route') == 'app_create_species' %} active{% endif %}" 
-                  href="{{ path('login') }}"
-                >
-                  Login
-                </a>
-              </li>
-            {% endif %}
-          </ul>
-
-            {% if searchForm is defined %}
-              {{ form_start(searchForm, { 'attr': {'class': 'd-flex'}}) }}
-                {{ form_widget(searchForm.q) }}
-                {{ form_widget(searchForm.submit) }}
-              {{ form_end(searchForm) }}
-            {% endif %}
-
-            {% if app.user is not null %}
-              <span class="navbar-text ms-2">
-                {{ app.user.userIdentifier }}
-              </span>
-            {% endif %}
-        </div>
-      </div>
-    </nav>
-    {% endblock %}
-
-    {% block flashMessage %}
-      {% if app.session.flashbag.peekAll %}
-      <div id="container">
-        {% for name, messages in app.session.flashbag.all %}
-          {% for message in messages %}
-          <div class="alert alert-{{ name }}">
-            {{ message }}
-          </div>
-          {% endfor %}
-        {% endfor %}
-      </div>
-      {% endif %}
-    {% endblock %}
-
-    {% block body %}{% endblock %}
-  </body>
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
 </html>
