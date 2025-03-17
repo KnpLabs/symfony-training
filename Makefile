@@ -20,7 +20,7 @@ database-migrate:
 
 .PHONY: database-create
 database-create:
-	docker compose run --rm php bin/console doctrine:database:create
+	docker compose run --rm php bin/console doctrine:database:create --if-not-exists
 
 .PHONY: database-drop
 database-drop:
