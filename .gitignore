@@ -1,3 +1,7 @@
+# Composer files and directories ignored for this training project
+# to ensure we always use the latest patch versions of dependencies.
+/composer.lock
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -19,4 +23,9 @@
 ###< phpunit/phpunit ###
 
 .env
-docker compose.override.yml
+compose.override.yml
+
+###> friendsofphp/php-cs-fixer ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###

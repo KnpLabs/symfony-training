@@ -11,7 +11,7 @@ class Dinosaur
         private string $gender,
         private Species $species,
         private int $age,
-        private string $eyesColor
+        private string $eyesColor,
     ) {
     }
 

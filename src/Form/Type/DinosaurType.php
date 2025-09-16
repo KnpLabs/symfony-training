@@ -39,7 +39,7 @@ final class DinosaurType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Dinosaur::class,
-            'empty_data' => function (FormInterface $form) {
+            'empty_data' => static function (FormInterface $form) {
                 return new Dinosaur(
                     $form->get('name')->getData(),
                     $form->get('gender')->getData(),

@@ -40,7 +40,7 @@ final class SpeciesType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Species::class,
-            'empty_data' => function (FormInterface $form) {
+            'empty_data' => static function (FormInterface $form) {
                 return new Species(
                     $form->get('name')->getData(),
                     $form->get('habitats')->getData(),

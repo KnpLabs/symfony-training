@@ -1,3 +1,5 @@
+UID := $(shell id -u)
+
 .PHONY: start
 start: cp-env build install-deps
 	docker compose up -d
@@ -12,23 +14,23 @@ build:
 
 .PHONY: install-deps
 install-deps:
-	docker compose run --rm php composer install
+	docker compose run --rm --user=$(UID) php composer install
 
 .PHONY: database-migrate
 database-migrate:
-	docker compose run --rm php bin/console doctrine:migrations:migrate
+	docker compose run --rm --user=$(UID) php bin/console doctrine:migrations:migrate
 
 .PHONY: database-create
 database-create:
-	docker compose run --rm php bin/console doctrine:database:create --if-not-exists
+	docker compose run --rm --user=$(UID) php bin/console doctrine:database:create --if-not-exists
 
 .PHONY: database-drop
 database-drop:
-	docker compose run --rm php bin/console doctrine:database:drop --if-exists --force
+	docker compose run --rm --user=$(UID) php bin/console doctrine:database:drop --if-exists --force
 
 .PHONY: fixtures-load
 fixtures-load:
-	docker compose run --rm php bin/console doctrine:fixtures:load
+	docker compose run --rm --user=$(UID) php bin/console doctrine:fixtures:load
 
 .PHONY: reset-db
 reset-db: database-drop database-create database-migrate fixtures-load
