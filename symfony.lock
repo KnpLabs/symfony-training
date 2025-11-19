@@ -1,4 +1,16 @@
 {
+    "deptrac/deptrac": {
+        "version": "4.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "3.0",
+            "ref": "05ab8813714080c7bc915cb10c780e6cfdbdb991"
+        },
+        "files": [
+            "deptrac.yaml"
+        ]
+    },
     "doctrine/cache": {
         "version": "2.1.1"
     },
@@ -361,6 +373,18 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
+    },
+    "symfony/messenger": {
+        "version": "6.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.0",
+            "ref": "2523f7d31488903e247a522e760dc279be7f7aaf"
+        },
+        "files": [
+            "config/packages/messenger.yaml"
+        ]
     },
     "symfony/mime": {
         "version": "v5.3.8"
