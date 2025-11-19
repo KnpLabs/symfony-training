@@ -36,7 +36,7 @@ final class AppFixtures extends Fixture
          */
         for ($i = 0; $i < 10; ++$i) {
             $user = new User(
-                'user_' . $i . '@mail.com'
+                'user_'.$i.'@mail.com'
             );
 
             $hashedPassword = $this->passwordHasher->hashPassword($user, 'password');
@@ -129,7 +129,7 @@ final class AppFixtures extends Fixture
 
         for ($i = 0; $i < 15; ++$i) {
             $dinosaur = new Dinosaur(
-                'dinosaur_' . $i,
+                'dinosaur_'.$i,
                 $gender[array_rand($gender)],
                 $speciesList[array_rand($speciesList)],
                 rand(1, 40),

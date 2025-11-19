@@ -1,0 +1,31 @@
+---
+name: Pull Request
+
+on: pull_request
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  php-cs-fixer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: make start
+      - run: docker compose run --rm --no-deps php vendor/bin/php-cs-fixer fix --diff --dry-run
+  container-deprecations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: make start
+      - run: |
+          OUTPUT=$(docker compose run --rm --no-deps php bin/console debug:container --deprecations)
+
+          echo "$OUTPUT"
+
+          if [[ "$OUTPUT" == *"[OK]"* ]]; then
+              exit 0
+          else
+              exit 1
+          fi

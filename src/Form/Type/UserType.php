@@ -18,7 +18,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 final class UserType extends AbstractType implements DataMapperInterface
 {
     public function __construct(
-        private readonly UserPasswordHasherInterface $passwordHasher
+        private readonly UserPasswordHasherInterface $passwordHasher,
     ) {
     }
 
@@ -37,7 +37,7 @@ final class UserType extends AbstractType implements DataMapperInterface
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'empty_data' => function (FormInterface $form) {
+            'empty_data' => static function (FormInterface $form) {
                 return new User(
                     $form->get('email')->getData(),
                 );
