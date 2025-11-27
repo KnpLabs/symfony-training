@@ -12,17 +12,4 @@ class DinosaurRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Dinosaur::class);
     }
-
-    public function search(?string $q): array
-    {
-        if (null === $q) {
-            return $this->findAll();
-        }
-
-        return $this->createQueryBuilder('d')
-            ->where('d.name = :q')
-            ->setParameter('q', $q)
-            ->getQuery()
-            ->getResult();
-    }
 }

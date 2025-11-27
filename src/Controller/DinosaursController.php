@@ -16,25 +16,9 @@ final class DinosaursController extends AbstractController
     #[Route('/dinosaurs', name: 'app_list_dinosaurs')]
     public function list(Request $request, ManagerRegistry $doctrine): Response
     {
-        $q = null;
-        $form = $this->createForm(SearchType::class);
+        $dinosaurs = $doctrine->getRepository(Dinosaur::class)->findAll();
 
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $search = $form->getData();
-
-            $q = $search['q'];
-        }
-
-        $dinosaurs = $doctrine
-            ->getRepository(Dinosaur::class)
-            ->search($q);
-
-        return $this->render('dinosaurs-list.html.twig', [
-            'dinosaurs' => $dinosaurs,
-            'searchForm' => $form->createView(),
-        ]);
+        return $this->render('dinosaurs-list.html.twig', ['dinosaurs' => $dinosaurs]);
     }
 
     #[Route(

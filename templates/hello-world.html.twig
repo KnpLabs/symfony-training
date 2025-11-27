@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello !{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+{% endblock %}
+
+{% block javascripts  %}
+<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<main>
+    <header>
+        <h1>Hello, World!</h1>
+    </header>
+    <section>
+        <p>Welcome to the Hello World page.</p>
+    </section>
+</main>
+{% endblock %}

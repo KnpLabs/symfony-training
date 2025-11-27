@@ -4,7 +4,7 @@ services:
     platform: linux/x86_64
     build: .
     environment:
-      APP_SECRET: $ecretf0rd3v
+      APP_SECRET: secretf0rd3v
       MYSQL_HOST: database
       MYSQL_PORT: 3306
       MYSQL_VERSION: 8.0.27
