@@ -4,12 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Dinosaur;
 use App\Form\Type\DinosaurType;
-use App\Form\Type\SearchType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class DinosaursController extends AbstractController
 {
@@ -42,8 +42,10 @@ final class DinosaursController extends AbstractController
     }
 
     #[Route('/dinosaurs/create', name: 'app_create_dinosaur')]
+    #[IsGranted('ROLE_ADMIN')]
     public function create(Request $request, ManagerRegistry $doctrine): Response
     {
+        $user = $this->getUser();
         $form = $this->createForm(DinosaurType::class);
 
         $form->handleRequest($request);
@@ -51,6 +53,7 @@ final class DinosaursController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $doctrine->getManager();
             $dinosaur = $form->getData();
+            $dinosaur->setCreatedBy($user);
 
             $em->persist($dinosaur);
             $em->flush();
@@ -70,6 +73,7 @@ final class DinosaursController extends AbstractController
         name: 'app_edit_dinosaur',
         requirements: ['id' => '\d+']
     )]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, int $id, ManagerRegistry $doctrine): Response
     {
         $dinosaur = $doctrine
@@ -105,6 +109,7 @@ final class DinosaursController extends AbstractController
         name: 'app_remove_dinosaur',
         requirements: ['id' => '\d+']
     )]
+    #[IsGranted('ROLE_ADMIN')]
     public function remove(int $id, ManagerRegistry $doctrine): Response
     {
         $dinosaur = $doctrine

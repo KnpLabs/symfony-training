@@ -16,6 +16,7 @@ final class DinosaursController extends AbstractController
     public function list(Request $request, ManagerRegistry $doctrine): Response
     {
         $dinosaurs = $doctrine->getRepository(Dinosaur::class)->findAll();
+
         $dinosaurs = array_map(function (Dinosaur $dinosaur) {
             return [
                 'id' => $dinosaur->getId(),

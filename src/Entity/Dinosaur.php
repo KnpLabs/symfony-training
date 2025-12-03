@@ -29,6 +29,9 @@ class Dinosaur
     #[ORM\Column(type: 'string', length: 255)]
     private string $eyesColor;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    private ?User $createdBy = null;
+
     public function __construct(
         string $name,
         string $gender,
@@ -96,5 +99,15 @@ class Dinosaur
     public function setEyesColor(string $eyesColor): void
     {
         $this->eyesColor = $eyesColor;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): void
+    {
+        $this->createdBy = $createdBy;
     }
 }

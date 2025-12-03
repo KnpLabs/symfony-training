@@ -26,3 +26,8 @@ main > section > img {
   width: 8rem;
   margin-right: 4rem;
 }
+
+.disabled-link {
+  pointer-events: none;
+  cursor: not-allowed;
+}

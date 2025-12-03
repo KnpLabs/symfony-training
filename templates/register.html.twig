@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sign up{% endblock %}
+
+{% block body %}
+    <form method="post">
+        <label>Email:</label><br>
+        <input type="email" name="email" required><br>
+
+        <label>Role:</label><br>
+        <select name="role" required placeholder="Select a role ...">
+            <option value="ROLE_USER">User</option>
+            <option value="ROLE_ADMIN">Admin</option>
+        </select><br>
+
+        <label>Password:</label><br>
+        <input type="password" name="password" required><br>
+
+        <button type="submit">Sign Up</button>
+    </form>
+{% endblock %}
