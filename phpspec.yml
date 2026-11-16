@@ -1,0 +1,5 @@
+suites:
+    domain:
+        namespace: Domain
+        psr4_prefix: Domain
+        src_path: src/Domain
