@@ -44,7 +44,8 @@ final class Handler
             $input->gender,
             $species,
             $input->age,
-            $input->eyesColor
+            $input->eyesColor,
+            $input->birthdate
         );
 
         $this->dinosaursCollection->add($dinosaur);

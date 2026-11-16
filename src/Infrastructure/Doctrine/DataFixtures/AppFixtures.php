@@ -3,6 +3,7 @@
 namespace Infrastructure\Doctrine\DataFixtures;
 
 use Application\Security\User;
+use DateTimeImmutable;
 use Domain\Model\User as ModelUser;
 use Domain\Model\Dinosaur;
 use Domain\Model\Species;
@@ -134,7 +135,8 @@ final class AppFixtures extends Fixture
                 $gender[array_rand($gender)],
                 $speciesList[array_rand($speciesList)],
                 rand(1, 40),
-                '#000000'
+                '#000000',
+                new DateTimeImmutable(sprintf('-%d minutes', random_int(0, 60 * 24 * 365)))
             );
 
             $manager->persist($dinosaur);

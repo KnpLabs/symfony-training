@@ -8,13 +8,15 @@ use Domain\ReadModel\Dinosaur;
 
 final readonly class Input
 {
+
     public function __construct(
         public string $id,
         public string $name,
         public string $gender,
         public string $speciesId,
         public int $age,
-        public string $eyesColor
+        public string $eyesColor,
+        public \DateTimeImmutable $birthdate
     ) {
     }
 
