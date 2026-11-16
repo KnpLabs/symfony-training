@@ -5,8 +5,8 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <entity
-        name="App\Entity\Dinosaur"
-        repository-class="App\Repository\DinosaurRepository"
+        name="Domain\Model\Dinosaur"
+        repository-class="Infrastructure\Doctrine\Repository\DinosaurRepository"
         table="dinosaur"
     >
 
@@ -18,10 +18,11 @@
         <field name="gender" column="gender" type="string" length="255" nullable="false" unique="false" />
         <field name="age" column="age" type="integer" />
         <field name="eyesColor" column="eyesColor" type="string" lenght="7" nullable="false" unique="false" />
+        <field name="birthDate" column="birthDate" type="date" nullable="true" unique="false" />
 
         <many-to-one
             field="species"
-            target-entity="App\Entity\Species"
+            target-entity="Domain\Model\Species"
             inversed-by="dinosaurs" />
 
     </entity>
