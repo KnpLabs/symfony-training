@@ -1,0 +1,11 @@
+---
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Domain\Query\:
+    resource: '%kernel.project_dir%/src/Domain/Query/**/Handler.php'
+    tags:
+      - { name: messenger.message_handler, bus: query.bus }
