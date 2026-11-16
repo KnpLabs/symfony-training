@@ -33,3 +33,7 @@ compose.override.yml
 ###> deptrac/deptrac ###
 /.deptrac.cache
 ###< deptrac/deptrac ###
+
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###
