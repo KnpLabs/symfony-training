@@ -44,6 +44,8 @@ services:
       MYSQL_USER: ${MYSQL_USER}
     volumes:
       - db_data:/var/lib/mysql:rw
+    ports:
+      - 3306:3306
     restart: unless-stopped
 
 volumes:

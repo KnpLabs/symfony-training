@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\ReadModel;
 
+use DateTime;
 use Domain\Model\Dinosaur as ModelDinosaur;
 
 final class Dinosaur
@@ -12,6 +13,7 @@ final class Dinosaur
     private string $name;
     private string $gender;
     private Species $species;
+    private DateTime $birthDate;
     private int $age;
     private string $eyesColor;
 
@@ -22,6 +24,7 @@ final class Dinosaur
         $this->gender = $dinosaurModel->getGender();
         $this->species = new Species($dinosaurModel->getSpecies());
         $this->age = $dinosaurModel->getAge();
+        $this->birthDate = $dinosaurModel->getBirthDate();
         $this->eyesColor = $dinosaurModel->getEyesColor();
     }
 
@@ -53,6 +56,11 @@ final class Dinosaur
     public function getSpecies(): Species
     {
         return $this->species;
+    }
+
+    public function getBirthDate(): DateTime
+    {
+        return $this->birthDate;
     }
 
     public function setSpecies(Species $species): void

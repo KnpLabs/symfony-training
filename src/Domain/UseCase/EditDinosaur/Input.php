@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace Domain\UseCase\EditDinosaur;
 
+use DateTime;
 use Domain\ReadModel\Dinosaur;
 
 final readonly class Input
 {
+
+
     public function __construct(
-        public string $id,
-        public string $name,
-        public string $gender,
+        public string    $id,
+        public string    $name,
+        public string    $gender,
         public string $speciesId,
-        public int $age,
-        public string $eyesColor
+        public int       $age,
+        public DateTime  $birthDate,
+        public string    $eyesColor,
+
     ) {
     }
 
@@ -26,6 +31,7 @@ final readonly class Input
             $dinosaur->getGender(),
             (string) $dinosaur->getSpecies()->getId(),
             $dinosaur->getAge(),
+            $dinosaur->getBirthDate(),
             $dinosaur->getEyesColor()
         );
     }

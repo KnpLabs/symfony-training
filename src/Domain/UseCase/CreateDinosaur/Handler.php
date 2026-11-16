@@ -44,6 +44,7 @@ final class Handler
             $input->gender,
             $species,
             $input->age,
+            $input->birthDate,
             $input->eyesColor
         );
 

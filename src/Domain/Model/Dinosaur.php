@@ -2,6 +2,8 @@
 
 namespace Domain\Model;
 
+use DateTime;
+
 class Dinosaur implements AggregateRoot
 {
     private int $id;
@@ -11,6 +13,7 @@ class Dinosaur implements AggregateRoot
         private string $gender,
         private Species $species,
         private int $age,
+        private DateTime $birthDate,
         private string $eyesColor,
     ) {
     }
@@ -33,6 +36,10 @@ class Dinosaur implements AggregateRoot
     public function getGender(): string
     {
         return $this->gender;
+    }
+    public function getBirthDate(): DateTime
+    {
+        return $this->birthDate;
     }
 
     public function setGender(string $gender): void
@@ -78,6 +85,7 @@ class Dinosaur implements AggregateRoot
             'gender' => $this->gender,
             'species' => $this->species,
             'age' => $this->age,
+            'birthdate' => $this->birthDate,
             'eyesColor' => $this->eyesColor,
         ];
     }

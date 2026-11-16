@@ -18,6 +18,7 @@
         <field name="gender" column="gender" type="string" length="255" nullable="false" unique="false" />
         <field name="age" column="age" type="integer" />
         <field name="eyesColor" column="eyesColor" type="string" lenght="7" nullable="false" unique="false" />
+        <field name="birthDate" column="birthDate" type="date" nullable="true" unique="false" />
 
         <many-to-one
             field="species"

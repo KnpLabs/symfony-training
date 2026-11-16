@@ -47,10 +47,11 @@ final class HandlerSpec extends ObjectBehavior
                     ->setValue($arguments[0], 42);
             });
 
-        $this(new Input('Rex', 'male', '1', 12, '#ff0000'))
+        $this(new Input('Rex', 'male', '1', 12, new \DateTime('2005-05-12 14:30:00'),'#ff0000'))
             ->shouldHaveType(Output::class);
 
-        $expected = [new DinosaurIsBorn(45)];
+
+        $expected = [new DinosaurIsBorn(42)];
 
         if ($expected != $this->eventsRegisterer->getEvents()) {
             throw new FailureException(
@@ -70,7 +71,7 @@ final class HandlerSpec extends ObjectBehavior
         $this
             ->shouldThrow(SpeciesNotFoundException::class)
             ->during('__invoke', [
-                new Input('Rex', 'male', '42', 12, '#ff0000'),
+                new Input('Rex', 'male', '42', 12,  new \DateTime('2005-05-12 14:30:00'), '#ff0000'),
             ]);
     }
 }
