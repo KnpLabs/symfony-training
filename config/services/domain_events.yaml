@@ -1,0 +1,13 @@
+---
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Domain\EventsRegisterer: ~
+
+  Application\DomainEventsHandler\:
+    resource: '%kernel.project_dir%/src/Application/DomainEventsHandler/**.php'
+    tags:
+      - { name: messenger.message_handler, bus: event.bus }
